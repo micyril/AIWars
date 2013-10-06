@@ -7,7 +7,7 @@
 #define PORT 80
 #define MAX_CONNECTIONS 100
 
-// здесь надо написать правильный путь к папке со страницей
+// Р·РґРµСЃСЊ РЅР°РґРѕ РЅР°РїРёСЃР°С‚СЊ РїСЂР°РІРёР»СЊРЅС‹Р№ РїСѓС‚СЊ Рє РїР°РїРєРµ СЃРѕ СЃС‚СЂР°РЅРёС†РµР№
 #define HTML_ROOT "../../html" 
 #define DEFAULT_PAGE "/index.html"
 
@@ -31,11 +31,11 @@ private:
 	WebHandler() {};
 	~WebHandler() {};
 public:
-	// запуск сервера
+	// Р·Р°РїСѓСЃРє СЃРµСЂРІРµСЂР°
 	static HANDLE StartHttp();
-	// остановка сервера
+	// РѕСЃС‚Р°РЅРѕРІРєР° СЃРµСЂРІРµСЂР°
 	static void StopHttp();
-	// получить список подключеных клиентов с их id
+	// РїРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє РїРѕРґРєР»СЋС‡РµРЅС‹С… РєР»РёРµРЅС‚РѕРІ СЃ РёС… id
 	static list<Client*>& getClients();
 
 	static void setOnConnectCallback(OnConnectCallBack cb) {

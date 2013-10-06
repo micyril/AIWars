@@ -16,9 +16,9 @@ public:
 	WebSocketPacket();
 	~WebSocketPacket();
 
-	// данные из d будут скопированы
+	// РґР°РЅРЅС‹Рµ РёР· d Р±СѓРґСѓС‚ СЃРєРѕРїРёСЂРѕРІР°РЅС‹
 	void setData(BYTE *d, unsigned long long len);
-	// просто вернет длину если d == 0
+	// РїСЂРѕСЃС‚Рѕ РІРµСЂРЅРµС‚ РґР»РёРЅСѓ РµСЃР»Рё d == 0
 	unsigned long long getData(BYTE *d);
 	
 	void ping();

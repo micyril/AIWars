@@ -1,4 +1,4 @@
-﻿#include "..\WebHandler\WebHandler.h"
+#include "..\WebHandler\WebHandler.h"
 #include "..\WebHandler\Utils.h"
 #include <iostream>
 #include <string>

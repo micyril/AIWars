@@ -96,7 +96,7 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 	try {
 		req = new HttpRequest(s, HTML_ROOT, DEFAULT_PAGE);
 		if (req->headers["Upgrade"].compare("websocket") == 0) {
-			// работаем с веб сокетом
+			// СЂР°Р±РѕС‚Р°РµРј СЃ РІРµР± СЃРѕРєРµС‚РѕРј
 			websocketHandshake(s, req);
 			Client *cl = new Client(s, id++);
 			clients.push_back(cl);
@@ -104,7 +104,7 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 				on_connect(cl);
 			dontClose = true;
 		} else {
-			// просто отдаем запрошенный файл
+			// РїСЂРѕСЃС‚Рѕ РѕС‚РґР°РµРј Р·Р°РїСЂРѕС€РµРЅРЅС‹Р№ С„Р°Р№Р»
 			int size = readFile((char*)req->path.c_str(), &data);
 			res = new HttpResponse(RESPONSE_OK);
 			if (endsWith(req->path, ".html"))
@@ -165,6 +165,6 @@ void WebHandler::websocketHandshake(SOCKET s, HttpRequest *r) {
 }
 
 list<Client*>& WebHandler::getClients() {
-	// возвращать только новых клиентов?
+	// РІРѕР·РІСЂР°С‰Р°С‚СЊ С‚РѕР»СЊРєРѕ РЅРѕРІС‹С… РєР»РёРµРЅС‚РѕРІ?
 	return clients;
 }

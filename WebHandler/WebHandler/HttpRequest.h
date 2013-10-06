@@ -4,7 +4,7 @@
 #include <map>
 using namespace std;
 
-// POST запросы не тестировались
+// POST Р·Р°РїСЂРѕСЃС‹ РЅРµ С‚РµСЃС‚РёСЂРѕРІР°Р»РёСЃСЊ
 
 enum MethodType {
 	GET, POST

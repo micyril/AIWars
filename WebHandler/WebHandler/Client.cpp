@@ -23,6 +23,6 @@ void Client::close() {
 	p.close();
 	p.sendTo(s);
 	char c;
-	recv(s, &c, 1, 0); // костыль
+	recv(s, &c, 1, 0); // РєРѕСЃС‚С‹Р»СЊ
 	closesocket(s);
 }
