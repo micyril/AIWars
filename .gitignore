@@ -1,5 +1,8 @@
 Debug/
 Release/
+Bin/
+Temp/
+build/
 ipch/
 *.aps
 *.ncb
