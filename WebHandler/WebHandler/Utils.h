@@ -11,6 +11,7 @@ int parseInt(string str);
 string base64_encode(unsigned char const* s, unsigned int len);
 string base64_decode(string const& s);
 bool SHA1(const char *msg, unsigned char *hash);
+string urlDecode(string &SRC);
 
 struct ListenerParams {
 	int port;

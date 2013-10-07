@@ -107,9 +107,18 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 			// просто отдаем запрошенный файл
 			int size = readFile((char*)req->path.c_str(), &data);
 			res = new HttpResponse(RESPONSE_OK);
+			
 			if (endsWith(req->path, ".html"))
 				res->headers["Content-Type"] = CONTENT_TYPE_HTML;
-			res->data = data;
+			else if (endsWith(req->path, ".jpg")) {
+				res->headers["Content-Type"] = "image/jpeg";
+			}
+
+			res->data.assign(data, size);
+
+			char buf[20];
+			itoa(size, buf, 10);
+			res->headers["Content-Length"] = buf;			
 			res->respond(s);
 		}
 		

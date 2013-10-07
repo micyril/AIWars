@@ -13,6 +13,10 @@
 
 typedef void (*OnConnectCallBack)(Client*);
 
+enum ContentType {
+	Html, Css, Js, Jpeg, Other
+};
+
 class WebHandler {
 private:
 	static TP_CALLBACK_ENVIRON pool_env;

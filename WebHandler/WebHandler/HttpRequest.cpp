@@ -185,7 +185,9 @@ void HttpRequest::processData(char c) {
 	length--;
 }
 
-void HttpRequest::parseRequest(string s) {
+void HttpRequest::parseRequest(string request) {
+	string s = urlDecode(request);
+
 	char *r = (char*)s.c_str();
 	char *p = strtok(r, "?");
 	path.append(p);
