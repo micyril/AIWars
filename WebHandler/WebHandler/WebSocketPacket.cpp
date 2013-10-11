@@ -1,5 +1,6 @@
 #include <WinSock2.h>
 #include "WebSocketPacket.h"
+#include "Utils.h"
 
 WebSocketPacket::WebSocketPacket() {
 	flags_opcode = 0;
@@ -65,6 +66,16 @@ void WebSocketPacket::close() {
 	flags_opcode = 0x88;
 }
 
+WebSocketMessageType WebSocketPacket::getType() {
+	switch (flags_opcode & 0xf) {
+		case 0x1: return WebSocketMessageType::TextData;
+		case 0x2: return WebSocketMessageType::BinaryData;
+		case 0x8: return WebSocketMessageType::Close;
+		case 0x9: return WebSocketMessageType::Ping;
+		case 0xa: return WebSocketMessageType::Pong;
+	}
+}
+
 void WebSocketPacket::sendTo(SOCKET s) {
 	unsigned long long len = mask_len & 0x7f;
 	
@@ -81,4 +92,26 @@ void WebSocketPacket::sendTo(SOCKET s) {
 		send(s, (char*)mask_key, 4, 0);
 	if (len != 0)
 		send(s, (char*)data, len, 0);
+}
+
+void WebSocketPacket::recvFrom(SOCKET s) {
+	_recv(s, (char*)&flags_opcode, 1, 0);
+	_recv(s, (char*)&mask_len, 1, 0);
+	
+	unsigned long long len = mask_len & 0x7f;
+	if (len == 126) {
+		_recv(s, (char*)&exlen, 2, 0);
+		len = exlen;
+	} else if (len == 127) {
+		_recv(s, (char*)&exlen2, 8, 0);
+		len = exlen2;
+	}
+
+	if (mask_len & 0x80)
+		_recv(s, (char*)&mask_key, 4, 0);
+
+	if (len != 0) {
+		data = new BYTE[len];
+		_recv(s, (char*)data, len, 0);
+	}
 }

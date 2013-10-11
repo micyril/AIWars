@@ -12,6 +12,8 @@ string base64_encode(unsigned char const* s, unsigned int len);
 string base64_decode(string const& s);
 bool SHA1(const char *msg, unsigned char *hash);
 string urlDecode(string &SRC);
+// обертка над обычным recv но с выбрасыванием исключения при таймауте (или другой ошибке чтения)
+int _recv(SOCKET s, char* buf, int len, int flags);
 
 struct ListenerParams {
 	int port;
@@ -19,7 +21,7 @@ struct ListenerParams {
 };
 
 
-
+class SocketIOException : public exception {};
 
 //===========================================================
 //========== Http Errors ====================================

@@ -13,9 +13,12 @@ using namespace std;
 WSADATA wd;
 int _ = WSAStartup(0x202, &wd);
 
+
 TP_CALLBACK_ENVIRON WebHandler::pool_env;
-HANDLE WebHandler::http_thread_handle = 0;
 PTP_POOL WebHandler::http_clients_pool = 0;
+HANDLE WebHandler::http_thread_handle = 0;
+HANDLE WebHandler::daemon_thread_handle = 0;
+bool WebHandler::daemon_alive;
 DWORD WebHandler::id = 0;
 list<Client*> WebHandler::clients;
 OnConnectCallBack WebHandler::on_connect;
@@ -40,12 +43,19 @@ HANDLE WebHandler::StartHttp() {
 		p->request_handler = &HttpRequestHandler;
 		http_thread_handle = CreateThread(0, 0, &Listener, (void*)p, 0, 0);
 	}
+	if (daemon_thread_handle == 0) {
+		daemon_alive = true;
+		//daemon_thread_handle = CreateThread(0, 0, &WatchingDaemon, 0, 0, 0);
+	}
 	return http_thread_handle;
 }
 
 void WebHandler::StopHttp() {
-	if (http_thread_handle != 0)
+	if (http_thread_handle != 0) {
 		TerminateThread(http_thread_handle, -1);
+		http_thread_handle = 0;
+	}
+	daemon_alive = false;
 	for (list<Client*>::iterator i = clients.begin(); i != clients.end(); i++)
 		delete *i;
 }
@@ -62,7 +72,7 @@ DWORD WINAPI WebHandler::Listener(void* param) {
 	addr.sin_port = htons(port);
 
 	SOCKET s = socket(AF_INET, SOCK_STREAM, 0);
-	if (0 != bind(s, (sockaddr*)&addr, sizeof(addr))) {
+	if (0 != ::bind(s, (sockaddr*)&addr, sizeof(addr))) {
 		cerr << "bind failed: " << GetLastError() << endl;
 		return -1;
 	}
@@ -88,6 +98,10 @@ DWORD WINAPI WebHandler::Listener(void* param) {
 
 VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVOID param, PTP_WORK Work) {
 	SOCKET s = (SOCKET)param;
+	timeval tv;
+	tv.tv_sec = RECV_TIMEOUT_SEC;
+	tv.tv_usec = 0;
+	setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof( timeval));
 	
 	HttpRequest *req = 0;
 	HttpResponse *res = 0;
@@ -124,13 +138,14 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 		
 #ifdef _DEBUG
 		cout << req->path << endl;
-		for (map<string, string>::iterator i = req->_GET.begin(); i != req->_GET.end(); i++)
+		for (auto i = req->_GET.begin(); i != req->_GET.end(); i++)
 			cout << i->first << "\t" << i->second << endl;
 #endif
 	} catch (HttpException &e) {
 		res = new HttpResponse(e.what());
 		res->respond(s);
 	} catch (exception &e) {
+		cerr << e.what() << endl;
 		res = new HttpResponse("500 Internal Server Error");
 		res->respond(s);
 	}
@@ -150,9 +165,9 @@ void WebHandler::websocketHandshake(SOCKET s, HttpRequest *r) {
 #ifdef _DEBUG
 	cout << "\n WS: \n";
 	cout << r->path << endl;
-	for (map<string, string>::iterator i = r->_GET.begin(); i != r->_GET.end(); i++)
+	for (auto i = r->_GET.begin(); i != r->_GET.end(); i++)
 		cout << i->first << "\t" << i->second << endl;
-	for (map<string, string>::iterator i = r->headers.begin(); i != r->headers.end(); i++)
+	for (auto i = r->headers.begin(); i != r->headers.end(); i++)
 		cout << i->first << "\t" << i->second << endl;
 	cout << r->data;
 #endif
@@ -173,7 +188,13 @@ void WebHandler::websocketHandshake(SOCKET s, HttpRequest *r) {
 	res->respond(s);
 }
 
-list<Client*>& WebHandler::getClients() {
-	// возвращать только новых клиентов?
-	return clients;
+// отключено
+DWORD WINAPI WebHandler::WatchingDaemon(void* param) {
+	while (daemon_alive) {
+		for (auto i = clients.begin(); i != clients.end(); i++) {
+			// здесь надо пинговать клиентов и отвечать на пинги - не отвечающих выпиливать
+		}
+		Sleep(SLEEP_TIME);
+	}
+	return 0;
 }

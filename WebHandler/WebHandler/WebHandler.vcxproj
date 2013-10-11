@@ -14,6 +14,8 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="HttpRequest.h" />
     <ClInclude Include="HttpResponse.h" />
+    <ClInclude Include="Serializable.h" />
+    <ClInclude Include="TestData.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="WebHandler.h" />
     <ClInclude Include="WebSocketPacket.h" />
@@ -23,6 +25,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="HttpRequest.cpp" />
     <ClCompile Include="HttpResponse.cpp" />
+    <ClCompile Include="TestData.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="WebHandler.cpp" />
     <ClCompile Include="WebSocketPacket.cpp" />

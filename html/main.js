@@ -15,7 +15,8 @@ function websocket_test() {
 	};
 	 
 	socket.onmessage = function(event) {
-		alert("Получены данные " + event.data);
+		var d = JSON.parse(event.data);
+		alert(d.s);
 	};
 
 	socket.onerror = function(error) { 

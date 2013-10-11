@@ -95,3 +95,10 @@ string urlDecode(string &SRC) {
     }
     return (ret);
 }
+
+int _recv(SOCKET s, char* buf, int len, int flags) {
+	int b = recv(s, buf, len, flags);
+	if (b < 0)
+		throw SocketIOException();
+	return b;
+}

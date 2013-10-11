@@ -3,6 +3,16 @@
 #include <string>
 using namespace std;
 
+enum WebSocketMessageType {
+	TextData = 1, 
+	BinaryData = 2, 
+	AnyData = TextData | BinaryData,
+	Ping = 4, 
+	Pong = 8, 
+	Close = 16, 
+	UnknownType = 0
+};
+
 class WebSocketPacket {
 private:
 	BYTE flags_opcode;
@@ -25,5 +35,8 @@ public:
 	void pong();
 	void close();
 
+	WebSocketMessageType getType();
+
 	void sendTo(SOCKET s);
+	void recvFrom(SOCKET s);
 };

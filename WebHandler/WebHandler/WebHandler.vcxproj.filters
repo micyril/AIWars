@@ -7,6 +7,8 @@
     <ClInclude Include="HttpResponse.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="WebSocketPacket.h" />
+    <ClInclude Include="Serializable.h" />
+    <ClInclude Include="TestData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WebHandler.cpp" />
@@ -16,6 +18,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="base64.cpp" />
     <ClCompile Include="WebSocketPacket.cpp" />
+    <ClCompile Include="TestData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />

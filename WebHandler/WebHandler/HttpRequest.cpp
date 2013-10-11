@@ -46,7 +46,7 @@ void HttpRequest::parse(SOCKET s) {
 	char c;
 	int n = 1;
 	while (!stop && length != 0 && n != 0) {
-		n = recv(s, &c, 1, 0);
+		n = _recv(s, &c, 1, 0);
 		if (n < 0)
 			throw InternalServerError();
 		if (c != '\r')
