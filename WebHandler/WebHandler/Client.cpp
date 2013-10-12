@@ -1,13 +1,14 @@
 #include "Client.h"
 #include "WebSocketPacket.h"
 #include "Utils.h"
-
+#include "messages\Message.h"
+#include <sstream>
+using namespace Messages;
 
 Client::Client(SOCKET s, int id) {
 	this->s = s;
 	this->id = id;
 }
-
 
 Client::~Client() {	
 	close();
@@ -25,25 +26,6 @@ void Client::sendData(char *data, unsigned long long len) {
 	m.unlock();
 }
 
-void Client::close() {
-	m.lock();
-	WebSocketPacket p;
-	p.close();
-	p.sendTo(s);
-	char c;
-	_recv(s, &c, 1, 0); // костыль
-	closesocket(s);
-	m.unlock();
-}
-
-WebSocketPacket* Client::recivePacket() {
-	m.lock();
-	WebSocketPacket *p = new WebSocketPacket();
-	p->recvFrom(s);
-	m.unlock();
-	return p;
-}
-
 int Client::reciveData(char **data) {
 	WebSocketPacket *p;
 	if (queue.empty()) 
@@ -59,6 +41,17 @@ int Client::reciveData(char **data) {
 	p->getData((BYTE*)*data);
 	delete p;
 	return len;
+}
+
+void Client::close() {
+	m.lock();
+	WebSocketPacket p;
+	p.close();
+	p.sendTo(s);
+	char c;
+	_recv(s, &c, 1, 0); // костыль
+	closesocket(s);
+	m.unlock();
 }
 
 void Client::ping() {
@@ -80,6 +73,18 @@ void Client::pong(WebSocketPacket *pp) {
 	m.unlock();
 }
 
+WebSocketPacket* Client::recivePacket() {
+	m.lock();
+	WebSocketPacket *p = new WebSocketPacket();
+	p->recvFrom(s);
+	m.unlock();
+	return p;
+}
+
+void Client::sendPacket(WebSocketPacket* p) {
+	p->sendTo(s);
+}
+
 void Client::sendObject(Serializable &o) {
 	string s = o.Serialize();
 	sendData((char*)s.c_str(), s.length());
@@ -93,4 +98,16 @@ void Client::sendObjects(Serializable *o, int n) {
 	}
 	s[s.length() - 1] = ']';
 	sendData((char*)s.c_str(), s.length());
+}
+
+void Client::sendSelfInfo() {
+	sendObject(Info(true, id));
+}
+
+void Client::sendEnemyInfo(int id) {
+	sendObject(Info(false, id));
+}
+
+void Client::notifyStart() {
+	sendObject(Action(Start));
 }

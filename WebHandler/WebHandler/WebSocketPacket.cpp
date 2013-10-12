@@ -2,6 +2,7 @@
 #include "WebSocketPacket.h"
 #include "Utils.h"
 
+
 WebSocketPacket::WebSocketPacket() {
 	flags_opcode = 0;
 	mask_len = 0;
@@ -68,11 +69,11 @@ void WebSocketPacket::close() {
 
 WebSocketMessageType WebSocketPacket::getType() {
 	switch (flags_opcode & 0xf) {
-		case 0x1: return WebSocketMessageType::TextData;
-		case 0x2: return WebSocketMessageType::BinaryData;
-		case 0x8: return WebSocketMessageType::Close;
-		case 0x9: return WebSocketMessageType::Ping;
-		case 0xa: return WebSocketMessageType::Pong;
+		case 0x1: return TextData;
+		case 0x2: return BinaryData;
+		case 0x8: return Close;
+		case 0x9: return Ping;
+		case 0xa: return Pong;
 	}
 }
 

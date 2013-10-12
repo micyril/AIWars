@@ -10,6 +10,7 @@
 using namespace std;
 
 
+
 WSADATA wd;
 int _ = WSAStartup(0x202, &wd);
 

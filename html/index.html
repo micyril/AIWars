@@ -1,9 +1,24 @@
 <!DOCTYPE html />
 <html>
-	<head>
-		<title>AIWars</title>
-		<script src="main.js"></script>
-	</head>
-	<body>
-	</body>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js" ></script>
+	<script src="main.js"></script>
+	<title>AIWars</title>	
+</head>
+<body>
+	<table id="container" cellspacing="0">
+		<tr>
+			<td width="80%" rowspan="3"><canvas id="canvas"></canvas></td>
+			<td width="20%" valign="top">
+				<table>
+					<tr><td>Ваш ID: <span id="id_self"></span></td></tr>
+					<tr id="text_enemy" class="hidden"><td>ID соперника: <span id="id_enemy"></span></td>
+					<tr><td>Статус: <span id="status"></span></td></tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</body>
 </html>

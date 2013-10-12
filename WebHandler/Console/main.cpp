@@ -7,9 +7,11 @@
 using namespace std;
 
 void OnConnect(Client *c) {
+	c->sendSelfInfo();
+	Sleep(2000);
+	c->sendEnemyInfo(20);
 	Sleep(1000);
-	TestData td;
-	c->sendObject(td);
+	c->notifyStart();
 }
 
 int main() {

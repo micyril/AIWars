@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 
+
 class TestData : public Serializable {
 public:
 	int k;

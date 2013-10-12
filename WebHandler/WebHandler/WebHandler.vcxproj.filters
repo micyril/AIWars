@@ -9,6 +9,9 @@
     <ClInclude Include="WebSocketPacket.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="TestData.h" />
+    <ClInclude Include="messages\Message.h">
+      <Filter>messages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WebHandler.cpp" />
@@ -19,8 +22,19 @@
     <ClCompile Include="base64.cpp" />
     <ClCompile Include="WebSocketPacket.cpp" />
     <ClCompile Include="TestData.cpp" />
+    <ClCompile Include="messages\Info.cpp">
+      <Filter>messages</Filter>
+    </ClCompile>
+    <ClCompile Include="messages\Action.cpp">
+      <Filter>messages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="messages">
+      <UniqueIdentifier>{e49986fc-8aa7-4728-bd96-188f20133e2e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

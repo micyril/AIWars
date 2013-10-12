@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
+
 class Serializable {
 public:
-	// сериализыция в JSON строку
+	// СЃРµСЂРёР°Р»РёР·Р°С†РёСЏ РІ JSON СЃС‚СЂРѕРєСѓ
 	virtual std::string Serialize()=0;
 };
-
