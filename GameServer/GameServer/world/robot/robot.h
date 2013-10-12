@@ -2,11 +2,11 @@
 
 #include <string>
 #include <map>
-#include "../mapobject.h"
+#include "../worldobject.h"
 #include "../mapelement.h"
 #include "robotcomponent.h"
 
-class Robot : public MapObject {
+class Robot : public WorldObject {
 private:
 	//todo: use safe pointers
 	MapElement *frame;

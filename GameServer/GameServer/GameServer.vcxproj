@@ -82,7 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="world\mapelement.h" />
-    <ClInclude Include="world\mapobject.h" />
+    <ClInclude Include="world\worldobject.h" />
     <ClInclude Include="world\robot\robot.h" />
     <ClInclude Include="world\robot\robotcomponent.h" />
     <ClInclude Include="world\world.h" />

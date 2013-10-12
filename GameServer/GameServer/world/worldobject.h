@@ -1,6 +1,6 @@
 #pragma once
 
-class MapObject {
+class WorldObject {
 public:
 	virtual void Update(float delta) = 0;
 };

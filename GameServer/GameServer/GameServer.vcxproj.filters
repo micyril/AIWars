@@ -12,9 +12,6 @@
     <ClInclude Include="world\world.h">
       <Filter>world</Filter>
     </ClInclude>
-    <ClInclude Include="world\mapobject.h">
-      <Filter>world</Filter>
-    </ClInclude>
     <ClInclude Include="world\mapelement.h">
       <Filter>world</Filter>
     </ClInclude>
@@ -23,6 +20,9 @@
     </ClInclude>
     <ClInclude Include="world\robot\robotcomponent.h">
       <Filter>world\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="world\worldobject.h">
+      <Filter>world</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
