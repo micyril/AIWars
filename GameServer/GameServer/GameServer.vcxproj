@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="world\mapelement.cpp" />
     <ClCompile Include="world\robot\robot.cpp" />
     <ClCompile Include="world\world.cpp" />
   </ItemGroup>
