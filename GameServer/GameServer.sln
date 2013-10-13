@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameServer", "GameServer\GameServer.vcxproj", "{8F069DB2-ED4B-47E5-B559-06782306018B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebHandler", "..\WebHandler\WebHandler\WebHandler.vcxproj", "{C2708994-C296-4497-AA52-FBCB554EDAD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{8F069DB2-ED4B-47E5-B559-06782306018B}.Debug|Win32.Build.0 = Debug|Win32
 		{8F069DB2-ED4B-47E5-B559-06782306018B}.Release|Win32.ActiveCfg = Release|Win32
 		{8F069DB2-ED4B-47E5-B559-06782306018B}.Release|Win32.Build.0 = Release|Win32
+		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Debug|Win32.Build.0 = Debug|Win32
+		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Release|Win32.ActiveCfg = Release|Win32
+		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
