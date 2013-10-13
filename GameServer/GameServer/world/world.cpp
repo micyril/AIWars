@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 World::World(int w, int h) : width(w), height(h) {
 	MapElement*  testElement =  new MapElement(5, 13, 13, 13, 1, 3); //testing
 	this->mapelements.push_back(testElement);

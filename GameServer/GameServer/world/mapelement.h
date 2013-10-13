@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "../../../WebHandler/WebHandler/Serializable.h"
 
 class Rectangle {
 public:
@@ -15,7 +16,7 @@ public:
 		width(width), height(height), x(x), y(y), rotation(rotation) {}
 };
 
-class MapElement : public Rectangle {
+class MapElement : public Rectangle, Serializable {
 public:
 	int layer;
 
