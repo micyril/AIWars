@@ -62,7 +62,7 @@ function game_info(msg) {
 		});
 	}
 	ctx = canvas.get(0).getContext("2d");
-	tx.fillRect(0, 0, canvas.width(), canvas.height());
+	ctx.fillRect(0, 0, canvas.width(), canvas.height());
 }
 
 function action(msg) {

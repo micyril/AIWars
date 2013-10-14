@@ -19,10 +19,10 @@ void World::Update(float delta) {
 std::string World::Serialize() {
 	stringstream stream;
 	stream << "{";
-	stream << "\"mtype\":\"game_info\","; // <-- òèï ñîîáùåíèÿ
+	stream << "\"mtype\":\"game_info\","; // <-- Ñ‚Ð¸Ð¿ ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ
 	stream << "\"width\":" << width << ",";
 	stream << "\"height\":" << height << ",";
-	stream << "\"mapelements\":["; // äëÿ ìàññèâîâ êâàäðàòíûå ñêîáêè, äëÿ îáúåêòîâ - ôèãóðíûå !
+	stream << "\"mapelements\":["; // Ð´Ð»Ñ Ð¼Ð°ÑÑÐ¸Ð²Ð¾Ð² ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð½Ñ‹Ðµ ÑÐºÐ¾Ð±ÐºÐ¸, Ð´Ð»Ñ Ð¾Ð±ÑŠÐµÐºÑ‚Ð¾Ð² - Ñ„Ð¸Ð³ÑƒÑ€Ð½Ñ‹Ðµ !
 
 	std::list<MapElement*>::iterator it = mapelements.begin();
 	stream << (*it)->Serialize();
