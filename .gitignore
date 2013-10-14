@@ -4,6 +4,7 @@ Bin/
 Temp/
 build/
 ipch/
+*-build/
 *.aps
 *.ncb
 *.opensdf
