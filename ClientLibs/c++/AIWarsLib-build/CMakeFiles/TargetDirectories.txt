@@ -1,1 +1,0 @@
-/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib-build/CMakeFiles/AIWarsLib.dir

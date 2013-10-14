@@ -1,1 +1,0 @@
-/usr/bin/c++    -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/AIWarsLib.dir/commands.cpp.o CMakeFiles/AIWarsLib.dir/commutator.cpp.o CMakeFiles/AIWarsLib.dir/controller.cpp.o CMakeFiles/AIWarsLib.dir/main.cpp.o CMakeFiles/AIWarsLib.dir/protocol.cpp.o CMakeFiles/AIWarsLib.dir/tools.cpp.o  -o AIWarsLib  
