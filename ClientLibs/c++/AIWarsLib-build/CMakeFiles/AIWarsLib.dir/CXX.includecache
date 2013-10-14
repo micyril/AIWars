@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib/commands.h
+string
+-
+tools.h
+/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib/tools.h
+protocol.h
+/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib/protocol.h
+
+/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib/main.cpp
+iostream
+-
+tools.h
+/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib/tools.h
+commands.h
+/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib/commands.h
+
+/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib/protocol.h
+string.h
+-
+tools.h
+/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib/tools.h
+
+/Users/AndrexPJ/Programming/AIWars/ClientLibs/c++/AIWarsLib/tools.h
+string
+-
+iostream
+-
+sstream
+-
+vector.h
+-
+
