@@ -4,7 +4,7 @@
 #include "worldobject.h"
 #include "mapelement.h"
 
-class World {
+class World : public Serializable {
 private:
 	int width;
 	int height;

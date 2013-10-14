@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iostream>
 #include "world.h"
 
 using namespace std;
@@ -19,15 +20,17 @@ std::string World::Serialize() {
 	stringstream stream;
 
 	stream << "\"world\" : " << endl << "{" << endl;
-	stream << "\"width\" : " << this->width << endl;
-	stream << "\"height\" : " << this->height << endl;
+	stream << "\"width\" : " << this->width << "," << endl;
+	stream << "\"height\" : " << this->height << "," << endl;
 	stream << "\"mapelements\" : " << endl << "{" << endl;
 
-	int i = 0;
-	for(std::list<MapElement*>::iterator it = mapelements.begin(); it != mapelements.end(); it++)
-		stream << "\"mapelement" << i++ << "\" :"  << endl <<(*it)->Serialize() << endl;
+	std::list<MapElement*>::iterator it = mapelements.begin();
+	stream << (*it)->Serialize();
+	it++;
+	for(; it != mapelements.end(); it++)
+		stream << "," << endl << (*it)->Serialize();
 
-	stream << "}" << endl;
+	stream << endl << "}" << endl;
 	stream << "}";
 
 	return stream.str();

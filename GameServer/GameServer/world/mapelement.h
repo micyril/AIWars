@@ -3,27 +3,30 @@
 #include <string>
 #include "../../../WebHandler/WebHandler/Serializable.h"
 
-class Rectangle {
+class Rectangle : public Serializable {
 public:
 	int width;
 	int height;
 	int x;
 	int y;
-
 	int rotation;
 
-	Rectangle(int width, int height, int x, int y, int rotation = 0) :
-		width(width), height(height), x(x), y(y), rotation(rotation) {}
+	Rectangle(int width, int height, int x, int y, int rotation = 0);
+	virtual std::string Serialize();
+
+protected:
+	virtual std::string serializeWithoutBrackets();
 };
 
-class MapElement : public Rectangle, Serializable {
+class MapElement : public Rectangle {
 public:
 	int layer;
 
-	MapElement(int width, int height, int x, int y, int rotation = 0, int layer = 0) : 
-		Rectangle(width, height, x, y, rotation), layer(layer) {}
+	MapElement(int width, int height, int x, int y, int rotation = 0, int layer = 0);
 	
 	//todo: use safe pointers 
 	//virtual void ApplyCollisionEffect(MapElement *mapElement) = 0;
-	virtual std::string Serialize();
+
+protected:
+	virtual std::string serializeWithoutBrackets();
 };
