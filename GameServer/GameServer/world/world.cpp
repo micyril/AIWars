@@ -18,7 +18,21 @@ void World::Update(float delta) {
 
 std::string World::Serialize() {
 	stringstream stream;
+	stream << "{";
+	stream << "\"mtype\":\"game_info\","; // <-- тип сообщения
+	stream << "\"width\":" << width << ",";
+	stream << "\"height\":" << height << ",";
+	stream << "\"mapelements\":["; // для массивов квадратные скобки, для объектов - фигурные !
 
+	std::list<MapElement*>::iterator it = mapelements.begin();
+	stream << (*it)->Serialize();
+	it++;
+	for(; it != mapelements.end(); it++)
+		stream << "," << (*it)->Serialize();
+	stream << "]";
+	stream << "}";
+
+	/*
 	stream << "\"world\" : " << endl << "{" << endl;
 	stream << "\"width\" : " << this->width << "," << endl;
 	stream << "\"height\" : " << this->height << "," << endl;
@@ -32,7 +46,7 @@ std::string World::Serialize() {
 
 	stream << endl << "}" << endl;
 	stream << "}";
-
+	*/
 	return stream.str();
 }
 

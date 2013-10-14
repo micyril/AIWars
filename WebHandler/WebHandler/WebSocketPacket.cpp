@@ -26,10 +26,10 @@ void WebSocketPacket::setData(BYTE *d, unsigned long long len) {
 		mask_len = 0x80 | len;
 	else if (len < 0xffff) {
 		mask_len = 0x80 | 126;
-		exlen = htons(len);
+		exlen = len;
 	} else {
 		mask_len = 0x80 | 127;
-		exlen2 = htonll(len);
+		exlen2 = len;
 	}
 	mask_key[0] = rand() & 0xff;
 	mask_key[1] = rand() & 0xff;
@@ -83,10 +83,12 @@ void WebSocketPacket::sendTo(SOCKET s) {
 	send(s, (char*)&flags_opcode, 1, 0);
 	send(s, (char*)&mask_len, 1, 0);
 	if (len == 126) {
-		send(s, (char*)&exlen, 2, 0);
+		WORD temp = htons(exlen);
+		send(s, (char*)&temp, 2, 0);
 		len = exlen;
 	} else if (len == 127) {
-		send(s, (char*)&exlen2, 8, 0);
+		unsigned long long temp = htonll(exlen2);
+		send(s, (char*)&temp, 8, 0);
 		len = exlen2;
 	}
 	if (mask_len & 0x80)

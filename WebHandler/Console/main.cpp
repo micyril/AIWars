@@ -1,10 +1,4 @@
 #include "..\WebHandler\WebHandler.h"
-#include "..\WebHandler\Utils.h"
-#include "..\WebHandler\TestData.h"
-#include <iostream>
-#include <string>
-#include <time.h>
-using namespace std;
 
 void OnConnect(Client *c) {
 	c->sendSelfInfo();
