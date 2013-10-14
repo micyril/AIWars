@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Console", "Console\Console.vcxproj", "{AD2E1A97-3BCF-47FA-B22B-76F592F652C9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C2708994-C296-4497-AA52-FBCB554EDAD2} = {C2708994-C296-4497-AA52-FBCB554EDAD2}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebHandler", "WebHandler\WebHandler.vcxproj", "{C2708994-C296-4497-AA52-FBCB554EDAD2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD2E1A97-3BCF-47FA-B22B-76F592F652C9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AD2E1A97-3BCF-47FA-B22B-76F592F652C9}.Debug|Win32.Build.0 = Debug|Win32
+		{AD2E1A97-3BCF-47FA-B22B-76F592F652C9}.Debug|Win32.Deploy.0 = Debug|Win32
+		{AD2E1A97-3BCF-47FA-B22B-76F592F652C9}.Release|Win32.ActiveCfg = Release|Win32
+		{AD2E1A97-3BCF-47FA-B22B-76F592F652C9}.Release|Win32.Build.0 = Release|Win32
+		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Debug|Win32.Build.0 = Debug|Win32
+		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Release|Win32.ActiveCfg = Release|Win32
+		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

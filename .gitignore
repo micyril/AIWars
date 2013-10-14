@@ -1,0 +1,12 @@
+Debug/
+Release/
+Bin/
+Temp/
+build/
+ipch/
+*.aps
+*.ncb
+*.opensdf
+*.sdf
+*.user
+*.suo
