@@ -2,6 +2,17 @@
 
 using namespace Commands;
 
+//---------------Obstacle-------------------------
+Obstacle::Obstacle(std::string type, float distance, float angle){
+    this->type = type;
+    this->distance = distance;
+    this->angle = angle;
+}
+//------------------------------------------------
+
+//------------------------------------------------
+//--------- base class methods--------------------
+//------------------------------------------------
 Command::Command(){}
 
 int Command::parse_response(std::string response){
@@ -20,7 +31,8 @@ int Command::parse_response(std::string response){
 std::string Command::produce_request(std::string response){
     return response+this->proto.end_line;
 }
-
+//------------------------------------------------
+//------------------------------------------------
 
 //--------MoveCommand--------------
 std::string MoveCommand::produce_request(int ID, float dest){
@@ -51,9 +63,9 @@ std::string ScanCommand::produce_request(int ID){
     return this->proto.getprotoline();
 }
 
-std::pair< int , std::vector<obstacle> > ScanCommand::parse_response(std::string response){
+std::pair< int , std::vector<Obstacle> > ScanCommand::parse_response(std::string response){
     int state;
-    std::pair< int , std::vector<obstacle> > out;
+    std::pair< int , std::vector<Obstacle> > out;
 
     if((state = Command::parse_response(response)) != 0){ //attention ! this->proto will be changed
         out.first = state;
@@ -63,11 +75,13 @@ std::pair< int , std::vector<obstacle> > ScanCommand::parse_response(std::string
     out.first = state;
 
     std::vector<std::string> args = Tools::StringSplitter::split(this->proto.args_line," ");
-    std::vector<obstacle> parsed_args;
+    std::vector<Obstacle> parsed_args;
     for(int i = 2; i < args.size(); i+=3){
-        parsed_args.push_back(obstacle(args[i-2],std::pair<float,float>(Tools::FromStrConverter<float>::convert(args[i-1]),Tools::FromStrConverter<float>::convert(args[i]))));
+       parsed_args.push_back(Obstacle(args[i-2],Tools::FromStrConverter<float>::convert(args[i-1]),Tools::FromStrConverter<float>::convert(args[i])));
     }
+
     out.second = parsed_args;
+
     return out;
 }
 

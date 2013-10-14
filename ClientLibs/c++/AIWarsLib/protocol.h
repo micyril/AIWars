@@ -15,8 +15,6 @@ public:
     static std::string SC;
     static std::string RET;
 
-
-
     std::string head; // ID|ACK|NAK|EOG
     std::string raw_command; // MOV|ROT|FR|SC|RET
     std::string args_line; // [FLOATS]|[TYPE,[FLOATS]]

@@ -15,7 +15,7 @@ public:
     bool move(float destination);
     bool rotate(float angle);
     bool fire();
-    std::vector<obstacle> scan();
+    std::vector<Obstacle> scan();
 };
 
 
