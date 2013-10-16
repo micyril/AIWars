@@ -1,14 +1,24 @@
 #include <sstream>
 #include <iostream>
 #include "world.h"
+#include "robot\robot.h"
+#include "collisions\collisions.h"
+#include "..\exceptions.h"
 
 using namespace std;
 
 World::World(int w, int h) : width(w), height(h) {
-	MapElement*  testElement =  new MapElement(5, 13, 13, 13, 1, 3); //testing
+	MapElement*  testElement =  new RobotFrame(5, 13, NULL); //testing
 	this->mapelements.push_back(testElement);
-	MapElement*  testElement1 =  new MapElement(15, 113, 113, 113, 11, 13); //testing
+	MapElement*  testElement1 =  new RobotFrame(6, 12, NULL); //testing
 	this->mapelements.push_back(testElement1);
+	DEFINE_COLLISION_RESOLVERS;
+	try {
+		CollisionResolverMaster::Resolve(testElement, testElement1);
+	}
+	catch (NotImplementedException) {
+		std::cout << "It's working!" << std::endl;
+	}
 }
 
 void World::Update(float delta) {

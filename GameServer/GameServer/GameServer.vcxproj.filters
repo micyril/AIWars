@@ -7,6 +7,12 @@
     <Filter Include="world\robot">
       <UniqueIdentifier>{e2663044-0385-4bc8-a2ce-1a7302fca951}</UniqueIdentifier>
     </Filter>
+    <Filter Include="world\collisions">
+      <UniqueIdentifier>{d943f369-158d-4bb6-ad19-dd9cfda81c16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="world\collisions\resolvers">
+      <UniqueIdentifier>{562b9ec6-a760-4193-b693-ac864c9af2a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="world\world.h">
@@ -24,6 +30,28 @@
     <ClInclude Include="world\worldobject.h">
       <Filter>world</Filter>
     </ClInclude>
+    <ClInclude Include="world\collisions\collisionchecker.h">
+      <Filter>world\collisions</Filter>
+    </ClInclude>
+    <ClInclude Include="exceptions.h" />
+    <ClInclude Include="world\collisions\collisionresolvermaster.h">
+      <Filter>world\collisions</Filter>
+    </ClInclude>
+    <ClInclude Include="world\collisions\exceptions.h">
+      <Filter>world\collisions</Filter>
+    </ClInclude>
+    <ClInclude Include="world\collisions\resolvers\collisionresolver.h">
+      <Filter>world\collisions\resolvers</Filter>
+    </ClInclude>
+    <ClInclude Include="world\collisions\resolvers\robotframescollisionresolver.h">
+      <Filter>world\collisions\resolvers</Filter>
+    </ClInclude>
+    <ClInclude Include="world\collisions\resolvers\collisionresolvers.h">
+      <Filter>world\collisions\resolvers</Filter>
+    </ClInclude>
+    <ClInclude Include="world\collisions\collisions.h">
+      <Filter>world\collisions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -35,6 +63,15 @@
     </ClCompile>
     <ClCompile Include="world\mapelement.cpp">
       <Filter>world</Filter>
+    </ClCompile>
+    <ClCompile Include="world\collisions\collisionchecker.cpp">
+      <Filter>world\collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="world\collisions\collisionresolvermaster.cpp">
+      <Filter>world\collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="world\collisions\resolvers\robotframescollisionresolver.cpp">
+      <Filter>world\collisions\resolvers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

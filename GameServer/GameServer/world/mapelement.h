@@ -23,9 +23,8 @@ public:
 	int layer;
 
 	MapElement(int width, int height, int x, int y, int rotation = 0, int layer = 0);
-	
-	//todo: use safe pointers 
-	//virtual void ApplyCollisionEffect(MapElement *mapElement) = 0;
+	virtual ~MapElement() {}
+	virtual std::string GetType() = 0;
 
 protected:
 	virtual std::string serializeWithoutBrackets();

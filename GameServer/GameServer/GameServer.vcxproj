@@ -77,11 +77,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="world\collisions\collisionchecker.cpp" />
+    <ClCompile Include="world\collisions\collisionresolvermaster.cpp" />
+    <ClCompile Include="world\collisions\resolvers\robotframescollisionresolver.cpp" />
     <ClCompile Include="world\mapelement.cpp" />
     <ClCompile Include="world\robot\robot.cpp" />
     <ClCompile Include="world\world.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="exceptions.h" />
+    <ClInclude Include="world\collisions\collisionchecker.h" />
+    <ClInclude Include="world\collisions\collisionresolvermaster.h" />
+    <ClInclude Include="world\collisions\collisions.h" />
+    <ClInclude Include="world\collisions\exceptions.h" />
+    <ClInclude Include="world\collisions\resolvers\collisionresolver.h" />
+    <ClInclude Include="world\collisions\resolvers\collisionresolvers.h" />
+    <ClInclude Include="world\collisions\resolvers\robotframescollisionresolver.h" />
     <ClInclude Include="world\mapelement.h" />
     <ClInclude Include="world\worldobject.h" />
     <ClInclude Include="world\robot\robot.h" />

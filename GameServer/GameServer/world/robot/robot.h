@@ -6,6 +6,20 @@
 #include "../mapelement.h"
 #include "robotcomponent.h"
 
+class Robot;
+
+class RobotFrame : public MapElement
+{
+private:
+	Robot *robot;
+	static std::string type;
+
+public:
+	RobotFrame(int width, int height, Robot *robot);
+	virtual std::string GetType();
+	static std::string GetClassType();
+};
+
 class Robot : public WorldObject {
 private:
 	//todo: use safe pointers

@@ -6,6 +6,7 @@
 
 class RobotComponent : public WorldObject {
 public:
-	virtual void* Use(void *arg) = 0;
-	virtual std::list<MapElement> GetElements() = 0;
+	virtual ~RobotComponent() {}
+	virtual void* Execute(std::string command, void *arg) = 0;
+	virtual std::list<MapElement *> GetElements() = 0;
 };
