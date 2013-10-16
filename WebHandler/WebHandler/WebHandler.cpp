@@ -122,6 +122,8 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 			// просто отдаем запрошенный файл
 			int size = readFile((char*)req->path.c_str(), &data);
 			res = new HttpResponse(RESPONSE_OK);
+			// муть какая то эти постоянные соединения
+			res->headers["Connection"] = "close";
 			
 			if (endsWith(req->path, ".html"))
 				res->headers["Content-Type"] = CONTENT_TYPE_HTML;

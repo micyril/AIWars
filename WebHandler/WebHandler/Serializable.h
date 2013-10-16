@@ -5,4 +5,6 @@ class Serializable {
 public:
 	// сериализация в JSON строку
 	virtual std::string Serialize()=0;
+
+	virtual ~Serializable() {}
 };

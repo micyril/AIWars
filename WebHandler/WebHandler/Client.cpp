@@ -100,6 +100,16 @@ void Client::sendObjects(Serializable *o, int n) {
 	sendData((char*)s.c_str(), s.length());
 }
 
+void Client::sendObjects(list<Serializable*> *l) {
+	string s = "[";
+	for (auto i = l->begin(); i != l->end(); i++) {
+		s.append((*i)->Serialize());
+		s.append(",");
+	}
+	s[s.length() - 1] = ']';
+	sendData((char*)s.c_str(), s.length());
+}
+
 void Client::sendSelfInfo() {
 	sendObject(Info(true, id));
 }
@@ -108,6 +118,18 @@ void Client::sendEnemyInfo(int id) {
 	sendObject(Info(false, id));
 }
 
+void Client::sendGameInfo(Serializable *w) {
+	sendObject(Info(w));
+}
+
 void Client::notifyStart() {
-	sendObject(Action(Start));
+	sendObject(Action());
+}
+
+void Client::notifyUpdate(list<Serializable*> *l) {
+	sendObject(Action(l));
+}
+
+void Client::notifyFinish(int id) {
+	sendObject(Action(id));
 }

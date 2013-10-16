@@ -4,13 +4,17 @@
 #include "..\..\WebHandler\WebHandler\WebHandler.h"
 
 void OnConnect(Client *c) {
+	World w(500, 500);
+
 	c->sendSelfInfo();
 	Sleep(2000);
 	c->sendEnemyInfo(20);
-	World w(500, 500);
-	c->sendObject(w);
 	Sleep(1000);
-	c->notifyStart();
+	c->sendGameInfo(&w);
+	c->notifyStart();	
+	c->notifyUpdate(w.getElements());
+	Sleep(2000);
+	c->notifyFinish(c->id);
 }
 
 int test()

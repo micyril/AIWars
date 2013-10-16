@@ -3,6 +3,7 @@
 #include <list>
 #include "worldobject.h"
 #include "mapelement.h"
+#include "..\..\..\WebHandler\WebHandler\Serializable.h"
 
 class World : public Serializable {
 private:
@@ -18,4 +19,8 @@ public:
 	void Update(float delta);
 	virtual std::string Serialize();
 	~World();
+
+	std::list<Serializable*>* getElements() {
+		return (std::list<Serializable*>*)&mapelements;
+	}
 };

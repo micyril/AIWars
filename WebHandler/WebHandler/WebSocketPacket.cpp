@@ -23,34 +23,31 @@ WebSocketPacket::~WebSocketPacket() {
 void WebSocketPacket::setData(BYTE *d, unsigned long long len) {
 	flags_opcode = 0x81; // text mode (0x82 for binary mode)
 	if (len < 126) 
-		mask_len = 0x80 | len;
+		mask_len = len;
 	else if (len < 0xffff) {
-		mask_len = 0x80 | 126;
+		mask_len = 126;
 		exlen = len;
 	} else {
-		mask_len = 0x80 | 127;
+		mask_len = 127;
 		exlen2 = len;
 	}
-	mask_key[0] = rand() & 0xff;
-	mask_key[1] = rand() & 0xff;
-	mask_key[2] = rand() & 0xff;
-	mask_key[3] = rand() & 0xff;
-
 	data = new BYTE[len];
-	for (int i=0; i<len; i++)
-		data[i] = d[i] ^ mask_key[i & 3];
+	memcpy(data, d, len);
 }
 
 unsigned long long WebSocketPacket::getData(BYTE *d) {
 	unsigned long long len = mask_len & 0x7f;
 	if (len == 126)
-		len = ntohs(exlen);
+		len = exlen;
 	else if (len == 127)
-		len = ntohll(exlen2);
+		len = exlen2;
 
 	if (d != 0) {
-		for (int i=0; i<len; i++)
-			d[i] = data[i] ^ mask_key[i & 3];
+		if (mask_len & 0x80)
+			for (int i=0; i<len; i++)
+				d[i] = data[i] ^ mask_key[i & 3];
+		else 
+			memcpy(d, data, len);
 	}
 	return len;
 }
@@ -104,9 +101,11 @@ void WebSocketPacket::recvFrom(SOCKET s) {
 	unsigned long long len = mask_len & 0x7f;
 	if (len == 126) {
 		_recv(s, (char*)&exlen, 2, 0);
+		exlen = ntohs(exlen);
 		len = exlen;
 	} else if (len == 127) {
 		_recv(s, (char*)&exlen2, 8, 0);
+		exlen2 = ntohll(exlen2);
 		len = exlen2;
 	}
 

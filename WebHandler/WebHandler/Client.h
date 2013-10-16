@@ -35,10 +35,14 @@ public:
 
 	void sendObject(Serializable &o);
 	void sendObjects(Serializable *o, int n);
+	void sendObjects(list<Serializable*> *l);
 
 	// game message level api
 
 	void sendSelfInfo();
 	void sendEnemyInfo(int id);
+	void sendGameInfo(Serializable *world);
 	void notifyStart();
+	void notifyUpdate(list<Serializable*> *elements);
+	void notifyFinish(int winnerid);
 };

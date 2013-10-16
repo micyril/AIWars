@@ -40,7 +40,7 @@ public:
 	static HANDLE StartHttp();
 	// остановка сервера
 	static void StopHttp();
-	// назначить функцию, которыя будет вызываться при подклчении нового клиента
+	// назначить функцию, которыя будет вызываться при подключении нового клиента
 	static void setOnConnectCallback(OnConnectCallBack cb) {
 		on_connect = cb;
 	}

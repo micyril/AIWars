@@ -8,11 +8,10 @@ Rectangle::Rectangle(int width, int height, int x, int y, int rotation) :
 
 std::string Rectangle::serializeWithoutBrackets() {
 	stringstream stream;
-	stream <<	"\"width\" : "		<< this->width		<< "," << endl << 
-				"\"height\" : "		<< this->height   	<< "," << endl << 
-				"\"x\" : "			<< this->x		  	<< "," << endl <<
-				"\"y\" : "			<< this->y		  	<< "," << endl <<
-				"\"rotation\" : "	<< this->rotation;
+	stream <<	"\"position\": {\"x\": " << x << ", \"y\": " << y << "}," <<
+				"\"width\": " << width << ", \"height\": " << height << "," <<
+				"\"angle\": " << rotation << "," <<
+				"\"rotationcenter\": {\"x\": " << 0 << ", \"y\": " << 0 << "}"; // TODO: записать сюда координаты центра поворота
 	return stream.str();
 }
 
