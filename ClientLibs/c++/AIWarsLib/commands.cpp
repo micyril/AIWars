@@ -2,12 +2,43 @@
 
 using namespace Commands;
 
+//--------------------------------
+//------------CMD names-----------
+//--------------------------------
+std::string Command::ACK = "ACK";
+std::string Command::NAK = "NAK";
+std::string Command::EOG = "EOG";
+std::string Command::RET = "RET";
+
+MoveCommand::MoveCommand() : Command(){
+    this->NAME = "MOV";
+}
+
+RotateCommand::RotateCommand() : Command(){
+    this->NAME = "ROT";
+}
+
+FireCommand::FireCommand() : Command(){
+    this->NAME = "FR";
+}
+
+ScanCommand::ScanCommand() : Command(){
+    this->NAME = "SC";
+}
+//--------------------------------
+//--------------------------------
+
+
+
 //---------------Obstacle-------------------------
 Obstacle::Obstacle(std::string type, float distance, float angle){
     this->type = type;
     this->distance = distance;
     this->angle = angle;
 }
+Obstacle::~Obstacle(){
+}
+
 //------------------------------------------------
 
 //------------------------------------------------
@@ -17,64 +48,69 @@ Command::Command(){}
 
 int Command::parse_response(std::string response){
 
-    this->proto.setprotoline(response);
+    Message msg = Protocol::get_msg_by_line(response);
 
     // ACK = 0 , NAK = 1 , EOG = -1 , default = NAK = 1
 
-    if      (this->proto.head == this->proto.ACK) return 0;
-    else if (this->proto.head == this->proto.NAK) return 1;
-    else if (this->proto.head == this->proto.EOG) return -1;
+    if      (msg.head == this->ACK) return 0;
+    else if (msg.head == this->NAK) return 1;
+    else if (msg.head == this->EOG) return -1;
 
     return 1;
 }
 
 std::string Command::produce_request(std::string response){
-    return response+this->proto.end_line;
+    return response + Message::end_line;
 }
 //------------------------------------------------
 //------------------------------------------------
 
 //--------MoveCommand--------------
 std::string MoveCommand::produce_request(int ID, float dest){
-    this->proto.setprotofields(Tools::ToStrConverter<int>::convert(ID),this->proto.MOV,Tools::ToStrConverter<float>::convert(dest));
-    return this->proto.getprotoline();
+    return Command::produce_request(Protocol::get_line_by_fields(Tools::ToStrConverter<int>::convert(ID),this->NAME,Tools::ToStrConverter<float>::convert(dest)));
 }
 //---------------------------------
 
 
 //--------RotateCommand------------
 std::string RotateCommand::produce_request(int ID, float angle){
-    this->proto.setprotofields(Tools::ToStrConverter<int>::convert(ID),this->proto.ROT,Tools::ToStrConverter<float>::convert(angle));
-    return this->proto.getprotoline();
+    return Command::produce_request(Protocol::get_line_by_fields(Tools::ToStrConverter<int>::convert(ID),this->NAME,Tools::ToStrConverter<float>::convert(angle)));
 }
 //---------------------------------
 
 
 //--------FireCommand--------------
 std::string FireCommand::produce_request(int ID){
-    this->proto.setprotofields(Tools::ToStrConverter<int>::convert(ID),this->proto.FR,"");
-    return this->proto.getprotoline();
+    return Command::produce_request(Protocol::get_line_by_fields(Tools::ToStrConverter<int>::convert(ID),this->NAME,""));
 }
 //---------------------------------
 
 //--------ScanCommand--------------
 std::string ScanCommand::produce_request(int ID){
-    this->proto.setprotofields(Tools::ToStrConverter<int>::convert(ID),this->proto.SC,"");
-    return this->proto.getprotoline();
+    return Command::produce_request(Protocol::get_line_by_fields(Tools::ToStrConverter<int>::convert(ID),this->NAME,""));
 }
 
 std::pair< int , std::vector<Obstacle> > ScanCommand::parse_response(std::string response){
-    int state;
     std::pair< int , std::vector<Obstacle> > out;
 
-    if((state = Command::parse_response(response)) != 0){ //attention ! this->proto will be changed
-        out.first = state;
+    Message msg  = Protocol::get_msg_by_line(response);
+
+    if      (msg.head == this->ACK) out.first =  0;
+    else if (msg.head == this->NAK){
+        out.first =  1;
+        return out;
+    }
+    else if (msg.head == this->EOG){
+        out.first =  -1;
         return out;
     }
 
-    out.first = state;
+    if(msg.raw_command != "RET"){
+        out.first = -1;
+        return out;
+    }
 
-    std::vector<std::string> args = Tools::StringSplitter::split(this->proto.args_line," ");
+    std::vector<std::string> args = Tools::StringSplitter::split(msg.args_line," ");
     std::vector<Obstacle> parsed_args;
     for(int i = 2; i < args.size(); i+=3){
        parsed_args.push_back(Obstacle(args[i-2],Tools::FromStrConverter<float>::convert(args[i-1]),Tools::FromStrConverter<float>::convert(args[i])));
