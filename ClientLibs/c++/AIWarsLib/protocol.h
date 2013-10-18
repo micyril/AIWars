@@ -2,29 +2,27 @@
 #define PROTOCOL_H
 #include <string.h>
 #include "tools.h"
-class Protocol
-{
+
+
+class Message{
+
+// ACK = 0 , NAK = 1 , EOG = -1
 
 public:
-    static std::string ACK;
-    static std::string NAK;
-    static std::string EOG;
-    static std::string MOV;
-    static std::string ROT;
-    static std::string FR;
-    static std::string SC;
-    static std::string RET;
-
+    Message(std::string head  = "" ,std::string raw_command = "" ,std::string args_line = "");
+    ~Message();
     std::string head; // ID|ACK|NAK|EOG
     std::string raw_command; // MOV|ROT|FR|SC|RET
     std::string args_line; // [FLOATS]|[TYPE,[FLOATS]]
-    std::string end_line;
+    static std::string end_line;
+};
 
-    Protocol(std::string head = "",std::string raw_command = "",std::string args_line = "");
-    void setprotofields(std::string head ,std::string raw_command ,std::string args_line);
-    void setprotoline(std::string line);
-    std::string getprotoline();
-
+class Protocol{
+public:
+    Protocol(){}
+    static Message get_msg_by_line(std::string line);
+    static std::string get_line_by_msg(Message &msg);
+    static std::string get_line_by_fields(std::string head, std::string raw_command, std::string args_line);
 };
 
 

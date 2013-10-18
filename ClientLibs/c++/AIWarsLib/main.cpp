@@ -1,16 +1,26 @@
 #include <iostream>
-#include "tools.h"
-#include "commands.h"
+#include "controller.h"
+#include "commutator.h"
+#include "time.h"
 using namespace std;
 using namespace Commands;
 
 int main()
 {
-    string s = "ACK RET BIG 1.1 1.2 WALL 1.01 1.9 AAA 1.2 1.2";
-    ScanCommand sc;
-    //s = mv.produce_request(666,10.1);
-    pair< int,vector<Obstacle> > v = sc.parse_response(s);
-    cout<<v.second[0].type<<endl;
+    Controller ctrl("213.159.196.198","2001","0");
+    if(ctrl.ready()){
+        cout<<"start"<<endl;
+        for(int i = 0; i < 1000; i++){
+            ctrl.move((float)i);
+            ctrl.fire();
+            ctrl.rotate((float)i);
+            vector<Obstacle> v = ctrl.scan();
+        }
+
+    cout<<"end"<<endl;
+    ctrl.end_game();
+    }
+
     return 0;
 }
 

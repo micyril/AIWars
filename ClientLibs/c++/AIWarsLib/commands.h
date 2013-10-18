@@ -11,6 +11,7 @@ namespace Commands {
     class Obstacle{
     public:
         Obstacle(std::string type = "",float distance = 0.0f,float angle = 0.0f);
+        ~Obstacle();
         std::string type;
         float distance;
         float angle;
@@ -20,8 +21,12 @@ namespace Commands {
     //----------base cmd class--------
     class Command{
     protected:
-        Protocol proto;
+        static std::string ACK;
+        static std::string NAK;
+        static std::string EOG;
+        static std::string RET;
     public:
+        std::string NAME;
         Command();
         std::string produce_request(std::string response);
         int parse_response(std::string response);
@@ -31,8 +36,8 @@ namespace Commands {
 
     //-----------move cmd------------
     class MoveCommand : public Command{
-    public :
-        MoveCommand() : Command(){}
+    public:
+        MoveCommand();
         std::string produce_request(int ID,float dest);
     };
     //-------------------------------
@@ -40,8 +45,8 @@ namespace Commands {
 
     //----------rotate cmd-----------
     class RotateCommand : public Command{
-    public :
-        RotateCommand() : Command(){}
+    public:
+        RotateCommand();
         std::string produce_request(int ID,float angle);
     };
     //-------------------------------
@@ -49,8 +54,8 @@ namespace Commands {
 
     //-----------fire cmd------------
     class FireCommand : public Command{
-    public :
-        FireCommand() : Command(){}
+    public:
+        FireCommand();
         std::string produce_request(int ID);
     };
     //-------------------------------
@@ -58,8 +63,8 @@ namespace Commands {
 
     //----------scan cmd-------------
     class ScanCommand : public Command{
-    public :
-        ScanCommand() : Command(){}
+    public:
+        ScanCommand();
         std::string produce_request(int ID);
         std::pair< int , std::vector<Obstacle> > parse_response(std::string response);
 
