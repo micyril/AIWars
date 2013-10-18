@@ -14,6 +14,13 @@ using namespace std;
 WSADATA wd;
 int _ = WSAStartup(0x202, &wd);
 
+int WebHandler::PORT = 80;
+int WebHandler::MAX_CONNECTIONS = 100;
+int WebHandler::RECV_TIMEOUT_SEC = 5;
+char* WebHandler::HTML_ROOT = ".";
+char* WebHandler::DEFAULT_PAGE = "/index.html";
+char* WebHandler::LOGFILE = 0;
+map<string, string> WebHandler::mime;
 
 TP_CALLBACK_ENVIRON WebHandler::pool_env;
 PTP_POOL WebHandler::http_clients_pool = 0;
@@ -36,7 +43,41 @@ void WebHandler::initPool() {
 	}
 }
 
-HANDLE WebHandler::StartHttp() {
+HANDLE WebHandler::StartHttp(char *cfg) {
+	// парсим конфиг
+	try {
+		char *data;
+		readFile(cfg ? cfg : DEFAULT_CONFIG, &data);
+		char *p = strtok(data, "=\r\n");
+		char *t;
+		while (p) {
+			if (*p == '#') {/* комментарии */}
+			else if (strcmp(p, "PORT") == 0) {
+				PORT = atoi(strtok(0, "\r\n"));
+			} else if (strcmp(p, "MAX_CONNECTIONS") == 0) {
+				MAX_CONNECTIONS = atoi(strtok(0, "\r\n"));
+			} else if (strcmp(p, "RECV_TIMEOUT_SEC") == 0) {
+				RECV_TIMEOUT_SEC = atoi(strtok(0, "\r\n"));
+			} else if (strcmp(p, "HTML_ROOT") == 0) {
+				t = strtok(0, "\r\n");
+				HTML_ROOT = new char[strlen(t)];
+				strcpy(HTML_ROOT, t);
+			} else if (strcmp(p, "DEFAULT_PAGE") == 0) {
+				t = strtok(0, "\r\n");
+				DEFAULT_PAGE = new char[strlen(t)];
+				strcpy(DEFAULT_PAGE, t);
+			} else if (strcmp(p, "LOGFILE") == 0) {
+				t = strtok(0, "\r\n");
+				LOGFILE = new char[strlen(t)];
+				strcpy(LOGFILE, t);
+			} else {
+				mime[string(p)] = string(strtok(0, "\r\n"));
+			}
+			p = strtok(0, "\r\n=");
+		}
+		delete[] data;
+	} catch (NotFound &e) {}
+
 	if (http_thread_handle == 0) {
 		initPool();
 		ListenerParams *p = new ListenerParams();
@@ -107,29 +148,22 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 	HttpRequest *req = 0;
 	HttpResponse *res = 0;
 	char *data = 0;
-	bool dontClose = false;
+	bool ws = false;
 	try {
 		req = new HttpRequest(s, HTML_ROOT, DEFAULT_PAGE);
 		if (req->headers["Upgrade"].compare("websocket") == 0) {
-			// работаем с веб сокетом
-			websocketHandshake(s, req);
-			Client *cl = new Client(s, id++);
-			clients.push_back(cl);
-			if (on_connect)
-				on_connect(cl);
-			dontClose = true;
+			res = websocketHandshake(req);
+			ws = true;
 		} else {
-			// просто отдаем запрошенный файл
+			// отдаем запрошенный файл
 			int size = readFile((char*)req->path.c_str(), &data);
 			res = new HttpResponse(RESPONSE_OK);
 			// муть какая то эти постоянные соединения
 			res->headers["Connection"] = "close";
-			
-			if (endsWith(req->path, ".html"))
-				res->headers["Content-Type"] = CONTENT_TYPE_HTML;
-			else if (endsWith(req->path, ".jpg")) {
-				res->headers["Content-Type"] = "image/jpeg";
-			}
+
+			const char *ext = strrchr(req->path.c_str(), '.');
+			if (ext)
+				res->headers["Content-Type"] = mime[string(++ext)];
 
 			res->data.assign(data, size);
 
@@ -146,12 +180,13 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 #endif
 	} catch (HttpException &e) {
 		res = new HttpResponse(e.what());
-		res->respond(s);
 	} catch (exception &e) {
 		cerr << e.what() << endl;
 		res = new HttpResponse("500 Internal Server Error");
-		res->respond(s);
 	}
+
+	res->respond(s);
+	log(req, res, s);
 
 	if (req)
 		delete req;
@@ -160,11 +195,16 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 	if (data)
 		delete[] data;
 
-	if (!dontClose)
+	if (ws) {
+		Client *cl = new Client(s, id++);
+		clients.push_back(cl);
+		if (on_connect)
+			on_connect(cl);
+	} else 
 		closesocket(s);	
 }
 
-void WebHandler::websocketHandshake(SOCKET s, HttpRequest *r) {
+HttpResponse* WebHandler::websocketHandshake(HttpRequest *r) {
 #ifdef _DEBUG
 	cout << "\n WS: \n";
 	cout << r->path << endl;
@@ -188,7 +228,7 @@ void WebHandler::websocketHandshake(SOCKET s, HttpRequest *r) {
 	res->headers["Connection"] = "Upgrade";
 	res->headers["Sec-WebSocket-Accept"] = base64_encode(hash, 20);
 
-	res->respond(s);
+	return res;
 }
 
 // отключено
@@ -200,4 +240,60 @@ DWORD WINAPI WebHandler::WatchingDaemon(void* param) {
 		Sleep(SLEEP_TIME);
 	}
 	return 0;
+}
+
+void WebHandler::log(HttpRequest *req, HttpResponse *res, SOCKET s) {
+	if (LOGFILE) {		
+		string log;
+
+		time_t now = time(0);
+		log.assign(ctime(&now));
+		if (log[log.length() - 1] == '\n')
+			log.erase(log.length() - 1);
+		log.append(" ");
+
+		SOCKADDR_IN addr;
+		int len = sizeof(addr);
+		getsockname(s, (sockaddr*)&addr, &len);
+		log.append(inet_ntoa(addr.sin_addr));
+		log.append(" ");
+
+		switch (req->method) {
+			case GET:
+				log.append("GET");
+				break;
+			case POST:
+				log.append("POST");
+				break;
+		}
+		log.append(" ");
+
+		log.append(req->path);
+		if (req->_GET.size()) {
+			log.append("?");
+			auto i = req->_GET.begin();
+			log.append(i->first);
+			log.append("=");
+			log.append(i->second);
+			for (i++; i != req->_GET.end(); i++) {
+				log.append("&");
+				log.append(i->first);
+				log.append("=");
+				log.append(i->second);
+			}
+		}
+		log.append(" ");
+
+		char buf[5];
+		log.append(itoa(PORT, buf, 10));
+
+		log.append(" \"");
+		log.append(req->headers["User-Agent"]);
+		log.append("\" ");
+
+		log.append(res->code);
+		log.append("\r\n");
+		
+		writeToFile(LOGFILE, log.c_str());
+	}
 }

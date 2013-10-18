@@ -9,7 +9,7 @@ void OnConnect(Client *c) {
 }
 
 int main() {
-	HANDLE h = WebHandler::StartHttp();
+	HANDLE h = WebHandler::StartHttp(DEFAULT_CONFIG);
 	WebHandler::setOnConnectCallback(&OnConnect);
 	WaitForSingleObject(h, INFINITE);
 

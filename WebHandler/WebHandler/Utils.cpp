@@ -33,6 +33,25 @@ int readFile(char* file, char** data) {
 	return size;
 }
 
+void writeToFile(const char* file, const char* data) {
+	DWORD size = MultiByteToWideChar(CP_UTF8, 0, file, -1, 0, 0);
+	wchar_t* wfile = new wchar_t[size];
+	MultiByteToWideChar(CP_UTF8, 0, file, -1, wfile, size);
+
+	HANDLE f = CreateFile(wfile, FILE_APPEND_DATA, 0, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (f == INVALID_HANDLE_VALUE) {
+#ifdef _DEBUG
+		cerr << "can't open file " << file << " for logging" << endl;
+#endif
+		delete[] wfile;
+		return;
+	}
+	DWORD len;
+	WriteFile(f, (void*)data, strlen(data), &len, 0);
+	CloseHandle(f);
+	delete[] wfile;
+}
+
 bool startsWith(string str, string prefix) {
 	if (str.length() < prefix.length()) 
 		return false;

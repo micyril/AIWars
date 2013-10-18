@@ -7,7 +7,6 @@ using namespace std;
 #define VERSION "HTTP/1.1"
 #define RESPONSE_OK "200 OK"
 #define SERVER "WebHandler (C++)"
-#define CONTENT_TYPE_HTML "text/html; charset=utf-8"
 
 class HttpResponse {
 private:

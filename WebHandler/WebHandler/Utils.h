@@ -5,6 +5,7 @@
 using namespace std;
 
 int readFile(char* file, char** data);
+void writeToFile(const char* file, const char* data);
 bool startsWith(string str, string prefix);
 bool endsWith(string str, string suffix);
 int parseInt(string str);
