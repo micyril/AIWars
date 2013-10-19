@@ -77,7 +77,7 @@ HANDLE WebHandler::StartHttp(char *cfg) {
 				IP = new char[strlen(t)];
 				strcpy(IP, t);
 			} else {
-				mime[string(p)] = string(strtok(0, "\r\n"));
+				mime[toLowerCase(string(p))] = string(strtok(0, "\r\n"));
 			}
 			p = strtok(0, "\r\n=");
 		}
@@ -168,8 +168,8 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 			res->headers["Connection"] = "close";
 
 			const char *ext = strrchr(req->path.c_str(), '.');
-			if (ext)
-				res->headers["Content-Type"] = mime[string(++ext)];
+			if (ext) 
+				res->headers["Content-Type"] = mime[toLowerCase(string(++ext))];
 
 			res->data.assign(data, size);
 

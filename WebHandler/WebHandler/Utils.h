@@ -9,6 +9,7 @@ void writeToFile(const char* file, const char* data);
 bool startsWith(string str, string prefix);
 bool endsWith(string str, string suffix);
 int parseInt(string str);
+string& toLowerCase(string& str);
 string base64_encode(unsigned char const* s, unsigned int len);
 string base64_decode(string const& s);
 bool SHA1(const char *msg, unsigned char *hash);

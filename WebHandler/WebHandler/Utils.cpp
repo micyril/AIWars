@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <string>
 #include <sstream>
+#include <algorithm>
 #ifdef _DEBUG
 #include <iostream>
 #endif
@@ -120,4 +121,9 @@ int _recv(SOCKET s, char* buf, int len, int flags) {
 	if (b < 0)
 		throw SocketIOException();
 	return b;
+}
+
+string& toLowerCase(string& str) {
+	transform(str.begin(), str.end(), str.begin(), ::tolower);
+	return str;
 }
