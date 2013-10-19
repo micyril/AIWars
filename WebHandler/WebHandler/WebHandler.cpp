@@ -17,6 +17,7 @@ int _ = WSAStartup(0x202, &wd);
 int WebHandler::PORT = 80;
 int WebHandler::MAX_CONNECTIONS = 100;
 int WebHandler::RECV_TIMEOUT_SEC = 5;
+char* WebHandler::IP = "0.0.0.0";
 char* WebHandler::HTML_ROOT = ".";
 char* WebHandler::DEFAULT_PAGE = "/index.html";
 char* WebHandler::LOGFILE = 0;
@@ -30,6 +31,7 @@ bool WebHandler::daemon_alive;
 DWORD WebHandler::id = 0;
 list<Client*> WebHandler::clients;
 OnConnectCallBack WebHandler::on_connect;
+mutex WebHandler::log_mutex;
 
 
 void WebHandler::initPool() {
@@ -70,6 +72,10 @@ HANDLE WebHandler::StartHttp(char *cfg) {
 				t = strtok(0, "\r\n");
 				LOGFILE = new char[strlen(t)];
 				strcpy(LOGFILE, t);
+			} else if (strcmp(p, "IP") == 0) {
+				t = strtok(0, "\r\n");
+				IP = new char[strlen(t)];
+				strcpy(IP, t);
 			} else {
 				mime[string(p)] = string(strtok(0, "\r\n"));
 			}
@@ -110,7 +116,7 @@ DWORD WINAPI WebHandler::Listener(void* param) {
 
 	SOCKADDR_IN addr;
 	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr  = INADDR_ANY; 
+	addr.sin_addr.s_addr = inet_addr(IP); // INADDR_ANY; 
 	addr.sin_port = htons(port);
 
 	SOCKET s = socket(AF_INET, SOCK_STREAM, 0);
@@ -294,6 +300,8 @@ void WebHandler::log(HttpRequest *req, HttpResponse *res, SOCKET s) {
 		log.append(res->code);
 		log.append("\r\n");
 		
+		log_mutex.lock();
 		writeToFile(LOGFILE, log.c_str());
+		log_mutex.unlock();
 	}
 }

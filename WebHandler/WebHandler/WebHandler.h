@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <list>
 #include <map>
+#include <mutex>
 using namespace std;
 
 #define DEFAULT_CONFIG "config.ini"
@@ -19,6 +20,7 @@ private:
 	static int PORT;
 	static int MAX_CONNECTIONS;
 	static int RECV_TIMEOUT_SEC;
+	static char* IP;
 	static char* HTML_ROOT;
 	static char* DEFAULT_PAGE;
 	static char* LOGFILE;
@@ -31,6 +33,7 @@ private:
 	static HANDLE http_thread_handle;
 	static HANDLE daemon_thread_handle;
 	static bool daemon_alive;
+	static mutex log_mutex;
 
 	// accept loop
 	static DWORD WINAPI Listener(void* param);
