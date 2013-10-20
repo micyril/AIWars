@@ -2,13 +2,12 @@
 #include "WebSocketPacket.h"
 #include "Serializable.h"
 #include <Windows.h>
-#include <mutex>
 #include <list>
 using namespace std;
 
 class Client {
 private:
-	mutex m;
+	HANDLE mutex;
 	SOCKET s;
 
 public:	

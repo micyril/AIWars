@@ -5,7 +5,6 @@
 #include <Windows.h>
 #include <list>
 #include <map>
-#include <mutex>
 using namespace std;
 
 #define DEFAULT_CONFIG "config.ini"
@@ -30,7 +29,7 @@ private:
 	static TP_CALLBACK_ENVIRON pool_env;
 	static PTP_POOL http_clients_pool;
 	static HANDLE http_thread_handle;
-	static mutex log_mutex;
+	static HANDLE log_mutex;
 
 	// accept loop
 	static DWORD WINAPI Listener(void* param);

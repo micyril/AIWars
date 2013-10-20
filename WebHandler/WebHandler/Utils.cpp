@@ -42,7 +42,7 @@ void writeToFile(const char* file, const char* data) {
 	HANDLE f = CreateFile(wfile, FILE_APPEND_DATA, 0, 0, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (f == INVALID_HANDLE_VALUE) {
 #ifdef _DEBUG
-		cerr << "can't open file " << file << " for logging" << endl;
+		cerr << "can't open file " << file << " for logging (" << GetLastError() << ")" << endl;
 #endif
 		delete[] wfile;
 		return;
@@ -126,4 +126,34 @@ int _recv(SOCKET s, char* buf, int len, int flags) {
 string& toLowerCase(string& str) {
 	transform(str.begin(), str.end(), str.begin(), ::tolower);
 	return str;
+}
+
+QWORD htonll(QWORD value) {
+    // The answer is 42
+    static const int num = 42;
+
+    // Check the endianness
+    if (*(char*)(&num) == num) {
+        DWORD high_part = htonl(DWORD(value >> 32));
+        DWORD low_part = htonl(DWORD(value & 0xFFFFFFFFLL));
+
+        return (QWORD(low_part) << 32) | high_part;
+    } else {
+        return value;
+    }
+}
+
+QWORD ntohll(QWORD value) {
+    // The answer is 42
+    static const int num = 42;
+
+    // Check the endianness
+    if (*(char*)(&num) == num) {
+        DWORD high_part = ntohl(DWORD(value >> 32));
+        DWORD low_part = ntohl(DWORD(value & 0xFFFFFFFFLL));
+
+        return (QWORD(low_part) << 32) | high_part;
+    } else {
+        return value;
+    }
 }

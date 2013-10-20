@@ -4,6 +4,8 @@
 #include <exception>
 using namespace std;
 
+typedef unsigned long long QWORD;
+
 int readFile(char* file, char** data);
 void writeToFile(const char* file, const char* data);
 bool startsWith(string &str, string &prefix);
@@ -14,6 +16,8 @@ string base64_encode(unsigned char const* s, unsigned int len);
 string base64_decode(string const& s);
 bool SHA1(const char *msg, unsigned char *hash);
 string urlDecode(string &SRC);
+QWORD htonll(QWORD value);
+QWORD ntohll(QWORD value);
 // обертка над обычным recv но с выбрасыванием исключения при таймауте (или другой ошибке чтения)
 int _recv(SOCKET s, char* buf, int len, int flags);
 

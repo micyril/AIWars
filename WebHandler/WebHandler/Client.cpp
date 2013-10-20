@@ -8,6 +8,7 @@ using namespace Messages;
 Client::Client(SOCKET s, int id) {
 	this->s = s;
 	this->id = id;
+	this->mutex = CreateMutex(0, false, 0);
 }
 
 Client::~Client() {	
@@ -15,12 +16,12 @@ Client::~Client() {
 }
 
 void Client::sendData(char *data, unsigned long long len) {
-	m.lock();
+	WaitForSingleObject(mutex, INFINITE);
 	WebSocketPacket p;
 
 	p.setData((BYTE*)data, len);
 	p.sendTo(s);
-	m.unlock();
+	ReleaseMutex(mutex);
 }
 
 int Client::reciveData(char **data) {
@@ -34,40 +35,40 @@ int Client::reciveData(char **data) {
 }
 
 void Client::close() {
-	m.lock();
+	WaitForSingleObject(mutex, INFINITE);
 	WebSocketPacket p;
 	p.close();
 	p.sendTo(s);
 	char c;
 	_recv(s, &c, 1, 0); // костыль
 	closesocket(s);
-	m.unlock();
+	ReleaseMutex(mutex);
 }
 
 void Client::ping() {
-	m.lock();
+	WaitForSingleObject(mutex, INFINITE);
 	WebSocketPacket p;
 	p.ping();
 	p.sendTo(s);
-	m.unlock();
+	ReleaseMutex(mutex);
 }
 
 void Client::pong(WebSocketPacket *pp) {
-	m.lock();
+	WaitForSingleObject(mutex, INFINITE);
 	if (pp == 0) {
 		WebSocketPacket p;
 		p.pong();
 		p.sendTo(s);
 	} else 
 		pp->sendTo(s);
-	m.unlock();
+	ReleaseMutex(mutex);
 }
 
 WebSocketPacket* Client::recivePacket() {
-	m.lock();
+	WaitForSingleObject(mutex, INFINITE);
 	WebSocketPacket *p = new WebSocketPacket();
 	p->recvFrom(s);
-	m.unlock();
+	ReleaseMutex(mutex);
 	return p;
 }
 

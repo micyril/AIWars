@@ -17,7 +17,7 @@ $(function() {
 	socket = new WebSocket("ws://" + location.hostname);
 	socket.onmessage = function (event) {
 		var msg = JSON.parse(event.data);
-		console.log(msg.type);
+		console.log(msg);
 		window[msg.mtype](msg);
 	};
 	socket.onopen = function() { 
@@ -91,10 +91,10 @@ function action_start(msg) {
 }
 
 function action_finish(msg) {
-	if ($("#id_self").text() == msg.winner)
-		$("#status").text(GameStatus.win);
+	if ($("#id_self").find(".value").text() == msg.winner)
+		setPlane("status", GameStatus.win, "Статус");
 	else 
-		$("#status").text(GameStatus.loose);
+		setPlane("status", GameStatus.loose, "Статус");
 }
 
 function action_update(msg) {

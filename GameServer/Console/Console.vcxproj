@@ -46,8 +46,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)..\build\$(Configuration)\bin\</OutDir>
-    <IntDir>$(SolutionDir)..\build\$(Configuration)\tmp\</IntDir>
+    <OutDir>$(SolutionDir)..\build\$(Configuration)\bin\gsc\</OutDir>
+    <IntDir>$(SolutionDir)..\build\$(Configuration)\tmp\gsc\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

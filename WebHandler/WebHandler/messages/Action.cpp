@@ -32,9 +32,11 @@ string Action::Serialize() {
 	if (l != 0) {
 		ss << ",\"mapelements\": [";
 		auto i = l->begin();
-		ss << (*i)->Serialize();
-		for (i++; i != l->end(); i++)
-			ss << "," << (*i)->Serialize();
+		if (i != l->end()) {
+			ss << (*i)->Serialize();
+			for (i++; i != l->end(); i++)
+				ss << "," << (*i)->Serialize();
+		}
 		ss << "]";
 	}
 	if (id != -1)  {

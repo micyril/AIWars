@@ -27,7 +27,7 @@ HANDLE WebHandler::http_thread_handle = 0;
 DWORD WebHandler::id = 0;
 list<Client*> WebHandler::clients;
 OnConnectCallBack WebHandler::on_connect;
-mutex WebHandler::log_mutex;
+HANDLE WebHandler::log_mutex = CreateMutex(0, false, 0);
 
 
 void WebHandler::initPool() {
@@ -265,8 +265,8 @@ void WebHandler::log(HttpRequest *req, HttpResponse *res, SOCKET s, SOCKADDR_IN 
 			log.append(res->code);
 		log.append("\r\n");
 		
-		log_mutex.lock();
+		WaitForSingleObject(log_mutex, INFINITE);
 		writeToFile(LOGFILE.c_str(), log.c_str());
-		log_mutex.unlock();
+		ReleaseMutex(log_mutex);
 	}
 }

@@ -11,6 +11,7 @@ void OnConnect(Client *c) {
 	c->sendGameInfo(w);
 	Sleep(500);
 	c->notifyStart();
+	w->Update(0);
 	while (1) {
 		c->notifyUpdate(w->getElements());
 		Sleep(20);
