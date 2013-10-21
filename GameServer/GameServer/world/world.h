@@ -15,7 +15,7 @@ private:
 	std::list<MapElement*> mapelements;
 
 public:
-	World(int w, int h);
+	World(int width, int height, std::list<WorldObject*>& objects, std::list<MapElement*>& mapelements);
 	void Update(float delta);
 	virtual std::string Serialize();
 	~World();

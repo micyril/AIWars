@@ -7,18 +7,8 @@
 
 using namespace std;
 
-World::World(int w, int h) : width(w), height(h) {
-	MapElement*  testElement =  new RobotFrame(5, 13, NULL); //testing
-	this->mapelements.push_back(testElement);
-	MapElement*  testElement1 =  new RobotFrame(6, 12, NULL); //testing
-	this->mapelements.push_back(testElement1);
-	DEFINE_COLLISION_RESOLVERS;
-	try {
-		CollisionResolverMaster::Resolve(testElement, testElement1);
-	}
-	catch (NotImplementedException) {
-		std::cout << "It's working!" << std::endl;
-	}
+World::World(int width, int height, std::list<WorldObject*>& objects, std::list<MapElement*>& mapelements) : 
+	width(width), height(height), objects(objects), mapelements(mapelements) {
 }
 
 void World::Update(float delta) {

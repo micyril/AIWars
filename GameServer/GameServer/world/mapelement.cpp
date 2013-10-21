@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Rectangle::Rectangle(int width, int height, int x, int y, int rotation) :
+Rectangle::Rectangle(int width, int height, float x, float y, float rotation) :
 		width(width), height(height), x(x), y(y), rotation(rotation) {}
 
 std::string Rectangle::serializeWithoutBrackets() {
@@ -21,7 +21,7 @@ std::string Rectangle::Serialize() {
 	return stream.str();
 }
 
-MapElement::MapElement(int width, int height, int x, int y, int rotation, int layer) : 
+MapElement::MapElement(int width, int height, float x, float y, int rotation, int layer) : 
 		Rectangle(width, height, x, y, rotation), layer(layer) {}
 
 std::string MapElement::serializeWithoutBrackets() {

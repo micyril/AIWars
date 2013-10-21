@@ -4,7 +4,7 @@
 #include <map>
 #include "../worldobject.h"
 #include "../mapelement.h"
-#include "robotcomponent.h"
+#include "components/robotcomponent.h"
 
 class Robot;
 
@@ -15,7 +15,8 @@ private:
 	static std::string type;
 
 public:
-	RobotFrame(int width, int height, Robot *robot);
+	RobotFrame(int width, int height, float x = 0, float y = 0);
+	void SetRobot(Robot *robot);
 	virtual std::string GetType();
 	static std::string GetClassType();
 };
@@ -23,10 +24,12 @@ public:
 class Robot : public WorldObject {
 private:
 	//todo: use safe pointers
-	MapElement *frame;
 	std::map<std::string, RobotComponent*> commandToRobotComponent;
 
 public:
+	Robot(RobotFrame *frame, std::map<std::string, RobotComponent*>& commandToRobotComponent);
+	RobotFrame *frame;
+
 	void* Execute(std::string command, void *arg);
 	void Update(float delta);
 };
