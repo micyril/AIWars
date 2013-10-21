@@ -15,13 +15,12 @@ private:
     char *buffer;
     struct sockaddr_in serv_addr;
     struct hostent *server;
-    static std::string hand_shake_msg;
 public:
     Commutator(std::string hostname = "localhost",std::string port = "1234");
     std::string exchange(std::string request);
     bool up_connection();
-    bool hand_shake();
-    bool down_connection(std::string last = "BB");
+    bool hand_shake(std::string hand_shake_msg = "HI\r\n");
+    bool down_connection(std::string last = "BB\r\n");
 };
 
 #endif // COMMUTATOR_H

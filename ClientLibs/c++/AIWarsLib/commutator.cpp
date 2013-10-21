@@ -1,6 +1,5 @@
 #include "commutator.h"
 
-std::string Commutator::hand_shake_msg = "HI\r\n";
 
 Commutator::Commutator(std::string hostname,std::string port)
 {
@@ -50,13 +49,13 @@ std::string Commutator::exchange(std::string request){
     return std::string(this->buffer);
 }
 
-bool Commutator::hand_shake(){
+bool Commutator::hand_shake(std::string hand_shake_msg){
      if(!this->connected) return false;
-     if(write(this->sock,this->hand_shake_msg.c_str(),this->hand_shake_msg.length()) < 0){
+     if(write(this->sock,hand_shake_msg.c_str(),hand_shake_msg.length()) < 0){
          return false;
      }
-     bzero(buffer,256);
-     while(read(this->sock,this->buffer,255) < 0);
+     bzero(buffer,this->buffer_size);
+     while(read(this->sock,this->buffer,this->buffer_size) < 0);
      return true;
 }
 

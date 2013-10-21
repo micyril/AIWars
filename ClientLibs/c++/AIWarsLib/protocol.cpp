@@ -1,7 +1,7 @@
 #include "protocol.h"
 
 
-std::string Message::end_line = "\n";
+std::string Message::end_line = "\r\n";
 
 Message::Message(std::string head ,std::string raw_command ,std::string args_line ){
     this->head = head;
@@ -13,6 +13,7 @@ Message::~Message(){
 }
 
 Message Protocol::get_msg_by_line(std::string line){
+    line.erase(line.find(Message::end_line,Message::end_line.length()));
     std::vector< std::string > tmp = Tools::StringSplitter::split(line," ",2);
     Message result;
     switch (tmp.size()) {

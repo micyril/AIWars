@@ -15,6 +15,9 @@ int main()
             ctrl.fire();
             ctrl.rotate((float)i);
             vector<Obstacle> v = ctrl.scan();
+            if (v.size() == 0)
+                cout << "problem" << endl;
+
         }
 
     cout<<"end"<<endl;
