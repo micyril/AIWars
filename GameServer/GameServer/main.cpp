@@ -4,7 +4,7 @@
 #include "world\robot\components\runninggear.h"
 #include "world\robot\robot.h"
 #include "..\..\WebHandler\WebHandler\WebHandler.h"
-
+#include "ClientHandler\ClientHandler.h"
 void OnConnect(Client *c) {
 	RobotFrame *robotFrame = new RobotFrame(50, 100, 200, 200);
 	float speed = 10;
@@ -17,7 +17,7 @@ void OnConnect(Client *c) {
 	worldObjects.push_back(robot);
 	mapElements.push_back(robotFrame);
 	World world(500, 500, worldObjects, mapElements);
-
+	ClientHandler cHandler(robot, "2560");
 	c->sendSelfInfo();
 	Sleep(2000);
 	c->sendEnemyInfo(20);
@@ -32,6 +32,7 @@ void OnConnect(Client *c) {
 	int sleepPeriod = 50;
 	while(true) {
 		Sleep(sleepPeriod);
+		cHandler.Execute();//TODO move it to other thread
 		world.Update(sleepPeriod / 1000.0);
 		c->notifyUpdate(world.getElements());
 	}
