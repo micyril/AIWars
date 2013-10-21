@@ -84,14 +84,13 @@ void HttpRequest::processRequest(char c) {
 		case ' ':
 			if (buf.length() == 0)
 				throw BadRequest();
-			temp.append(html_root);
-			if (buf.compare("/") == 0) 				
+			if (buf.find("/../") != string::npos) 
+				throw Forbidden();
+			temp.append(html_root);			
+			temp.append(buf);
+			if (buf[buf.length() - 1] == '/')
 				temp.append(default_page);
-			else {
-				if (buf.find("/../") != string::npos) 
-					throw Forbidden();
-				temp.append(buf);
-			}
+
 			parseRequest(temp);
 			temp.clear();
 			state = ParserState::Version;

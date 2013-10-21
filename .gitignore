@@ -12,3 +12,4 @@ ipch/
 *.user
 *.suo
 *.exe
+*/logs.txt

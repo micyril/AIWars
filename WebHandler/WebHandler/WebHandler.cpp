@@ -19,7 +19,7 @@ int WebHandler::MAX_CONNECTIONS = 100;
 int WebHandler::RECV_TIMEOUT_SEC = 5;
 char* WebHandler::IP = "0.0.0.0";
 char* WebHandler::HTML_ROOT = ".";
-char* WebHandler::DEFAULT_PAGE = "/index.html";
+char* WebHandler::DEFAULT_PAGE = "index.html";
 char* WebHandler::LOGFILE = 0;
 map<string, string> WebHandler::mime;
 

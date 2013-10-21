@@ -69,6 +69,10 @@ function game_info(msg) {
 	Canvas.appendTo(Box);	
 	Context = Canvas.get(0).getContext("2d");
 	Context.fillRect(0, 0, Canvas.width(), Canvas.height());
+	Context.clear = function() {
+		Context.fillStyle = "#000000";
+		Context.fillRect(0, 0, Canvas.width(), Canvas.height());
+	}
 }
 
 function action(msg) {
@@ -87,7 +91,7 @@ function action_finish(msg) {
 }
 
 function action_update(msg) {
-	Context.fillRect(0, 0, Canvas.width(), Canvas.height());
+	Context.clear();
 	for (var i in msg.mapelements) {
 		i = msg.mapelements[i];
 		var me = new MapElement(i.position.x, i.position.y, i.width, i.height, i.angle, i.rotationcenter.x, i.rotationcenter.y);
@@ -101,7 +105,6 @@ function translateCoords(c) {
 	c.y = c.y / MapSize.height * Canvas.height();
 	return c;	
 }
-
 
 function MapElement(x, y, width, height, rx, ry, a) {
 	this.pos = {x: x, y: y};
