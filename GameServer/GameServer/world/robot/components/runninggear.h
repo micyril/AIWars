@@ -5,11 +5,16 @@
 
 class RunningGear : public RobotComponent {
 private:
-	float speed;
+	float movingSpeed;
+	float rotationSpeed;
 	float leftDistanceForMoving;
+	float leftAngleForRotation;
+
+	void updateMoving(float delta);
+	void updateRotation(float delta);
 
 public:
-	RunningGear(float speed);
+	RunningGear(float movingSpeed, float rotationSpeed);
 	virtual void* Execute(std::string command, void *arg);
 	virtual void Update(float delta);
 };

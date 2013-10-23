@@ -3,6 +3,8 @@
 #include "../../../exceptions.h"
 #include "../../robot/robot.h"
 
+RobotFramesCollisionResolver* RobotFramesCollisionResolver::robotFramesCollisionResolver = NULL;
+
 RobotFramesCollisionResolver::RobotFramesCollisionResolver() {
 	CollisionResolverMaster::AddNewCollisionResolver(RobotFrame::GetClassType(), RobotFrame::GetClassType(), this);
 }
@@ -13,4 +15,9 @@ void RobotFramesCollisionResolver::Resolve(MapElement *mapElement1, MapElement *
 
 	//todo:: implemention
 	throw NotImplementedException();
-};
+}
+
+void RobotFramesCollisionResolver::Initilize() {
+	if(robotFramesCollisionResolver == NULL)
+		robotFramesCollisionResolver = new RobotFramesCollisionResolver();
+}

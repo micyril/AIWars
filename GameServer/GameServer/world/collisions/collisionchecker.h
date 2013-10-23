@@ -4,5 +4,5 @@
 
 class CollisionChecker {
 public:
-	bool static Check(MapElement *mapElement1, MapElement *mapElement2);
+	virtual bool Check(MapElement *mapElement1, MapElement *mapElement2) = 0;
 };

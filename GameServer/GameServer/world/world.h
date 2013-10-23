@@ -12,15 +12,15 @@ private:
 	//todo: borders
 	//todo: use safe pointers
 	std::list<WorldObject*> objects;
-	std::list<MapElement*> mapelements;
+	std::list<MapElement*> mapElements;
 
 public:
-	World(int width, int height, std::list<WorldObject*>& objects, std::list<MapElement*>& mapelements);
+	World(int width, int height, std::list<WorldObject*>& objects);
+	~World();
 	void Update(float delta);
 	virtual std::string Serialize();
-	~World();
 
 	std::list<Serializable*>* getElements() {
-		return (std::list<Serializable*>*)&mapelements;
+		return (std::list<Serializable*>*)&mapElements;
 	}
 };

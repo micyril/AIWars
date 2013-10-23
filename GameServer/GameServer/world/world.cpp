@@ -2,13 +2,22 @@
 #include <iostream>
 #include "world.h"
 #include "robot\robot.h"
-#include "collisions\collisions.h"
 #include "..\exceptions.h"
 
 using namespace std;
 
-World::World(int width, int height, std::list<WorldObject*>& objects, std::list<MapElement*>& mapelements) : 
-	width(width), height(height), objects(objects), mapelements(mapelements) {
+World::World(int width, int height, std::list<WorldObject*>& objects) : width(width), height(height), objects(objects) {
+	for(std::list<WorldObject*>::iterator it = objects.begin(); it != objects.end(); it++)
+		for(std::list<MapElement*>::iterator mapElemIt = (*it)->mapElements.begin(); mapElemIt != (*it)->mapElements.end(); mapElemIt++)
+			mapElements.push_back(*mapElemIt);
+}
+
+World::~World()
+{
+	for(std::list<WorldObject*>::iterator it = objects.begin(); it != objects.end(); it++)
+		delete *it;
+	for(std::list<MapElement*>::iterator it = mapElements.begin(); it != mapElements.end(); it++)
+		delete *it;
 }
 
 void World::Update(float delta) {
@@ -24,12 +33,4 @@ std::string World::Serialize() {
 	stream << "}";
 
 	return stream.str();
-}
-
-World::~World()
-{
-	for(std::list<WorldObject*>::iterator it = objects.begin(); it != objects.end(); it++)
-		delete *it;
-	for(std::list<MapElement*>::iterator it = mapelements.begin(); it != mapelements.end(); it++)
-		delete *it;
 }

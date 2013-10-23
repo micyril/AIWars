@@ -18,11 +18,16 @@ std::string RobotFrame::GetClassType() {
 	return type;
 }
 
-Robot::Robot(RobotFrame *frame, std::map<std::string, RobotComponent*>& commandToRobotComponent) :
-	frame(frame), commandToRobotComponent(commandToRobotComponent) {
-		frame->SetRobot(this);
-		for(std::map<std::string, RobotComponent*>::iterator it = commandToRobotComponent.begin(); it != commandToRobotComponent.end(); it++)
-			it->second->SetRobot(this);
+Robot::Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents) : frame(frame) {
+	frame->SetRobot(this);
+	mapElements.push_back(frame);
+	for(std::list<RobotComponent*>::iterator it = robotComponents.begin(); it != robotComponents.end(); it++) {
+		for(std::list<std::string>::iterator commandIter = (*it)->supportedCommands.begin(); commandIter != (*it)->supportedCommands.end(); commandIter++)
+			commandToRobotComponent[*commandIter] = *it;
+		for(std::list<MapElement*>::iterator mapElemIt = (*it)->mapElements.begin(); mapElemIt != (*it)->mapElements.end(); mapElemIt++)
+			mapElements.push_back(*mapElemIt);
+		(*it)->SetRobot(this);
+	}
 }
 
 void Robot::Update(float delta) {

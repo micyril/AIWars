@@ -27,7 +27,7 @@ private:
 	std::map<std::string, RobotComponent*> commandToRobotComponent;
 
 public:
-	Robot(RobotFrame *frame, std::map<std::string, RobotComponent*>& commandToRobotComponent);
+	Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents);
 	RobotFrame *frame;
 
 	void* Execute(std::string command, void *arg);

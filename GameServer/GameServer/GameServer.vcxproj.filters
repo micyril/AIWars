@@ -69,7 +69,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="world\robot\robot.cpp">
       <Filter>world\robot</Filter>
     </ClCompile>
@@ -78,9 +77,6 @@
     </ClCompile>
     <ClCompile Include="world\mapelement.cpp">
       <Filter>world</Filter>
-    </ClCompile>
-    <ClCompile Include="world\collisions\collisionchecker.cpp">
-      <Filter>world\collisions</Filter>
     </ClCompile>
     <ClCompile Include="world\collisions\collisionresolvermaster.cpp">
       <Filter>world\collisions</Filter>

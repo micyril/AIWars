@@ -8,6 +8,9 @@ class CollisionResolverMaster {
 private:
 	std::map<std::string, CollisionResolver*> mapElementsTypesToCollisionResolver;
 	static CollisionResolverMaster crm;
+	static bool areResolversInitialized;
+
+	CollisionResolverMaster() {}
 
 public:
 	~CollisionResolverMaster();

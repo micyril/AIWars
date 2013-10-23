@@ -33,7 +33,7 @@ void ClientHandler::InitSocket(const char* portno)
         freeaddrinfo(result);
         WSACleanup();
         return 1;*/
-		throw SocketConnectionExeption();
+		throw SocketConnectionException();
     }
 
     // Setup the TCP listening socket
@@ -44,7 +44,7 @@ void ClientHandler::InitSocket(const char* portno)
         closesocket(ListenSocket);
         WSACleanup();
         return 1;*/
-		throw SocketConnectionExeption();
+		throw SocketConnectionException();
     }
 
 
@@ -54,7 +54,7 @@ void ClientHandler::InitSocket(const char* portno)
         closesocket(ListenSocket);
         WSACleanup();
         return 1;*/
-		throw SocketConnectionExeption();
+		throw SocketConnectionException();
     }
 
     // Accept a client socket
@@ -64,7 +64,7 @@ void ClientHandler::InitSocket(const char* portno)
         closesocket(ListenSocket);
         WSACleanup();
         return 1;*/
-		throw SocketConnectionExeption();
+		throw SocketConnectionException();
     }
 
     // No longer need server socket
@@ -131,7 +131,7 @@ void ClientHandler::Execute(){
                 closesocket(ClientSocket);
                 WSACleanup();
                 return 1;*/
-				throw SocketConnectionExeption();
+				throw SocketConnectionException();
             }
             printf("Bytes sent: %d\n", iSendResult);
         }
@@ -142,7 +142,7 @@ void ClientHandler::Execute(){
             closesocket(ClientSocket);
             WSACleanup();
             return 1;*/
-			throw SocketConnectionExeption();
+			throw SocketConnectionException();
         }
 
     } while (iResult > 0);

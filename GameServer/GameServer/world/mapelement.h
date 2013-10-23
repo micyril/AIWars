@@ -9,9 +9,12 @@ public:
 	int height;
 	float x;
 	float y;
+	float rotationCenterX;
+	float rotationCenterY;
 	float rotation;
 
 	Rectangle(int width, int height, float x, float y, float rotation = 0);
+	Rectangle(int width, int height, float x, float y, float rotationCenterX, float rotationCenterY, float rotation = 0);
 	virtual std::string Serialize();
 
 protected:

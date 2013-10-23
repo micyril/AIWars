@@ -12,4 +12,6 @@ ipch/
 *.user
 *.suo
 *.exe
-*/logs.txt
+*.mdf
+*.ldf
+*logs.txt

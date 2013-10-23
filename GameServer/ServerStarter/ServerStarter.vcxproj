@@ -10,20 +10,31 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\WebHandler\WebHandler\WebHandler.vcxproj">
+      <Project>{c2708994-c296-4497-aa52-fbcb554edad2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GameServer\GameServer.vcxproj">
+      <Project>{8f069db2-ed4b-47e5-b559-06782306018b}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8F069DB2-ED4B-47E5-B559-06782306018B}</ProjectGuid>
+    <ProjectGuid>{337EA671-FEE4-476F-9222-BFF5CC9F90FA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GameServer</RootNamespace>
+    <RootNamespace>ServerStarter</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -52,6 +63,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -67,6 +79,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -75,33 +88,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="ClientHandler\ClientHandler.cpp" />
-    <ClCompile Include="world\collisions\collisionresolvermaster.cpp" />
-    <ClCompile Include="world\collisions\resolvers\robotframescollisionresolver.cpp" />
-    <ClCompile Include="world\mapelement.cpp" />
-    <ClCompile Include="world\robot\components\runninggear.cpp" />
-    <ClCompile Include="world\robot\robot.cpp" />
-    <ClCompile Include="world\world.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ClientHandler\ClientHandler.h" />
-    <ClInclude Include="exceptions.h" />
-    <ClInclude Include="world\collisions\collisionchecker.h" />
-    <ClInclude Include="world\collisions\collisionresolvermaster.h" />
-    <ClInclude Include="world\collisions\collisions.h" />
-    <ClInclude Include="world\collisions\exceptions.h" />
-    <ClInclude Include="world\collisions\resolvers\collisionresolver.h" />
-    <ClInclude Include="world\collisions\resolvers\collisionresolvers.h" />
-    <ClInclude Include="world\collisions\resolvers\robotframescollisionresolver.h" />
-    <ClInclude Include="world\mapelement.h" />
-    <ClInclude Include="world\robot\components\robotcomponent.h" />
-    <ClInclude Include="world\robot\components\runninggear.h" />
-    <ClInclude Include="world\robot\exceptions.h" />
-    <ClInclude Include="world\worldobject.h" />
-    <ClInclude Include="world\robot\robot.h" />
-    <ClInclude Include="world\world.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

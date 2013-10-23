@@ -5,6 +5,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameServer", "GameServer\Ga
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebHandler", "..\WebHandler\WebHandler\WebHandler.vcxproj", "{C2708994-C296-4497-AA52-FBCB554EDAD2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerStarter", "ServerStarter\ServerStarter.vcxproj", "{337EA671-FEE4-476F-9222-BFF5CC9F90FA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{F490EEAF-A905-4392-8844-56F5AA65BA36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +23,14 @@ Global
 		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Debug|Win32.Build.0 = Debug|Win32
 		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Release|Win32.ActiveCfg = Release|Win32
 		{C2708994-C296-4497-AA52-FBCB554EDAD2}.Release|Win32.Build.0 = Release|Win32
+		{337EA671-FEE4-476F-9222-BFF5CC9F90FA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{337EA671-FEE4-476F-9222-BFF5CC9F90FA}.Debug|Win32.Build.0 = Debug|Win32
+		{337EA671-FEE4-476F-9222-BFF5CC9F90FA}.Release|Win32.ActiveCfg = Release|Win32
+		{337EA671-FEE4-476F-9222-BFF5CC9F90FA}.Release|Win32.Build.0 = Release|Win32
+		{F490EEAF-A905-4392-8844-56F5AA65BA36}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F490EEAF-A905-4392-8844-56F5AA65BA36}.Debug|Win32.Build.0 = Debug|Win32
+		{F490EEAF-A905-4392-8844-56F5AA65BA36}.Release|Win32.ActiveCfg = Release|Win32
+		{F490EEAF-A905-4392-8844-56F5AA65BA36}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

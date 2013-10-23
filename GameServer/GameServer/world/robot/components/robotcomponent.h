@@ -11,9 +11,11 @@ protected:
 	Robot *robot;
 
 public:
-	std::list<MapElement *> mapelements;
+	std::list<std::string> supportedCommands;
 
 	virtual ~RobotComponent() {}
 	virtual void* Execute(std::string command, void *arg) = 0;
-	void SetRobot(Robot *robot) { this->robot = robot; }
+	void SetRobot(Robot *robot) { 
+		this->robot = robot; 
+	}
 };
