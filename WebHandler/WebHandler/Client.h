@@ -11,9 +11,13 @@ private:
 	mutex m;
 	list<WebSocketPacket*> queue;
 	SOCKET s;
+	
 
 public:	
 	int id;
+	int worldId;
+	SOCKET commandSocket;
+
 
 	Client(SOCKET s, int id);
 	~Client();

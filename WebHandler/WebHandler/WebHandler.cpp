@@ -192,7 +192,8 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 	}
 
 	res->respond(s);
-	log(req, res, s);
+	if (res && req)
+		log(req, res, s);
 
 	if (req)
 		delete req;

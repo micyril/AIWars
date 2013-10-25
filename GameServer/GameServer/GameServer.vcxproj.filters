@@ -16,9 +16,6 @@
     <Filter Include="world\robot\components">
       <UniqueIdentifier>{c113eab5-ec01-4b1d-979a-e22c89369f80}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ClientServer">
-      <UniqueIdentifier>{d5b1d516-efbe-407a-9d88-703c4efd786e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="world\world.h">
@@ -64,9 +61,6 @@
     <ClInclude Include="world\robot\components\robotcomponent.h">
       <Filter>world\robot\components</Filter>
     </ClInclude>
-    <ClInclude Include="ClientHandler\ClientHandler.h">
-      <Filter>ClientServer</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="world\robot\robot.cpp">
@@ -86,9 +80,6 @@
     </ClCompile>
     <ClCompile Include="world\robot\components\runninggear.cpp">
       <Filter>world\robot\components</Filter>
-    </ClCompile>
-    <ClCompile Include="ClientHandler\ClientHandler.cpp">
-      <Filter>ClientServer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

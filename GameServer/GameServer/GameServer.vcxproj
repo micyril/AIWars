@@ -76,7 +76,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ClientHandler\ClientHandler.cpp" />
     <ClCompile Include="world\collisions\collisionresolvermaster.cpp" />
     <ClCompile Include="world\collisions\resolvers\robotframescollisionresolver.cpp" />
     <ClCompile Include="world\mapelement.cpp" />
@@ -85,7 +84,6 @@
     <ClCompile Include="world\world.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClientHandler\ClientHandler.h" />
     <ClInclude Include="exceptions.h" />
     <ClInclude Include="world\collisions\collisionchecker.h" />
     <ClInclude Include="world\collisions\collisionresolvermaster.h" />

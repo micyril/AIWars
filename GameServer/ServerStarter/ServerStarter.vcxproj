@@ -11,7 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WorldHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WebHandler\WebHandler\WebHandler.vcxproj">
@@ -20,6 +22,10 @@
     <ProjectReference Include="..\GameServer\GameServer.vcxproj">
       <Project>{8f069db2-ed4b-47e5-b559-06782306018b}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="WorldHandler.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{337EA671-FEE4-476F-9222-BFF5CC9F90FA}</ProjectGuid>

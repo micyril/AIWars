@@ -1,11 +1,6 @@
 #include <iostream>
-#include "..\GameServer\world\mapelement.h"
-#include "..\GameServer\world\world.h"
-#include "..\GameServer\world\robot\components\runninggear.h"
-#include "..\GameServer\world\robot\robot.h"
-#include "..\..\WebHandler\WebHandler\WebHandler.h"
-#include "..\GameServer\ClientHandler\ClientHandler.h"
-void OnConnect(Client *c) {
+#include "Application.h"
+/*void OnConnect(Client *c) {
 	RobotFrame *robotFrame = new RobotFrame(50, 50, 200, 200);
 	float movingSpeed = 40;
 	float rotationSpeed = 0.005;
@@ -47,11 +42,8 @@ int test()
 	//World w(500,500);
 	//std::cout << w.Serialize();
 	return 0;
-}
+}*/
 int main() {
-	HANDLE h = WebHandler::StartHttp();
-	WebHandler::setOnConnectCallback(&OnConnect);
-	WaitForSingleObject(h, INFINITE); // join к потоку
-
-	return test();
+	Application ap;
+	ap.Run();
 }
