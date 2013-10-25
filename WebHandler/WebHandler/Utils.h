@@ -17,12 +17,6 @@ string urlDecode(string &SRC);
 // обертка над обычным recv но с выбрасыванием исключения при таймауте (или другой ошибке чтения)
 int _recv(SOCKET s, char* buf, int len, int flags);
 
-struct ListenerParams {
-	int port;
-	PTP_WORK_CALLBACK request_handler;
-};
-
-
 class SocketIOException : public exception {};
 
 //===========================================================

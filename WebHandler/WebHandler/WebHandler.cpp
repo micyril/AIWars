@@ -86,10 +86,7 @@ HANDLE WebHandler::StartHttp(char *cfg) {
 
 	if (http_thread_handle == 0) {
 		initPool();
-		ListenerParams *p = new ListenerParams();
-		p->port = PORT;
-		p->request_handler = &HttpRequestHandler;
-		http_thread_handle = CreateThread(0, 0, &Listener, (void*)p, 0, 0);
+		http_thread_handle = CreateThread(0, 0, &Listener, 0, 0, 0);
 	}
 	if (daemon_thread_handle == 0) {
 		daemon_alive = true;
@@ -109,31 +106,26 @@ void WebHandler::StopHttp() {
 }
 
 DWORD WINAPI WebHandler::Listener(void* param) {
-	ListenerParams *p = (ListenerParams*)param;
-	int port = p->port;
-	PTP_WORK_CALLBACK rh = p->request_handler;
-	delete p;
-
 	SOCKADDR_IN addr;
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = inet_addr(IP); // INADDR_ANY; 
-	addr.sin_port = htons(port);
+	addr.sin_port = htons(PORT);
 
 	SOCKET s = socket(AF_INET, SOCK_STREAM, 0);
 	if (0 != ::bind(s, (sockaddr*)&addr, sizeof(addr))) {
 		cerr << "bind failed: " << GetLastError() << endl;
-		return -1;
+		return 0;
 	}
 	if (0 != listen(s, SOMAXCONN)) {
 		cerr << "listen failed: " << GetLastError() << endl;
-		return -1;
+		return 0;
 	}
 
 	while (1) {
 		SOCKADDR_IN caddr;
 		int l = sizeof(caddr);
 		SOCKET client = accept(s, (sockaddr*)&caddr, &l);
-		PTP_WORK work = CreateThreadpoolWork(rh, (void*)client, &pool_env);
+		PTP_WORK work = CreateThreadpoolWork(&HttpRequestHandler, (void*)client, &pool_env);
 		if (0 == work) {
 			cerr << "can't create threadpool work" << endl;
 			continue;

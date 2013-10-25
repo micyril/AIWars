@@ -134,7 +134,7 @@ void HttpRequest::processNewLine(char c) {
 				state = ParserState::HeaderName;
 			} else {
 				if (method == MethodType::POST) {
-					length = parseInt(headers["Content-Length"]);
+					length = parseInt(headers["Content-Length"]) - 1;
 					state = ParserState::Data;
 				}
 			}
