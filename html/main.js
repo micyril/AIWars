@@ -94,7 +94,7 @@ function action_update(msg) {
 	Context.clear();
 	for (var i in msg.mapelements) {
 		i = msg.mapelements[i];
-		var me = new MapElement(i.position.x, i.position.y, i.width, i.height, i.angle, i.rotationcenter.x, i.rotationcenter.y);
+		var me = new MapElement(i.position.x, i.position.y, i.width, i.height, i.rotationcenter.x, i.rotationcenter.y, i.angle);
 		me.draw();
 	}
 }
