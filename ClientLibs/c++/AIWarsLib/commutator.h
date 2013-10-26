@@ -6,6 +6,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+
 class Commutator
 {
 private:
@@ -15,6 +16,10 @@ private:
     char *buffer;
     struct sockaddr_in serv_addr;
     struct hostent *server;
+
+    void send_all(std::string msg);
+    std::string recv_all();
+
 public:
     Commutator(std::string hostname = "localhost",std::string port = "1234");
     std::string exchange(std::string request);

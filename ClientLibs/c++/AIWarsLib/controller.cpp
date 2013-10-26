@@ -50,7 +50,7 @@ bool Controller::fire(){
     return this->state_process(this->fire_cmd.parse_response(response));
 }
 
-std::vector<Obstacle> Controller::scan(){
+std::vector<WorldObject> Controller::scan(){
     std::string request = this->scan_cmd.produce_request(this->ID);
     std::string response = this->comm.exchange(request);
     return this->scan_cmd.parse_response(response).second;

@@ -7,11 +7,11 @@
 
 namespace Commands {
 
-    //----- obstacle class ----------
-    class Obstacle{
+    //----- WorldObject class ----------
+    class WorldObject{
     public:
-        Obstacle(std::string type = "",float distance = 0.0f,float angle = 0.0f);
-        ~Obstacle();
+        WorldObject(std::string type = "",float distance = 0.0f,float angle = 0.0f);
+        ~WorldObject();
         std::string type;
         float distance;
         float angle;
@@ -66,7 +66,7 @@ namespace Commands {
     public:
         ScanCommand();
         std::string produce_request(int ID);
-        std::pair< int , std::vector<Obstacle> > parse_response(std::string response);
+        std::pair< int , std::vector<WorldObject> > parse_response(std::string response);
 
     };
     //-------------------------------

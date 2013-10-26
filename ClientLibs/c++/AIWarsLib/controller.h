@@ -1,8 +1,7 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 #include <string.h>
-#include <pair.h>
-#include <vector.h>
+#include <vector>
 #include "commutator.h"
 #include "commands.h"
 
@@ -26,7 +25,7 @@ public:
     bool move(float destination);
     bool rotate(float angle);
     bool fire();
-    std::vector<Obstacle> scan();
+    std::vector<WorldObject> scan();
 };
 
 

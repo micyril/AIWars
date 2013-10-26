@@ -10,6 +10,22 @@ Commutator::Commutator(std::string hostname,std::string port)
     this->buffer = new char[this->buffer_size];
 }
 
+void Commutator::send_all(std::string msg){
+    size_t i = 0;
+    size_t msg_len = msg.length();
+    const char * raw_msg = msg.c_str();
+    for(i = 0; i< msg_len; i+=send(this->sock,raw_msg,msg_len - i,0));
+}
+
+std::string Commutator::recv_all(){
+    size_t i = 0;
+    std::string tmp;
+    bzero(this->buffer,this->buffer_size);
+    recv(this->sock,this->buffer,this->buffer_size,0);
+    tmp+=this->buffer;
+    return tmp;
+}
+
 bool Commutator::up_connection(){
     this->sock = socket(AF_INET,SOCK_STREAM,0);
     if(this->sock < 0){
@@ -39,23 +55,14 @@ bool Commutator::up_connection(){
 
 std::string Commutator::exchange(std::string request){
     if(!this->connected) return "";
-    if(write(this->sock,request.c_str(),request.length()) < 0){
-        return "";
-    }
-    bzero(this->buffer,this->buffer_size);
-    if(read(this->sock,this->buffer,this->buffer_size) < 0){
-        return "";
-    }
-    return std::string(this->buffer);
+    this->send_all(request);
+    return this->recv_all();
 }
 
 bool Commutator::hand_shake(std::string hand_shake_msg){
      if(!this->connected) return false;
-     if(write(this->sock,hand_shake_msg.c_str(),hand_shake_msg.length()) < 0){
-         return false;
-     }
-     bzero(buffer,this->buffer_size);
-     while(read(this->sock,this->buffer,this->buffer_size) < 0);
+     this->send_all(hand_shake_msg);
+     this->recv_all();
      return true;
 }
 
@@ -64,6 +71,6 @@ bool Commutator::down_connection(std::string last){
     if(this->sock < 0) return false;
     this->exchange(last);
     this->connected = false;
-    close(this->sock);
+    shutdown(this->sock,2);
     return true;
 }

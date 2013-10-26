@@ -30,13 +30,13 @@ ScanCommand::ScanCommand() : Command(){
 
 
 
-//---------------Obstacle-------------------------
-Obstacle::Obstacle(std::string type, float distance, float angle){
+//---------------WorldObject-------------------------
+WorldObject::WorldObject(std::string type, float distance, float angle){
     this->type = type;
     this->distance = distance;
     this->angle = angle;
 }
-Obstacle::~Obstacle(){
+WorldObject::~WorldObject(){
 }
 
 //------------------------------------------------
@@ -90,13 +90,14 @@ std::string ScanCommand::produce_request(int ID){
     return Command::produce_request(Protocol::get_line_by_fields(Tools::ToStrConverter<int>::convert(ID),this->NAME,""));
 }
 
-std::pair< int , std::vector<Obstacle> > ScanCommand::parse_response(std::string response){
-    std::pair< int , std::vector<Obstacle> > out;
+std::pair< int , std::vector<WorldObject> > ScanCommand::parse_response(std::string response){
+    std::pair< int , std::vector<WorldObject> > out;
 
     Message msg  = Protocol::get_msg_by_line(response);
 
     if      (msg.head == this->ACK) out.first =  0;
     else if (msg.head == this->NAK){
+
         out.first =  1;
         return out;
     }
@@ -111,9 +112,9 @@ std::pair< int , std::vector<Obstacle> > ScanCommand::parse_response(std::string
     }
 
     std::vector<std::string> args = Tools::StringSplitter::split(msg.args_line," ");
-    std::vector<Obstacle> parsed_args;
+    std::vector<WorldObject> parsed_args;
     for(int i = 2; i < args.size(); i+=3){
-       parsed_args.push_back(Obstacle(args[i-2],Tools::FromStrConverter<float>::convert(args[i-1]),Tools::FromStrConverter<float>::convert(args[i])));
+       parsed_args.push_back(WorldObject(args[i-2],Tools::FromStrConverter<float>::convert(args[i-1]),Tools::FromStrConverter<float>::convert(args[i])));
     }
 
     out.second = parsed_args;
