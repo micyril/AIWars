@@ -6,16 +6,18 @@ using namespace std;
 
 int readFile(char* file, char** data);
 void writeToFile(const char* file, const char* data);
-bool startsWith(string str, string prefix);
-bool endsWith(string str, string suffix);
-int parseInt(string str);
+bool startsWith(string &str, string &prefix);
+bool endsWith(string &str, string &suffix);
+int parseInt(string &str);
 string& toLowerCase(string& str);
 string base64_encode(unsigned char const* s, unsigned int len);
 string base64_decode(string const& s);
 bool SHA1(const char *msg, unsigned char *hash);
 string urlDecode(string &SRC);
-// обертка над обычным recv но с выбрасыванием исключения при таймауте (или другой ошибке чтения)
+// РѕР±РµСЂС‚РєР° РЅР°Рґ РѕР±С‹С‡РЅС‹Рј recv РЅРѕ СЃ РІС‹Р±СЂР°СЃС‹РІР°РЅРёРµРј РёСЃРєР»СЋС‡РµРЅРёСЏ РїСЂРё С‚Р°Р№РјР°СѓС‚Рµ (РёР»Рё РґСЂСѓРіРѕР№ РѕС€РёР±РєРµ С‡С‚РµРЅРёСЏ)
 int _recv(SOCKET s, char* buf, int len, int flags);
+// РѕС‚РїСЂР°РІР»СЏРµС‚ РґР°РЅРЅС‹Рµ data РІ SSL-СЃРѕРєРµС‚ ss Р° РѕС‚РІРµС‚ С€Р»РµС‚ РІ РѕР±С‹С‡РЅС‹Р№ СЃРѕРєРµС‚ s
+void SSLDataExchange(const char* data, int len, SOCKET ss, SOCKET s);
 
 class SocketIOException : public exception {};
 

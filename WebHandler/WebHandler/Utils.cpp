@@ -53,7 +53,7 @@ void writeToFile(const char* file, const char* data) {
 	delete[] wfile;
 }
 
-bool startsWith(string str, string prefix) {
+bool startsWith(string &str, string &prefix) {
 	if (str.length() < prefix.length()) 
 		return false;
 	for (int i=0; i<prefix.length(); i++)
@@ -62,7 +62,7 @@ bool startsWith(string str, string prefix) {
 	return true;
 }
 
-bool endsWith(string str, string suffix) {
+bool endsWith(string &str, string &suffix) {
 	if (str.length() < suffix.length()) 
 		return false;
 	for (int i=1; i<=suffix.length(); i++)
@@ -71,7 +71,7 @@ bool endsWith(string str, string suffix) {
 	return true;
 }
 
-int parseInt(string str) {
+int parseInt(string &str) {
 	int value;
 	stringstream ss(str);
 	ss >> value;

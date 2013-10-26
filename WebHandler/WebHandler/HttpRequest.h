@@ -4,18 +4,16 @@
 #include <map>
 using namespace std;
 
-// POST запросы не тестировались
-
 enum MethodType {
 	GET, POST
 };
 
-enum ParserState {
-	Method, Request, Version, NewLine, HeaderName, HeaderValue, Data
-};
-
 class HttpRequest {
 private:
+	enum ParserState {
+		Method, Request, Version, NewLine, HeaderName, HeaderValue, Data
+	};
+
 	typedef void (HttpRequest::*processState)(char c);
 
 	string html_root;
@@ -25,11 +23,10 @@ private:
 	string buf;
 	string temp;
 	int length;
-	int NLcount;
 	bool stop;
 	processState state_map[7];
 
-	void init(string hr, string dp);
+	void init(string &hr, string &dp);
 
 	void processMethod(char c);
 	void processRequest(char c);
@@ -39,18 +36,21 @@ private:
 	void processHeaderValue(char c);
 	void processData(char c);
 
-	void parseRequest(string s);
+	void parseRequest(string &s);
 
 public:
 	MethodType method;
 	map<string, string> headers;
 	string data;
 	string path;
+	string requestLine;
 	map<string, string> _GET;
 
-	HttpRequest(string hr, string dp);
-	HttpRequest(SOCKET s, string hr, string dp);
+	HttpRequest(string &hr, string &dp);
+	HttpRequest(SOCKET s, string &hr, string &dp);
 	~HttpRequest();
 
 	void parse(SOCKET s);
+	void send(SOCKET s);
+	string*  toString();
 };

@@ -1,6 +1,5 @@
 #include "HttpResponse.h"
 
-
 HttpResponse::HttpResponse(const char *_code) {
 	init();
 	code.assign(_code);

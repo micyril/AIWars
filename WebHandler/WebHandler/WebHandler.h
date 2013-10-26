@@ -9,7 +9,6 @@
 using namespace std;
 
 #define DEFAULT_CONFIG "config.ini"
-#define SLEEP_TIME 10000
 
 typedef void (*OnConnectCallBack)(Client*);
 
@@ -20,10 +19,11 @@ private:
 	static int PORT;
 	static int MAX_CONNECTIONS;
 	static int RECV_TIMEOUT_SEC;
-	static char* IP;
-	static char* HTML_ROOT;
-	static char* DEFAULT_PAGE;
-	static char* LOGFILE;
+	static string IP;
+	static string HTML_ROOT;
+	static string DEFAULT_PAGE;
+	static string LOGFILE;
+	static string PROXY;
 	static map<string, string> mime;
 
 	// threads, pools, etc...
@@ -31,15 +31,13 @@ private:
 	static TP_CALLBACK_ENVIRON pool_env;
 	static PTP_POOL http_clients_pool;
 	static HANDLE http_thread_handle;
-	static HANDLE daemon_thread_handle;
-	static bool daemon_alive;
 	static mutex log_mutex;
 
 	// accept loop
 	static DWORD WINAPI Listener(void* param);
 	static VOID CALLBACK HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVOID param, PTP_WORK Work);
 	static HttpResponse* websocketHandshake(HttpRequest *r);
-	static DWORD WINAPI WatchingDaemon(void* param);
+	static void proxyRequest(HttpRequest *r, SOCKET s);
 	static void initPool();
 	static void log(HttpRequest *req, HttpResponse *res, SOCKET s);
 

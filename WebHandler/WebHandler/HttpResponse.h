@@ -11,6 +11,7 @@ using namespace std;
 class HttpResponse {
 private:
 	void init();
+
 public:
 	string version;
 	string code;
