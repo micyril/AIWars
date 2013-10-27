@@ -24,7 +24,7 @@ bool Controller::state_process(int state){
 
 bool Controller::ready(){
     if(this->comm.up_connection()){
-        return this->comm.hand_shake();
+        return this->comm.hand_shake(Tools::ToStrConverter<int>::convert(this->ID)+"\r\n");
     } else return false;
 }
 

@@ -12,18 +12,17 @@ int main()
     if(ctrl.ready()){
         cout<<"start"<<endl;
         for(int i = 0; i < 1000; i++){
-            cout<<ctrl.move((float)i)<<" ";
+            cout<<ctrl.move(0.1)<<" ";
             cout<<ctrl.fire()<<" ";
-            cout<<ctrl.rotate((float)i)<<" ";
+            cout<<ctrl.rotate(10)<<" ";
             vector<WorldObject> v = ctrl.scan();
-            cout<<v[2].type<<endl;
+            cout<<v[3].distance<<endl;
             if (v.size() == 0)
                 cout << "problem" << endl;
 
         }
-
-    cout<<"end"<<endl;
     ctrl.end_game();
+    cout<<"end"<<endl;
     }
     /*vector<string> v = Tools::StringSplitter::split("aaa"," ",2);
     for(int i = 0;i<v.size();i++)
