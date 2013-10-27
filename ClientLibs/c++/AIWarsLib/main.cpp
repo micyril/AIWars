@@ -1,6 +1,5 @@
 #include <iostream>
 #include "controller.h"
-#include "commutator.h"
 #include "time.h"
 using namespace std;
 using namespace Commands;
