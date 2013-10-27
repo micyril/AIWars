@@ -25,7 +25,7 @@ public:
     std::string exchange(std::string request);
     bool up_connection();
     bool hand_shake(std::string hand_shake_msg = "HI\r\n");
-    bool down_connection(std::string last = "BB\r\n");
+    bool down_connection(std::string last = "EOG\r\n");
 };
 
 #endif // COMMUTATOR_H
