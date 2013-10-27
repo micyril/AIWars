@@ -20,7 +20,7 @@
 	c->notifyStart();
 	c->notifyUpdate(world.getElements());
 	Sleep(2000);
-
+	×
 	float arg = 100;
 	float rotArg = 1.54F;
 	robot->Execute("move", &arg);

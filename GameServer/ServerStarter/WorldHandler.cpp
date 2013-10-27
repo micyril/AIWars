@@ -41,6 +41,7 @@ DWORD WINAPI clientThread(LPVOID lpParam){
     int recvbuflen = 1024;
 	std::string command("");
 	void* args = NULL;
+	send(info->c->commandSocket, "ACK", 3, 0);
     do {
 
 		iResult = recv(info->c->commandSocket, recvbuf, recvbuflen, 0);
