@@ -9,7 +9,6 @@ ipch/
 *.ncb
 *.opensdf
 *.sdf
-*.user
 *.suo
 *.exe
 *.mdf
