@@ -7,17 +7,17 @@ using namespace Commands;
 int main()
 {
 
-    Controller ctrl("213.159.196.198","2001","0");
+    Controller ctrl("87.251.167.242","2560","0");
     if(ctrl.ready()){
         cout<<"start"<<endl;
-        for(int i = 0; i < 1000; i++){
+        for(int i = 0; i < 100; i++){
             cout<<ctrl.move(0.1)<<" ";
-            cout<<ctrl.fire()<<" ";
+            /*cout<<ctrl.fire()<<" ";
             cout<<ctrl.rotate(10)<<" ";
             vector<WorldObject> v = ctrl.scan();
             cout<<v[3].distance<<endl;
             if (v.size() == 0)
-                cout << "problem" << endl;
+                cout << "problem" << endl;*/
 
         }
     ctrl.end_game();
