@@ -16,8 +16,6 @@
     <ClInclude Include="HttpResponse.h" />
     <ClInclude Include="messages\Message.h" />
     <ClInclude Include="Serializable.h" />
-    <ClInclude Include="ssl\ssl.h" />
-    <ClInclude Include="ssl\z.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="WebHandler.h" />
     <ClInclude Include="WebSocketPacket.h" />
@@ -29,8 +27,6 @@
     <ClCompile Include="HttpResponse.cpp" />
     <ClCompile Include="messages\Action.cpp" />
     <ClCompile Include="messages\Info.cpp" />
-    <ClCompile Include="ssl\ssl.cpp" />
-    <ClCompile Include="ssl\SSLDataExchange.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="WebHandler.cpp" />
     <ClCompile Include="WebSocketPacket.cpp" />

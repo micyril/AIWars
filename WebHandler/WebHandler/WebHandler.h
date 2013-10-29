@@ -23,7 +23,6 @@ private:
 	static string HTML_ROOT;
 	static string DEFAULT_PAGE;
 	static string LOGFILE;
-	static string PROXY;
 	static map<string, string> mime;
 
 	// threads, pools, etc...
@@ -37,7 +36,6 @@ private:
 	static DWORD WINAPI Listener(void* param);
 	static VOID CALLBACK HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVOID param, PTP_WORK Work);
 	static HttpResponse* websocketHandshake(HttpRequest *r);
-	static void proxyRequest(HttpRequest *r, SOCKET s);
 	static void initPool();
 	static void log(HttpRequest *req, HttpResponse *res, SOCKET s);
 

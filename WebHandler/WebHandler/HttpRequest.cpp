@@ -5,7 +5,6 @@
 #include <sstream>
 using namespace std;
 
-
 HttpRequest::HttpRequest(string &hr, string &dp) {
 	init(hr, dp);
 }
@@ -38,7 +37,6 @@ void HttpRequest::parse(SOCKET s) {
 	buf.clear();
 	temp.clear();
 
-	requestLine.clear();
 	path.clear();
 	_GET.clear();
 	data.clear();
@@ -84,7 +82,6 @@ void HttpRequest::processRequest(char c) {
 				throw BadRequest();
 			if (buf.find("/../") != string::npos) 
 				throw Forbidden();
-			requestLine.append(buf);
 			temp.append(html_root);
 			temp.append(buf);
 			if (buf[buf.length() - 1] == '/')
@@ -200,52 +197,4 @@ void HttpRequest::parseRequest(string &request) {
 			break;
 		_GET[string(k)] = string(v);
 	}
-}
-
-void HttpRequest::send(SOCKET s) {
-	switch (method) {
-		case GET:
-			::send(s, "GET", 3, 0);
-			break;
-		case POST:
-			::send(s, "POST", 4, 0);
-			break;
-	}
-	::send(s, " ", 1, 0);
-	::send(s, requestLine.c_str(), requestLine.length(), 0);
-	::send(s, " HTTP/1.1\r\n", 11, 0);
-	for (auto i = headers.begin(); i != headers.end(); i++) {
-		::send(s, i->first.c_str(), i->first.length(), 0);
-		::send(s, ": ", 2, 0);
-		::send(s, i->second.c_str(), i->second.length(), 0);
-		::send(s, "\r\n", 2, 0);
-	}
-	::send(s, "\r\n", 2, 0);
-	if (!data.empty())
-		::send(s, data.c_str(), data.length(), 0);
-}
-
-string*  HttpRequest::toString() {
-	string *s = new string();
-	switch (method) {
-		case GET:
-			s->append("GET");
-			break;
-		case POST:
-			s->append("POST");
-			break;
-	}
-	s->append(" ");
-	s->append(requestLine);
-	s->append(" HTTP/1.1\r\n");
-	for (auto i = headers.begin(); i != headers.end(); i++) {
-		s->append(i->first);
-		s->append(": ");
-		s->append(i->second);
-		s->append("\r\n");
-	}
-	s->append("\r\n");
-	if (!data.empty())
-		s->append(data);
-	return s;
 }

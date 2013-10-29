@@ -11,12 +11,6 @@
     <ClInclude Include="messages\Message.h">
       <Filter>messages</Filter>
     </ClInclude>
-    <ClInclude Include="ssl\ssl.h">
-      <Filter>ssl</Filter>
-    </ClInclude>
-    <ClInclude Include="ssl\z.h">
-      <Filter>ssl</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WebHandler.cpp" />
@@ -32,12 +26,6 @@
     <ClCompile Include="messages\Action.cpp">
       <Filter>messages</Filter>
     </ClCompile>
-    <ClCompile Include="ssl\ssl.cpp">
-      <Filter>ssl</Filter>
-    </ClCompile>
-    <ClCompile Include="ssl\SSLDataExchange.cpp">
-      <Filter>ssl</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
@@ -45,9 +33,6 @@
   <ItemGroup>
     <Filter Include="messages">
       <UniqueIdentifier>{e49986fc-8aa7-4728-bd96-188f20133e2e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ssl">
-      <UniqueIdentifier>{5433f54c-b805-4733-921f-98a8706932c1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

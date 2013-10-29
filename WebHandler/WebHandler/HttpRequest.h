@@ -43,7 +43,6 @@ public:
 	map<string, string> headers;
 	string data;
 	string path;
-	string requestLine;
 	map<string, string> _GET;
 
 	HttpRequest(string &hr, string &dp);
@@ -51,6 +50,4 @@ public:
 	~HttpRequest();
 
 	void parse(SOCKET s);
-	void send(SOCKET s);
-	string*  toString();
 };

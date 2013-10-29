@@ -19,7 +19,6 @@ string WebHandler::IP = "0.0.0.0";
 string WebHandler::HTML_ROOT = ".";
 string WebHandler::DEFAULT_PAGE = "index.html";
 string WebHandler::LOGFILE;
-string WebHandler::PROXY = "/proxy/";
 map<string, string> WebHandler::mime;
 
 TP_CALLBACK_ENVIRON WebHandler::pool_env;
@@ -65,8 +64,6 @@ HANDLE WebHandler::StartHttp(char *cfg) {
 				LOGFILE.assign(strtok(0, "\r\n"));
 			} else if (strcmp(p, "IP") == 0) {
 				IP.assign(strtok(0, "\r\n"));
-			} else if (strcmp(p, "PROXY") == 0) {
-				PROXY.assign(strtok(0, "\r\n"));
 			} else {
 				mime[toLowerCase(string(p))] = string(strtok(0, "\r\n"));
 			}
@@ -135,10 +132,7 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 	bool ws = false;
 	try {
 		req = new HttpRequest(s, HTML_ROOT, DEFAULT_PAGE);
-		if (startsWith(req->requestLine, PROXY)) {
-			// перенаправляем запрос
-			proxyRequest(req, s);
-		} else if (req->headers["Upgrade"].compare("websocket") == 0) {
+		if (req->headers["Upgrade"].compare("websocket") == 0) {
 			// переходим на веб-сокет
 			res = websocketHandshake(req);
 			ws = true;
@@ -269,44 +263,5 @@ void WebHandler::log(HttpRequest *req, HttpResponse *res, SOCKET s) {
 		log_mutex.lock();
 		writeToFile(LOGFILE.c_str(), log.c_str());
 		log_mutex.unlock();
-	}
-}
-
-void WebHandler::proxyRequest(HttpRequest *req, SOCKET s) {
-	int off = PROXY.length();
-	int spl = req->requestLine.find('/', off);
-	req->headers["Host"] = req->requestLine.substr(off, spl - off);
-	req->headers["Connection"] = "close";
-	req->requestLine = spl == string::npos ? "/" : req->requestLine.substr(spl);
-	int port = PORT;
-	spl = req->headers["Host"].find(':');
-	if (spl != string::npos) {
-		port = atoi(req->headers["Host"].substr(spl+1).c_str());
-		req->headers["Host"] = req->headers["Host"].substr(0, spl);
-	}
-
-	hostent* host = gethostbyname(req->headers["Host"].c_str());
-	if (!host)
-		throw BadRequest();
-	SOCKADDR_IN addr;
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = *(u_long*)host->h_addr_list[0];
-	addr.sin_port = htons(port);
-			
-	SOCKET ps = socket(AF_INET, SOCK_STREAM, 0);
-	if (0 != connect(ps, (sockaddr*)&addr, sizeof(addr)))
-		throw exception();
-						
-	if (port == 443) {
-		string *data = req->toString();
-		SSLDataExchange(data->c_str(), data->length(), ps, s);
-		delete data;
-	} else {
-		req->send(ps);
-		char *bf = new char[1024];
-		int n;				
-		while ((n = recv(ps, bf, 1024, 0)) > 0)
-			send(s, bf, n, 0);
-		delete[] bf;
 	}
 }

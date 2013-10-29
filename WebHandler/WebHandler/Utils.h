@@ -16,8 +16,6 @@ bool SHA1(const char *msg, unsigned char *hash);
 string urlDecode(string &SRC);
 // обертка над обычным recv но с выбрасыванием исключения при таймауте (или другой ошибке чтения)
 int _recv(SOCKET s, char* buf, int len, int flags);
-// отправляет данные data в SSL-сокет ss а ответ шлет в обычный сокет s
-void SSLDataExchange(const char* data, int len, SOCKET ss, SOCKET s);
 
 class SocketIOException : public exception {};
 
