@@ -14,3 +14,4 @@ ipch/
 *.mdf
 *.ldf
 *logs.txt
+*.txt.user
