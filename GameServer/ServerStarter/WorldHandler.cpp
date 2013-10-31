@@ -20,7 +20,7 @@ Robot* WorldHandler::makeRobot(){
 	robotComponents.push_back(runningGear);
 	return new Robot(robotFrame, robotComponents);
 }
-void parceCommand(char* input, int size, std::string &command, void* args){
+void parceCommand(char* input, int size, std::string &command, std::string &arg){
 	std::string instr(input, input + size);
 	std::stringstream ss(instr);
 	std::string index("");
@@ -29,7 +29,7 @@ void parceCommand(char* input, int size, std::string &command, void* args){
 	std::getline(ss, index, ' ');//skip index
 	std::getline(ss, command, ' ');
 	std::getline(ss, argsstr, ' ');
-	args = (void*)argsstr.data();
+	arg = argsstr.data();
 }
 DWORD WINAPI clientThread(LPVOID lpParam){
 
@@ -40,19 +40,16 @@ DWORD WINAPI clientThread(LPVOID lpParam){
     char recvbuf[1024];
     int recvbuflen = 1024;
 	std::string command("");
-	void* args = NULL;
+	std::string arg;
 	send(info->c->commandSocket, "ACK", 3, 0);
     do {
-
 		iResult = recv(info->c->commandSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
-           
-			parceCommand(recvbuf, iResult, command, args);
-			info->r->Execute(command, args);
+			parceCommand(recvbuf, iResult, command, arg);
+			info->r->Execute(command, arg);  //TODO: catch exceptions
             iSendResult = send( info->c->commandSocket, "ACK", 3, 0 );//ToDo replace for retur of sendCommandToRobot
             if (iSendResult == SOCKET_ERROR) {
-
-				throw NotImplementedException();
+				throw NotImplementedException();  //TODO: it's not good to use this type of exception here
             }
             printf("Bytes sent: %d\n", iSendResult);
         }

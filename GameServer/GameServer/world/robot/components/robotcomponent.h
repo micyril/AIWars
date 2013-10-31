@@ -14,7 +14,7 @@ public:
 	std::list<std::string> supportedCommands;
 
 	virtual ~RobotComponent() {}
-	virtual void* Execute(std::string command, void *arg) = 0;
+	virtual std::string Execute(const std::string &command, const std::string &arg) = 0;
 	void SetRobot(Robot *robot) { 
 		this->robot = robot; 
 	}

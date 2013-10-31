@@ -35,7 +35,7 @@ void Robot::Update(float delta) {
 		it->second->Update(delta);
 }
 
-void *Robot::Execute(std::string command, void *arg) {
+std::string Robot::Execute(const std::string &command, const std::string &arg) {
 	std::map<std::string, RobotComponent*>::iterator it = commandToRobotComponent.find(command);
 	if (it == commandToRobotComponent.end())
 		throw NotSupportedCommandException(command);

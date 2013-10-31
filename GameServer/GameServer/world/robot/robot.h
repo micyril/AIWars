@@ -30,6 +30,6 @@ public:
 	Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents);
 	RobotFrame *frame;
 
-	void* Execute(std::string command, void *arg);
+	std::string Execute(const std::string &command, const std::string &arg);
 	void Update(float delta);
 };

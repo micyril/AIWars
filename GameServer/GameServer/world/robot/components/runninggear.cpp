@@ -1,26 +1,34 @@
 #include <algorithm>
 #include <cmath>
+#include <sstream>
 #include "runninggear.h"
 #include "../exceptions.h"
 #include "../robot.h"
 
-RunningGear::RunningGear(float movingSpeed, float rotationSpeed) : 
-	movingSpeed(movingSpeed), rotationSpeed(rotationSpeed) {
-		supportedCommands.push_back("move");
-		supportedCommands.push_back("rotate");
+//TODO: do not use that
+template<typename T>
+T convertFromString(const std::string &s) {
+	T result;
+	std::stringstream stream(s);
+	stream >> result;
+	return result;
 }
 
-void* RunningGear::Execute(std::string command, void *arg) {
-	//todo: think out what we should do if we are performing previous command now
-	if (command == "move") {
-		leftDistanceForMoving = *((float *)arg);
-		std::string *answer = new std::string("ACK");
-		return answer;
+RunningGear::RunningGear(float movingSpeed, float rotationSpeed) : 
+	movingSpeed(movingSpeed), rotationSpeed(rotationSpeed) {
+		supportedCommands.push_back("MOVE");
+		supportedCommands.push_back("ROTATE");
+}
+
+std::string RunningGear::Execute(const std::string &command, const std::string &arg) {
+	//TODO: think out what we should do if we are performing previous command now
+	if (command == "MOVE") {
+		leftDistanceForMoving = convertFromString<float>(arg);
+		return std::string("");  //TODO: use constant
 	}
-	if (command == "rotate") {
-		leftAngleForRotation = *((float *)arg);
-		std::string *answer = new std::string("ACK");
-		return answer;
+	if (command == "ROTATE") {
+		leftAngleForRotation = convertFromString<float>(arg);
+		return std::string("");  //TODO: use constant
 	}
 	throw NotSupportedCommandException(command);
 }
