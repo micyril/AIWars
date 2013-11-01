@@ -37,7 +37,7 @@ private:
 	static VOID CALLBACK HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVOID param, PTP_WORK Work);
 	static HttpResponse* websocketHandshake(HttpRequest *r);
 	static void initPool();
-	static void log(HttpRequest *req, HttpResponse *res, SOCKET s);
+	static void log(HttpRequest *req, HttpResponse *res, SOCKET s, SOCKADDR_IN addr);
 
 	static DWORD id;
 	static list<Client*> clients;

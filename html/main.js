@@ -6,6 +6,7 @@ var GameStatus = {
 	loose: "Поражение"
 };
 var MapSize, Canvas, Context;
+var ds, minsize;
 
 $(function() {
 	socket = new WebSocket("ws://" + location.hostname);
@@ -48,21 +49,27 @@ function game_info(msg) {
 	};
 	
 	var Box = $("#canvas_box");
+	var s = getWindowSize();
+	ds = {
+		width: s.width - Box.width(),
+		height: s.height - Box.height()
+	};
 	
 	var map_r = MapSize.width / MapSize.height;
-	var canv_r = Box.width() / Box.height();	
+	var canv_r = Box.width() / Box.height();
 	if (map_r > canv_r) {
 		Canvas = $("<canvas width='" + Box.width() + "' height='" + Box.width() / map_r + "'></canvas>");
 		$(window).resize(function() {
-			Canvas.width(Box.width());
-			Canvas.height(Box.width() / map_r);
+			var s = getWindowSize().width - ds.width;
+			Canvas.width(s);
+			Canvas.height(s / map_r);
 		});
 	} else {
 		Canvas = $("<canvas width='" + Box.height() * map_r + "' height='" + Box.height() + "'></canvas>");
 		$(window).resize(function() {
-			console.log($(window).height()); // WTF?? почему размер не уменьшается???
-			Canvas.width(Box.height() * map_r);
-			Canvas.height(Box.height());
+			var s = getWindowSize().height - ds.height;
+			Canvas.width(s * map_r);
+			Canvas.height(s);
 		});
 	}
 	
@@ -124,4 +131,20 @@ function MapElement(x, y, width, height, rx, ry, a) {
 		Context.rotate(rot.a);
 		Context.translate(-rot.x, -rot.y);
 	}
+}
+
+function  getWindowSize(){
+       var windowWidth, windowHeight;
+       if (self.innerHeight) { // all except Explorer
+               windowWidth = self.innerWidth;
+               windowHeight = self.innerHeight;
+       } else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
+               windowWidth = document.documentElement.clientWidth;
+               windowHeight = document.documentElement.clientHeight;
+       } else if (document.body) { // other Explorers
+               windowWidth = document.body.clientWidth;
+               windowHeight = document.body.clientHeight;
+       }
+ 
+       return {width: windowWidth, height: windowHeight};
 }

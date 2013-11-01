@@ -9,9 +9,7 @@ using namespace std;
 class Client {
 private:
 	mutex m;
-	list<WebSocketPacket*> queue;
 	SOCKET s;
-	
 
 public:	
 	int id;

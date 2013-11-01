@@ -12,10 +12,6 @@ Client::Client(SOCKET s, int id) {
 
 Client::~Client() {	
 	close();
-	m.lock();
-	for (auto i = queue.begin(); i != queue.end(); i++)
-		delete *i;
-	m.unlock();
 }
 
 void Client::sendData(char *data, unsigned long long len) {
@@ -28,14 +24,7 @@ void Client::sendData(char *data, unsigned long long len) {
 
 int Client::reciveData(char **data) {
 	WebSocketPacket *p;
-	if (queue.empty()) 
-		p = recivePacket();
-	else {
-		m.lock();
-		p = *(queue.begin());
-		queue.pop_front();
-		m.unlock();
-	}
+	p = recivePacket();
 	int len = p->getData(0);
 	*data = new char[len];
 	p->getData((BYTE*)*data);

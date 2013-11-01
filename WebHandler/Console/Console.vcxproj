@@ -88,6 +88,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GameServer\GameServer\GameServer.vcxproj">
+      <Project>{8f069db2-ed4b-47e5-b559-06782306018b}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\WebHandler\WebHandler.vcxproj">
       <Project>{c2708994-c296-4497-aa52-fbcb554edad2}</Project>
       <Private>false</Private>

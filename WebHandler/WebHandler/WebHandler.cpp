@@ -105,10 +105,10 @@ DWORD WINAPI WebHandler::Listener(void* param) {
 	}
 
 	while (1) {
-		SOCKADDR_IN caddr;
-		int l = sizeof(caddr);
-		SOCKET client = accept(s, (sockaddr*)&caddr, &l);
-		PTP_WORK work = CreateThreadpoolWork(&HttpRequestHandler, (void*)client, &pool_env);
+		auto p  = new pair<SOCKET, SOCKADDR_IN>();
+		int l = sizeof(p->second);
+		p->first = accept(s, (sockaddr*)&p->second, &l);		
+		PTP_WORK work = CreateThreadpoolWork(&HttpRequestHandler, (void*)p, &pool_env);
 		if (0 == work) {
 			cerr << "can't create threadpool work" << endl;
 			continue;
@@ -120,7 +120,10 @@ DWORD WINAPI WebHandler::Listener(void* param) {
 }
 
 VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVOID param, PTP_WORK Work) {
-	SOCKET s = (SOCKET)param;
+	auto p = (pair<SOCKET, SOCKADDR_IN>*)param;
+	SOCKET s = p->first;
+	SOCKADDR_IN addr = p->second;
+	delete p;
 	timeval tv;
 	tv.tv_sec = RECV_TIMEOUT_SEC;
 	tv.tv_usec = 0;
@@ -157,6 +160,8 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 #endif
 	} catch (HttpException &e) {
 		res = new HttpResponse(e.what());
+	} catch (SocketIOException &e) {
+		// насрать
 	} catch (exception &e) {
 		cerr << e.what() << endl;
 		res = new HttpResponse("500 Internal Server Error");
@@ -167,7 +172,7 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 	
 	if (res)
 		res->respond(s);
-	log(req, res, s);
+	log(req, res, s, addr);
 
 	if (req)
 		delete req;
@@ -206,7 +211,7 @@ HttpResponse* WebHandler::websocketHandshake(HttpRequest *r) {
 	return res;
 }
 
-void WebHandler::log(HttpRequest *req, HttpResponse *res, SOCKET s) {
+void WebHandler::log(HttpRequest *req, HttpResponse *res, SOCKET s, SOCKADDR_IN addr) {
 	if (!LOGFILE.empty()) {		
 		string log;
 
@@ -216,9 +221,6 @@ void WebHandler::log(HttpRequest *req, HttpResponse *res, SOCKET s) {
 			log.erase(log.length() - 1);
 		log.append(" ");
 
-		SOCKADDR_IN addr;
-		int len = sizeof(addr);
-		getsockname(s, (sockaddr*)&addr, &len);
 		log.append(inet_ntoa(addr.sin_addr));
 		log.append(" ");
 		if (req) {
