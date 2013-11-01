@@ -28,7 +28,7 @@ namespace Tests
 			robotComponents.push_back(runningGear);
 			Robot *robot = new Robot(robotFrame, robotComponents);
 
-			robot->Execute("MOVE", "50.5");
+			robot->Execute("MOV", "50.5");
 			robot->Update(0.5F);
 			robot->Update(0.5F);
 			float actualDistance = calculateDistance(x0, y0, robot->frame->x, robot->frame->y);
@@ -48,7 +48,7 @@ namespace Tests
 			robotComponents.push_back(runningGear);
 			Robot *robot = new Robot(robotFrame, robotComponents);
 
-			robot->Execute("ROTATE", "2.0");
+			robot->Execute("ROT", "2.0");
 			robot->Update(1.0F);
 			robot->Update(1.0F);
 			float actualDeltaRotation = robot->frame->rotation - rotation0;

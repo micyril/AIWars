@@ -16,17 +16,17 @@ T convertFromString(const std::string &s) {
 
 RunningGear::RunningGear(float movingSpeed, float rotationSpeed) : 
 	movingSpeed(movingSpeed), rotationSpeed(rotationSpeed) {
-		supportedCommands.push_back("MOVE");
-		supportedCommands.push_back("ROTATE");
+		supportedCommands.push_back("MOV");
+		supportedCommands.push_back("ROT");
 }
 
 std::string RunningGear::Execute(const std::string &command, const std::string &arg) {
 	//TODO: think out what we should do if we are performing previous command now
-	if (command == "MOVE") {
+	if (command == "MOV") {
 		leftDistanceForMoving = convertFromString<float>(arg);
 		return std::string("");  //TODO: use constant
 	}
-	if (command == "ROTATE") {
+	if (command == "ROT") {
 		leftAngleForRotation = convertFromString<float>(arg);
 		return std::string("");  //TODO: use constant
 	}
