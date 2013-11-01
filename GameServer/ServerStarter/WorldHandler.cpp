@@ -42,7 +42,7 @@ DWORD WINAPI clientThread(LPVOID lpParam){
 	std::string command("");
 	std::string arg;
 	send(info->c->commandSocket, "ACK", 3, 0);
-    do {
+     while (1) {
 		iResult = recv(info->c->commandSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
 			if (strcmp(recvbuf, "EOG") == 0){
@@ -67,27 +67,23 @@ DWORD WINAPI clientThread(LPVOID lpParam){
 				throw SocketConnectionException(); 
             }
             printf("Bytes sent: %d\n", iSendResult);
-        }
-		else {
-				continue;
-			}
-
-    } while (1);
+        }	
+    }
 }
 DWORD WINAPI worldThread( LPVOID lpParam ){
 	worldInfo* info = (worldInfo*)lpParam;
 	int sleepPeriod = 20;
 	info->c1info->c->sendSelfInfo();
-	Sleep(2000);
+
 	info->c1info->c->sendEnemyInfo(info->c2info->c->id);
-	Sleep(1000);
+
 	info->c1info->c->sendGameInfo(info->world);
 	info->c1info->c->notifyStart();
 
 	info->c2info->c->sendSelfInfo();
-	Sleep(2000);
+
 	info->c2info->c->sendEnemyInfo(info->c1info->c->id);
-	Sleep(1000);
+
 	info->c2info->c->sendGameInfo(info->world);
 	info->c2info->c->notifyStart();
 	CreateThread(NULL, NULL, clientThread, info->c1info, NULL, NULL);
