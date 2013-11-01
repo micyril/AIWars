@@ -1,4 +1,5 @@
 #include "WorldHandler.h"
+#include <iostream>
 #define MAX_CONNECTIONS (100)
 
 WorldHandler::WorldHandler(void)
@@ -11,8 +12,8 @@ WorldHandler::WorldHandler(void)
 
 	worldId = 0;
 }
-Robot* WorldHandler::makeRobot(){
-	RobotFrame *robotFrame = new RobotFrame(50, 50, 200, 200);
+Robot* WorldHandler::makeRobot(int width, int hieght, float x, float y){
+	RobotFrame *robotFrame = new RobotFrame(width, hieght, x, y);
 	float movingSpeed = 40;
 	float rotationSpeed = 0.005;
 	RobotComponent *runningGear = new RunningGear(movingSpeed, rotationSpeed);
@@ -28,8 +29,7 @@ void parceCommand(char* input, int size, std::string &command, std::string &arg)
 	std::string argsstr("");
 	std::getline(ss, index, ' ');//skip index
 	std::getline(ss, command, ' ');
-	std::getline(ss, argsstr, ' ');
-	arg = argsstr.data();
+	std::getline(ss, arg, ' ');
 }
 DWORD WINAPI clientThread(LPVOID lpParam){
 
@@ -45,22 +45,34 @@ DWORD WINAPI clientThread(LPVOID lpParam){
     do {
 		iResult = recv(info->c->commandSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
+			if (strcmp(recvbuf, "EOG") == 0){
+				std::stringstream ss;
+				std::string answer = info->r->Execute(command, arg); 
+				answer = "EOG";//ToDo just for test, get rip of that
+				iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
+				std::cerr <<  "End...\n";
+				break;
+			}
 			parceCommand(recvbuf, iResult, command, arg);
-			info->r->Execute(command, arg);  //TODO: catch exceptions
-            iSendResult = send( info->c->commandSocket, "ACK", 3, 0 );//ToDo replace for retur of sendCommandToRobot
+			
+			try{
+				std::string answer = info->r->Execute(command, arg); 
+				answer = "ACK";//ToDo just for test, get rip of that
+				iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
+			}
+			catch(...){
+				std::cerr << "FAIL" << std::endl;
+			}
             if (iSendResult == SOCKET_ERROR) {
-				throw NotImplementedException();  //TODO: it's not good to use this type of exception here
+				throw SocketConnectionException(); 
             }
             printf("Bytes sent: %d\n", iSendResult);
         }
-        else if (iResult == 0)
-			fprintf(stderr, "Connection closing...\n");
-        else  {
-         
-			continue;
-        }
+		else {
+				continue;
+			}
 
-    } while (iResult > 0);
+    } while (1);
 }
 DWORD WINAPI worldThread( LPVOID lpParam ){
 	worldInfo* info = (worldInfo*)lpParam;
@@ -95,8 +107,8 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 
 void WorldHandler::startGame(Client* cl1, Client* cl2){
 	
-	Robot* r1 = makeRobot();
-	Robot* r2 = makeRobot();
+	Robot* r1 = makeRobot(40,40, 100.0f, 100.0f);
+	Robot* r2 = makeRobot(40,40, 200.0f, 200.0f);
 
 	std::list<WorldObject*> worldObjects;
 	worldObjects.push_back(r1);
@@ -130,5 +142,4 @@ WorldHandler::~WorldHandler(void)
 {
 	for(std::map<int, World*>::iterator it = worlds.begin();it!= worlds.end();it++ )
 		delete it->second;
-	//TODO delete wordls
 }

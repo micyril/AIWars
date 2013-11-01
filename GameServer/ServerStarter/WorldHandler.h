@@ -27,7 +27,7 @@ class WorldHandler
 	std::map<int, World*> worlds;
 	int worldId;
 
-	Robot* makeRobot();
+	Robot* makeRobot(int width, int hieght, float x, float y);
 public:
 	WorldHandler(void);
 	void startGame(Client* cl1, Client* cl2 );

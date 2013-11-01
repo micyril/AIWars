@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-class NotSupportedCommandException : public std::exception {
+class NotSupportedCommandException : public std::exception { // ToDo why 2 files with exeptions
 private:
 	std::string command;
 
