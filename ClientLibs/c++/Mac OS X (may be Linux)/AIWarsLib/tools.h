@@ -45,8 +45,8 @@ namespace Tools {
     class StringSplitter{
         public:
         StringSplitter(){}
-        static std::vector<std::string> split(std::string text,std::string splitter);
-        static std::vector<std::string> split(std::string text,std::string splitter,int count);
+        static std::vector<std::string> split(std::string text,char splitter);
+        static std::vector<std::string> split(std::string text,char splitter,int count);
     };
 
 }

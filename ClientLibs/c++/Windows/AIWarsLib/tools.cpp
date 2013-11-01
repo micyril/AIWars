@@ -2,38 +2,27 @@
 
 
 
-std::vector<std::string> Tools::StringSplitter::split(std::string text,std::string splitter){
-    std::vector<std::string> out;
-    const char* splt = splitter.c_str();
-    char* txt = (char*)text.c_str();
-    char* pnt;
-    pnt = strtok(txt,splt);
-    while(pnt){
-        out.push_back(pnt);
-        pnt = strtok(NULL,splt);
-    }
-    return out;
+std::vector<std::string> Tools::StringSplitter::split(std::string text,char splitter){
+        std::vector<std::string> elems;
+        std::stringstream sstream(text);
+        std::string token;
+        while (std::getline(sstream, token, splitter)) {
+            elems.push_back(token);
+        }
+        return elems;
 }
 
-std::vector<std::string> Tools::StringSplitter::split(std::string text,std::string splitter,int count){
-    std::vector<std::string> out;
-
-    const char* splt = splitter.c_str();
-    int splt_ln = splitter.length();
-    char* txt = (char*)text.c_str();
-    char* pnt;
-
+std::vector<std::string> Tools::StringSplitter::split(std::string text,char splitter,int count){
+    std::vector<std::string> elems;
+    std::stringstream sstream(text);
+    std::string token;
     int i = 0;
-    do{
-        if(i==count){
-            out.push_back(text);
-            break;
-        }
-        pnt = strtok(txt,splt);
-        if(!pnt) break;
-        out.push_back(pnt);
-        text.erase(0,strlen(pnt) + splt_ln);
+    while ((i < count) && std::getline(sstream, token, splitter) ) {
+        elems.push_back(token);
+        //text.erase(text.find(token),token.length()+1);
         i++;
-    } while(pnt);
-    return out;
+    }
+    std::getline(sstream, token);
+    elems.push_back(token);
+    return elems;
 }

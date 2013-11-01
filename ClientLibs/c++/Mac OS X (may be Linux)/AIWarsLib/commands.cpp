@@ -111,7 +111,7 @@ std::pair< int , std::vector<WorldObject> > ScanCommand::parse_response(std::str
         return out;
     }
 
-    std::vector<std::string> args = Tools::StringSplitter::split(msg.args_line," ");
+    std::vector<std::string> args = Tools::StringSplitter::split(msg.args_line,' ');
     std::vector<WorldObject> parsed_args;
     for(int i = 2; i < args.size(); i+=3){
        parsed_args.push_back(WorldObject(args[i-2],Tools::FromStrConverter<float>::convert(args[i-1]),Tools::FromStrConverter<float>::convert(args[i])));

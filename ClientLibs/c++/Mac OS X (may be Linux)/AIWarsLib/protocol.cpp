@@ -14,7 +14,7 @@ Message::~Message(){
 
 Message Protocol::get_msg_by_line(std::string line){
     line.erase(line.find(Message::end_line,Message::end_line.length()));
-    std::vector< std::string > tmp = Tools::StringSplitter::split(line," ",2);
+    std::vector< std::string > tmp = Tools::StringSplitter::split(line,' ',2);
     Message result;
     switch (tmp.size()) {
     case 3:
