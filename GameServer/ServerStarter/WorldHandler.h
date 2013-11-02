@@ -1,12 +1,13 @@
 #pragma once
 #include <Windows.h>
+#include <sstream>
 #include "..\..\WebHandler\WebHandler\WebHandler.h"
 #include "..\GameServer\world\mapelement.h"
 #include "..\GameServer\world\world.h"
 #include "..\GameServer\world\robot\components\runninggear.h"
 #include "..\GameServer\world\robot\robot.h"
 #include "..\..\WebHandler\WebHandler\WebHandler.h"
-#include "..\GameServer\ClientHandler\ClientHandler.h"
+#include "..\GameServer\exceptions.h"
 #include <map>
 struct clientInfo{
 	Client* c;

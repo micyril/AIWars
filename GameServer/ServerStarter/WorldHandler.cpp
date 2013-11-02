@@ -14,8 +14,8 @@ WorldHandler::WorldHandler(void)
 }
 Robot* WorldHandler::makeRobot(int width, int hieght, float x, float y){
 	RobotFrame *robotFrame = new RobotFrame(width, hieght, x, y);
-	float movingSpeed = 40;
-	float rotationSpeed = 0.005;
+	float movingSpeed = 10.0f;
+	float rotationSpeed = 1.0f;
 	RobotComponent *runningGear = new RunningGear(movingSpeed, rotationSpeed);
 	std::list<RobotComponent*> robotComponents;
 	robotComponents.push_back(runningGear);
@@ -31,6 +31,7 @@ void parceCommand(char* input, int size, std::string &command, std::string &arg)
 	std::getline(ss, command, ' ');
 	std::getline(ss, arg, ' ');
 }
+#include "../GameServer/world/robot/exceptions.h" //TODO
 DWORD WINAPI clientThread(LPVOID lpParam){
 
 	clientInfo* info = (clientInfo*)lpParam;
@@ -41,14 +42,16 @@ DWORD WINAPI clientThread(LPVOID lpParam){
     int recvbuflen = 1024;
 	std::string command("");
 	std::string arg;
-	send(info->c->commandSocket, "ACK", 3, 0);
+	std::string ack = "ACK\r\n";
+	std::string eog = "EOG\r\n";
+	send(info->c->commandSocket, ack.data(), ack.length(), 0);
      while (1) {
 		iResult = recv(info->c->commandSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
 			if (strcmp(recvbuf, "EOG") == 0){
 				std::stringstream ss;
 				std::string answer = info->r->Execute(command, arg); 
-				answer = "EOG";//ToDo just for test, get rip of that
+				answer = eog;//ToDo just for test, get rip of that
 				iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
 				std::cerr <<  "End...\n";
 				break;
@@ -57,8 +60,12 @@ DWORD WINAPI clientThread(LPVOID lpParam){
 			
 			try{
 				std::string answer = info->r->Execute(command, arg); 
-				answer = "ACK";//ToDo just for test, get rip of that
+				answer = ack;//ToDo just for test, get rip of that
 				iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
+			}
+			catch(NotSupportedCommandException &ex){
+				cerr << ex.command << endl;
+
 			}
 			catch(...){
 				std::cerr << "FAIL" << std::endl;
@@ -66,25 +73,23 @@ DWORD WINAPI clientThread(LPVOID lpParam){
             if (iSendResult == SOCKET_ERROR) {
 				throw SocketConnectionException(); 
             }
-            printf("Bytes sent: %d\n", iSendResult);
+            cerr << "Bytes sent: " << iSendResult << endl;;
         }	
     }
 }
 DWORD WINAPI worldThread( LPVOID lpParam ){
 	worldInfo* info = (worldInfo*)lpParam;
 	int sleepPeriod = 20;
+
 	info->c1info->c->sendSelfInfo();
-
 	info->c1info->c->sendEnemyInfo(info->c2info->c->id);
-
 	info->c1info->c->sendGameInfo(info->world);
-	info->c1info->c->notifyStart();
-
 	info->c2info->c->sendSelfInfo();
-
 	info->c2info->c->sendEnemyInfo(info->c1info->c->id);
-
 	info->c2info->c->sendGameInfo(info->world);
+
+
+	info->c1info->c->notifyStart();
 	info->c2info->c->notifyStart();
 	CreateThread(NULL, NULL, clientThread, info->c1info, NULL, NULL);
 	CreateThread(NULL, NULL, clientThread, info->c2info, NULL, NULL);
