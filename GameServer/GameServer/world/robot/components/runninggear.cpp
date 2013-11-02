@@ -5,17 +5,8 @@
 #include "../exceptions.h"
 #include "../robot.h"
 
-//TODO: do not use that
-template<typename T>
-T convertFromString(const std::string &s) {
-	T result;
-	std::stringstream stream(s);
-	stream >> result;
-	return result;
-}
-
 RunningGear::RunningGear(float movingSpeed, float rotationSpeed) : 
-	movingSpeed(movingSpeed), rotationSpeed(rotationSpeed) {
+	movingSpeed(movingSpeed), rotationSpeed(rotationSpeed), leftDistanceForMoving(0), leftAngleForRotation(0) {
 		supportedCommands.push_back("MOV");
 		supportedCommands.push_back("ROT");
 }
@@ -23,11 +14,11 @@ RunningGear::RunningGear(float movingSpeed, float rotationSpeed) :
 std::string RunningGear::Execute(const std::string &command, const std::string &arg) {
 	//TODO: think out what we should do if we are performing previous command now
 	if (command == "MOV") {
-		leftDistanceForMoving = convertFromString<float>(arg);
+		leftDistanceForMoving = (float)atof(arg.c_str());
 		return std::string("");  //TODO: use constant
 	}
 	if (command == "ROT") {
-		leftAngleForRotation = convertFromString<float>(arg);
+		leftAngleForRotation = (float)atof(arg.c_str());
 		return std::string("");  //TODO: use constant
 	}
 	throw NotSupportedCommandException(command);
