@@ -37,7 +37,7 @@ void RunningGear::updateMoving(float delta) {
 		//todo: cooperate coordinates axes choosing between us (server) and java script client
 
 		float deltaX = currentDistanceForMoving * cos(robot->frame->rotation);
-		float deltaY = currentDistanceForMoving * sin(robot->frame->rotation);
+		float deltaY = currentDistanceForMoving * sin(-robot->frame->rotation);
 		robot->frame->x += deltaX;
 		robot->frame->y += deltaY;
 		robot->frame->rotationCenterX += deltaX;

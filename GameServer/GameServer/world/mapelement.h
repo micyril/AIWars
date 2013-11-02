@@ -25,7 +25,7 @@ class MapElement : public Rectangle {
 public:
 	int layer;
 
-	MapElement(int width, int height, float x, float y, int rotation = 0, int layer = 0);
+	MapElement(int width, int height, float x, float y, float rotation = 0, int layer = 0);
 	virtual ~MapElement() {}
 	virtual std::string GetType() = 0;
 

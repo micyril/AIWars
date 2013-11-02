@@ -64,7 +64,7 @@ DWORD WINAPI clientThread(LPVOID lpParam){
 				iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
 			}
 			catch(NotSupportedCommandException &ex){
-				cerr << ex.command << endl;
+				cerr << ex.what() << endl;
 
 			}
 			catch(...){

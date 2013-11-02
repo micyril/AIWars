@@ -27,7 +27,7 @@ std::string Rectangle::Serialize() {
 	return stream.str();
 }
 
-MapElement::MapElement(int width, int height, float x, float y, int rotation, int layer) : 
+MapElement::MapElement(int width, int height, float x, float y, float rotation, int layer) : 
 		Rectangle(width, height, x, y, rotation), layer(layer) {}
 
 std::string MapElement::serializeWithoutBrackets() {
