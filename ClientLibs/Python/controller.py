@@ -13,13 +13,13 @@ class Controller:
     def state_process(self,state):
         if(state == -1):
             print "End of Game!"
-            self.comm.down_connection()
-            return False
+            self.end_game()
+            return -1
         if(state == 1):
-                return True
+                return 1
         if(state == 0):
-                return False
-        return False
+                return 0
+        return 0
 
     def ready(self):
         if(self.comm.up_connection()):
