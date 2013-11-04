@@ -29,14 +29,28 @@ ScanCommand::ScanCommand() : Command(){
 //--------------------------------
 
 
+//--------------base commandAnswer----------------
+CommandAnswer::CommandAnswer(int state){
+    this->state = state;
+}
+//------------------------------------------------
 
-//---------------WorldObject-------------------------
+//---------------WorldObject----------------------
 WorldObject::WorldObject(std::string type, float distance, float angle){
     this->type = type;
     this->distance = distance;
     this->angle = angle;
 }
 WorldObject::~WorldObject(){
+}
+//------------------------------------------------
+
+//--------------Scan Command Answer---------------
+ScanCommandAnswer::ScanCommandAnswer(std::vector<WorldObject> scWorldObjects, int state) : CommandAnswer(state){
+    this->scannedWorldObjects = scWorldObjects;
+}
+
+ScanCommandAnswer::ScanCommandAnswer(){
 }
 
 //------------------------------------------------
@@ -48,15 +62,18 @@ Command::Command(){}
 
 int Command::parse_response(std::string response){
 
+    if(response.length() == 0){
+        return 0;
+    }
+
     Message msg = Protocol::get_msg_by_line(response);
 
-    // ACK = 0 , NAK = 1 , EOG = -1 , default = NAK = 1
-
-    if      (msg.head == this->ACK) return 0;
-    else if (msg.head == this->NAK) return 1;
+    // ACK = 1 , NAK = 0 , EOG = -1 , default = NAK = 0
+    if      (msg.head == this->ACK) return 1;
+    else if (msg.head == this->NAK) return 0;
     else if (msg.head == this->EOG) return -1;
 
-    return 1;
+    return 0;
 }
 
 std::string Command::produce_request(std::string response){
@@ -90,24 +107,27 @@ std::string ScanCommand::produce_request(int ID){
     return Command::produce_request(Protocol::get_line_by_fields(Tools::ToStrConverter<int>::convert(ID),this->NAME,""));
 }
 
-std::pair< int , std::vector<WorldObject> > ScanCommand::parse_response(std::string response){
-    std::pair< int , std::vector<WorldObject> > out;
+ScanCommandAnswer ScanCommand::parse_response(std::string response){
+    ScanCommandAnswer out;
+    if(response.length() == 0){
+       out.state = 0;
+       return out;
+    }
 
     Message msg  = Protocol::get_msg_by_line(response);
 
-    if      (msg.head == this->ACK) out.first =  0;
+    if      (msg.head == this->ACK) out.state =  1;
     else if (msg.head == this->NAK){
-
-        out.first =  1;
+        out.state =  0;
         return out;
     }
     else if (msg.head == this->EOG){
-        out.first =  -1;
+        out.state =  -1;
         return out;
     }
 
     if(msg.raw_command != "RET"){
-        out.first = -1;
+        out.state = 0;
         return out;
     }
 
@@ -117,7 +137,7 @@ std::pair< int , std::vector<WorldObject> > ScanCommand::parse_response(std::str
        parsed_args.push_back(WorldObject(args[i-2],Tools::FromStrConverter<float>::convert(args[i-1]),Tools::FromStrConverter<float>::convert(args[i])));
     }
 
-    out.second = parsed_args;
+    out.scannedWorldObjects = parsed_args;
 
     return out;
 }
