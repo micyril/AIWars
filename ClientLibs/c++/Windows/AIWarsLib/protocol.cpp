@@ -13,7 +13,9 @@ Message::~Message(){
 }
 
 Message Protocol::get_msg_by_line(std::string line){
-    line.erase(line.find(Message::end_line,Message::end_line.length()));
+    size_t index = line.find(Message::end_line,Message::end_line.length());
+    if(index != std::string::npos)
+        line.erase(index);
     std::vector< std::string > tmp = Tools::StringSplitter::split(line,' ',2);
     Message result;
     switch (tmp.size()) {
@@ -38,4 +40,8 @@ std::string Protocol::get_line_by_msg(Message &msg){
 
 std::string Protocol::get_line_by_fields(std::string head, std::string raw_command, std::string args_line){
     return head+" "+raw_command+" "+args_line+" "+Message::end_line;
+}
+
+std::string Protocol::get_simple_msg_line(std::string str_msg){
+    return str_msg+Message::end_line;
 }

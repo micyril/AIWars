@@ -63,7 +63,7 @@ Command::Command(){}
 int Command::parse_response(std::string response){
 
     if(response.length() == 0){
-        return 0;
+        return -1;
     }
 
     Message msg = Protocol::get_msg_by_line(response);
@@ -110,7 +110,7 @@ std::string ScanCommand::produce_request(int ID){
 ScanCommandAnswer ScanCommand::parse_response(std::string response){
     ScanCommandAnswer out;
     if(response.length() == 0){
-       out.state = 0;
+       out.state = -1;
        return out;
     }
 

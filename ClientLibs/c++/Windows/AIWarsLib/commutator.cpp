@@ -19,11 +19,16 @@ void Commutator::send_all(std::string msg){
 
 std::string Commutator::recv_all(){
     size_t i = 0;
-    std::string tmp;
+    std::string tmp = "";
 	memset(this->buffer,'\0',this->buffer_size);
-    recv(this->sock,this->buffer,this->buffer_size,0);
-    tmp+=this->buffer;
-    return tmp;
+	if(recv(this->sock,this->buffer,this->buffer_size,0) > -1){
+		tmp+=this->buffer;
+		return tmp;
+	}
+	else{
+		return "";
+	}
+    
 }
 
 bool Commutator::up_connection(){

@@ -6,8 +6,15 @@
 
 
 namespace Commands {
+    //------base CommandAnswer--------
+    class CommandAnswer{
+    public:
+        int state;
+        CommandAnswer(int state = 1);
+    };
+    //--------------------------------
 
-    //----- WorldObject class ----------
+    //----- WorldObject class --------
     class WorldObject{
     public:
         WorldObject(std::string type = "",float distance = 0.0f,float angle = 0.0f);
@@ -16,7 +23,16 @@ namespace Commands {
         float distance;
         float angle;
     };
-    //-------------------------------
+    //--------------------------------
+
+    //---------Scan Answer------------
+    class ScanCommandAnswer : public CommandAnswer{
+    public:
+        std::vector<WorldObject> scannedWorldObjects;
+        ScanCommandAnswer();
+        ScanCommandAnswer(std::vector<WorldObject> scWorldObjects,int state);
+    };
+    //--------------------------------
 
     //----------base cmd class--------
     class Command{
@@ -66,7 +82,7 @@ namespace Commands {
     public:
         ScanCommand();
         std::string produce_request(int ID);
-        std::pair< int , std::vector<WorldObject> > parse_response(std::string response);
+        ScanCommandAnswer parse_response(std::string response);
 
     };
     //-------------------------------
