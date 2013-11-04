@@ -12,15 +12,12 @@ int Controller::state_process(int state){
             std::cout << "End of Game !" << std::endl;
             this->comm.down_connection();
             //exit(0);
-            break;
         case 1:
-            return true;
         case 0:
-            return false;
-        default:
-            return false;
+            return state;
+
     }
-    return false;
+    return 0;
 }
 
 bool Controller::ready(){
