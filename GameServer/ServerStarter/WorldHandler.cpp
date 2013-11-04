@@ -1,5 +1,6 @@
 #include "WorldHandler.h"
 #include <iostream>
+#include "time.h"
 #define MAX_CONNECTIONS (100)
 
 WorldHandler::WorldHandler(void)
@@ -93,11 +94,16 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 	info->c2info->c->notifyStart();
 	CreateThread(NULL, NULL, clientThread, info->c1info, NULL, NULL);
 	CreateThread(NULL, NULL, clientThread, info->c2info, NULL, NULL);
+	Sleep(sleepPeriod);
+	clock_t start, end;
 	while(true) {
-		Sleep(sleepPeriod);
-		info->world->Update(sleepPeriod / 1000.0);
+		start = clock();
+		Sleep(sleepPeriod);//dont work without
+		info->world->Update(sleepPeriod / 1000.0f);
 		info->c1info->c->notifyUpdate(info->world->getElements());
 		info->c2info->c->notifyUpdate(info->world->getElements());
+		end = clock();
+		sleepPeriod = end - start;
 	}
 	
 	//info.cl1->notifyFinish();
