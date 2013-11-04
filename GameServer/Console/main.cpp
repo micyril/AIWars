@@ -24,11 +24,8 @@ void OnConnect(Client *c) {
 	World world = World(500, 500, worldObjects);
 
 	c->sendSelfInfo();
-	Sleep(500);
 	c->sendEnemyInfo(20);
-	Sleep(500);
 	c->sendGameInfo(&world);
-	Sleep(500);
 	c->notifyStart();	
 
 	r1->Execute("MOV", "120.0");
