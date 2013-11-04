@@ -81,5 +81,8 @@
     <ClCompile Include="world\robot\components\runninggear.cpp">
       <Filter>world\robot\components</Filter>
     </ClCompile>
+    <ClCompile Include="world\collisions\collisionchecker.cpp">
+      <Filter>world\collisions</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

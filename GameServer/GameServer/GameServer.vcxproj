@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="world\collisions\collisionchecker.cpp" />
     <ClCompile Include="world\collisions\collisionresolvermaster.cpp" />
     <ClCompile Include="world\collisions\resolvers\robotframescollisionresolver.cpp" />
     <ClCompile Include="world\mapelement.cpp" />
