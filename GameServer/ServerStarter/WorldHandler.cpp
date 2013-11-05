@@ -98,7 +98,7 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 	clock_t start, end;
 	while(true) {
 		start = clock();
-		Sleep(sleepPeriod);//dont work without
+		Sleep(20);//dont work without
 		info->world->Update(sleepPeriod / 1000.0f);
 		info->c1info->c->notifyUpdate(info->world->getElements());
 		info->c2info->c->notifyUpdate(info->world->getElements());
