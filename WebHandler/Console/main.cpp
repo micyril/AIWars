@@ -10,7 +10,8 @@ void OnConnect(Client *c) {
 	Sleep(500);
 	c->sendGameInfo(w);
 	Sleep(500);
-	c->notifyStart();	
+	c->notifyStart();
+	c->notifyUpdate(w->getElements());
 }
 
 Robot* makeRobot(int width, int hieght, float x, float y) {
