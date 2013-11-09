@@ -84,7 +84,7 @@ bool Commutator::hand_shake(std::string hand_shake_msg){
 bool Commutator::down_connection(std::string last){
     if(!this->connected) return false;
     if(this->sock < 0) return false;
-    this->exchange(last);
+    this->send_all(last);
     this->connected = false;
 	closesocket(this->sock);
     return true;
