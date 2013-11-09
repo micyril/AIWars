@@ -72,9 +72,14 @@ void Application::listenOnPort(int port){
 		std::cerr << "Client " << idClient << " waiting for partner..." << endl;
 		if(clientsToRun.size() >= 2){
 			std::set<int>::iterator it = isClientConnect.find(clientsToRun[idClient]);
+			
 			if(it != isClientConnect.end()){
 				cerr << "start game " << idClient << " VS " << clientsToRun[idClient] << endl;
 				wh.startGame(clients[idClient], clients[clientsToRun[idClient]]);
+				std::set<int>::iterator it1 = isClientConnect.find(idClient);
+				isClientConnect.erase(it1);
+				isClientConnect.erase(it);
+
 			}
 		}
 

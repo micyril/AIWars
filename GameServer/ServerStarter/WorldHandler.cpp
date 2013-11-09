@@ -43,7 +43,7 @@ DWORD WINAPI clientThread(LPVOID lpParam){
     int recvbuflen = 1024;
 	std::string command("");
 	std::string arg;
-	std::string ack = "ACK\r\n";
+	std::string ack = "ACK\r\n";//ToDo move it to constants
 	std::string eog = "EOG\r\n";
 	send(info->c->commandSocket, ack.data(), ack.length(), 0);
      while (1) {
@@ -54,7 +54,6 @@ DWORD WINAPI clientThread(LPVOID lpParam){
 				std::string answer = info->r->Execute(command, arg); 
 				answer = eog;//ToDo just for test, get rip of that
 				iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
-				std::cerr <<  "End...\n";
 				break;
 			}
 			parceCommand(recvbuf, iResult, command, arg);
@@ -74,10 +73,15 @@ DWORD WINAPI clientThread(LPVOID lpParam){
             if (iSendResult == SOCKET_ERROR) {
 				throw SocketConnectionException(); 
             }
-            cerr << "Bytes sent: " << iSendResult << endl;;
-        }	
+        }
+		else{
+			std::string answer = eog;//ToDo just for test, get rip of that
+			iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
+			closesocket(info->c->commandSocket); 
+		}
     }
 }
+#include "../GameServer/world/collisions/collisionchecker.h"
 DWORD WINAPI worldThread( LPVOID lpParam ){
 	worldInfo* info = (worldInfo*)lpParam;
 	int sleepPeriod = 20;
@@ -102,6 +106,9 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 		info->world->Update(sleepPeriod / 1000.0f);
 		info->c1info->c->notifyUpdate(info->world->getElements());
 		info->c2info->c->notifyUpdate(info->world->getElements());
+		//system("cls");
+		if(CollisionChecker::Check(info->c1info->r->frame, info->c2info->r->frame))
+			cerr << "collision" << endl;
 		end = clock();
 		sleepPeriod = end - start;
 	}
