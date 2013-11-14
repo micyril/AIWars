@@ -1,3 +1,5 @@
+var BORDER_WIDTH = 10;
+
 // globals
 var GameStatus = {
 	waiting: "Ожидание",
@@ -6,7 +8,8 @@ var GameStatus = {
 	loose: "Поражение"
 };
 var MapSize, Canvas, Context;
-var ds, minsize;
+var Padding;
+
 
 $(function() {
 	socket = new WebSocket("ws://" + location.hostname);
@@ -31,49 +34,44 @@ $(function() {
 })
 
 function self_info(msg) {
-	$("#id_self").text(msg.id);
-	$("#status").text(GameStatus.waiting);
+	setPlane("id_self", msg.id, "Ваш ID");
+	setPlane("status", GameStatus.waiting, "Статус");
 }
 
 function enemy_info(msg) {
-	$("#id_enemy").text(msg.id);
-	$("#text_enemy").removeClass("hidden");
-	$("#status").text(GameStatus.waiting);
+	setPlane("id_enemy", msg.id, "ID соперника");
+	$("#status").remove();
+	setPlane("status", GameStatus.waiting, "Статус");
 }
 
 function game_info(msg) {
 	MapSize = {
 		width: msg.world.width,
 		height: msg.world.height,
-		//ratio: msg.world.width / msg.world.height
-	};
-	
+		ratio: msg.world.width / msg.world.height
+	};	
 	var Box = $("#canvas_box");
-	var s = getWindowSize();
-	ds = {
-		width: s.width - Box.width(),
-		height: s.height - Box.height()
+	Padding = {
+		width: innerWidth - Box.width(),
+		height: innerHeight - Box.height()
 	};
-	
-	var map_r = MapSize.width / MapSize.height;
+
+	var map_r = MapSize.ratio;
 	var canv_r = Box.width() / Box.height();
+	var w, h;
 	if (map_r > canv_r) {
-		Canvas = $("<canvas width='" + Box.width() + "' height='" + Box.width() / map_r + "'></canvas>");
-		$(window).resize(function() {
-			var s = getWindowSize().width - ds.width;
-			Canvas.width(s);
-			Canvas.height(s / map_r);
-		});
+		w = (Box.width() - BORDER_WIDTH*2);
+		h = (Box.width() / map_r - BORDER_WIDTH*2);
 	} else {
-		Canvas = $("<canvas width='" + Box.height() * map_r + "' height='" + Box.height() + "'></canvas>");
-		$(window).resize(function() {
-			var s = getWindowSize().height - ds.height;
-			Canvas.width(s * map_r);
-			Canvas.height(s);
-		});
+		w = (Box.height() * map_r - BORDER_WIDTH*2);
+		h = (Box.height() - BORDER_WIDTH*2);
 	}
-	
-	Canvas.appendTo(Box);	
+	Canvas = $("<canvas width='" + w + "' height='" + h + "'></canvas>");
+	Box.empty();
+	Box.append(Canvas);
+
+	$(window).resize(resizeCanvas);
+
 	Context = Canvas.get(0).getContext("2d");
 	Context.fillRect(0, 0, Canvas.width(), Canvas.height());
 	Context.clear = function() {
@@ -87,7 +85,7 @@ function action(msg) {
 }
 
 function action_start(msg) {
-	$("#status").text(GameStatus.ingame);
+	setPlane("status", GameStatus.ingame);
 }
 
 function action_finish(msg) {
@@ -133,18 +131,38 @@ function MapElement(x, y, width, height, rx, ry, a) {
 	}
 }
 
-function  getWindowSize(){
-       var windowWidth, windowHeight;
-       if (self.innerHeight) { // all except Explorer
-               windowWidth = self.innerWidth;
-               windowHeight = self.innerHeight;
-       } else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
-               windowWidth = document.documentElement.clientWidth;
-               windowHeight = document.documentElement.clientHeight;
-       } else if (document.body) { // other Explorers
-               windowWidth = document.body.clientWidth;
-               windowHeight = document.body.clientHeight;
-       }
- 
-       return {width: windowWidth, height: windowHeight};
+function resizeCanvas() {
+	var area = {
+		width: innerWidth - Padding.width,
+		height: innerHeight - Padding.height
+	};
+	var map_r = MapSize.ratio;
+	var canv_r = area.width / area.height;
+	var w, h;	
+	if (map_r > canv_r) {
+		w = area.width - BORDER_WIDTH*2;
+		h = area.width / map_r - BORDER_WIDTH*2; 
+	} else {
+		w = area.height * map_r - BORDER_WIDTH*2;
+		h = area.height - BORDER_WIDTH*2;
+	}
+	Canvas.width(w);
+	Canvas.height(h);
+}
+
+// создает новую информационную плашку или обновляет значение в существующей
+function setPlane(id, v, k) {
+	var plane = $("#" + id);
+	if (plane.length != 0) {
+		if (k) plane.find(".key").text(k);
+		if (v) plane.find(".value").text(v);
+	} else {
+		plane.remove();
+		plane = $("#info_plane_original").clone();
+		plane.find(".key").text(k);
+		plane.find(".value").text(v);
+		plane.prop("id", id);
+		plane.removeClass("hidden");
+		$("#info_panel").append(plane);
+	}
 }

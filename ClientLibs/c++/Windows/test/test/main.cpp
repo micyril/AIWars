@@ -1,5 +1,5 @@
 #include <iostream>
-#include "controller.h"
+#include "./../../AIWarsLib/controller.h"
 #include "time.h"
 using namespace std;
 using namespace Commands;
@@ -17,14 +17,18 @@ int main(int argc, char *argv[])
     Controller ctrl(IP,PORT,ID);
     if(ctrl.ready()){
         cout<<"start"<<endl;
-        for(int i = 0; i < 100; i++){
-            cout<<ctrl.move(0.1)<<" ";
-            cout<<ctrl.fire()<<" ";
-            cout<<ctrl.rotate(10)<<" ";
-            vector<WorldObject> v = ctrl.scan();
-            cout<<v[3].distance<<endl;
-            if (v.size() == 0)
-                cout << "problem" << endl;
+        for(int i = 0; i < 1000; i++){
+            //cout<<ctrl.move(0.1)<<" ";
+            //cout<<ctrl.fire()<<" ";
+            //cout<<ctrl.rotate(10)<<" ";
+            ScanCommandAnswer answ = ctrl.scan();
+            if (answ.scannedWorldObjects.size() == 0){
+			
+                //cout << "problem" << endl;
+			}
+            else{
+                //cout<<answ.scannedWorldObjects[1].type<<endl;
+            }
 
         }
     ctrl.end_game();

@@ -16,6 +16,7 @@ private:
     char *buffer;
     struct sockaddr_in serv_addr;
     struct hostent *server;
+    struct timeval tvalue; // sets timeout for socket operations
 
     void send_all(std::string msg);
     std::string recv_all();

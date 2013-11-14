@@ -6,9 +6,10 @@
 
 class NotSupportedCommandException : public std::exception { // ToDo why 2 files with exeptions
 private:
-	std::string command;
+	
 
 public:
+	std::string command;
 	NotSupportedCommandException(std::string command) :
 		command(command) {}
 

@@ -6,7 +6,7 @@
 
 class Message{
 
-// ACK = 0 , NAK = 1 , EOG = -1
+// ACK = 1 , NAK = 0 , EOG = -1
 
 public:
     Message(std::string head  = "" ,std::string raw_command = "" ,std::string args_line = "");
@@ -23,6 +23,7 @@ public:
     static Message get_msg_by_line(std::string line);
     static std::string get_line_by_msg(Message &msg);
     static std::string get_line_by_fields(std::string head, std::string raw_command, std::string args_line);
+    static std::string get_simple_msg_line(std::string str_msg);
 };
 
 

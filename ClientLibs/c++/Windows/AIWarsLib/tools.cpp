@@ -19,7 +19,6 @@ std::vector<std::string> Tools::StringSplitter::split(std::string text,char spli
     int i = 0;
     while ((i < count) && std::getline(sstream, token, splitter) ) {
         elems.push_back(token);
-        //text.erase(text.find(token),token.length()+1);
         i++;
     }
     std::getline(sstream, token);

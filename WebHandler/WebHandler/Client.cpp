@@ -17,6 +17,7 @@ Client::~Client() {
 void Client::sendData(char *data, unsigned long long len) {
 	m.lock();
 	WebSocketPacket p;
+
 	p.setData((BYTE*)data, len);
 	p.sendTo(s);
 	m.unlock();
