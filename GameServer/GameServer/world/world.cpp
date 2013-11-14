@@ -6,23 +6,43 @@
 
 using namespace std;
 
-World::World(int width, int height, std::list<WorldObject*>& objects) : width(width), height(height), objects(objects) {
-	for(std::list<WorldObject*>::iterator it = objects.begin(); it != objects.end(); it++)
-		for(std::list<MapElement*>::iterator mapElemIt = (*it)->mapElements.begin(); mapElemIt != (*it)->mapElements.end(); mapElemIt++)
+World::World(int width, int height) : width(width), height(height) {}
+
+World::World(int width, int height, std::list<WorldObject*>& objects) : objects(objects) {
+	World(width, height);
+	for(auto it = objects.begin(); it != objects.end(); it++)
+		for(auto mapElemIt = (*it)->mapElements.begin(); mapElemIt != (*it)->mapElements.end(); mapElemIt++)
 			mapElements.push_back(*mapElemIt);
 }
 
 World::~World()
 {
-	for(std::list<WorldObject*>::iterator it = objects.begin(); it != objects.end(); it++)
-		delete *it;
-	for(std::list<MapElement*>::iterator it = mapElements.begin(); it != mapElements.end(); it++)
+	for(auto it = objects.begin(); it != objects.end(); it++)
 		delete *it;
 }
 
 void World::Update(float delta) {
-	for(std::list<WorldObject*>::iterator it = objects.begin(); it != objects.end(); it++)
+	worldUpdateMutex.lock();
+	for(auto it = objects.begin(); it != objects.end(); it++)
 		(*it)->Update(delta);
+	worldUpdateMutex.unlock();
+}
+
+void World::Add(WorldObject *worldObject) {
+	worldUpdateMutex.lock();
+	objects.push_back(worldObject);
+	for(auto mapElemIt = worldObject->mapElements.begin(); mapElemIt != worldObject->mapElements.end(); mapElemIt++)
+		mapElements.push_back(*mapElemIt);
+	worldUpdateMutex.unlock();
+}
+
+void World::Delete(WorldObject *worldObject) {
+	worldUpdateMutex.lock();
+	for(auto mapElemIt = worldObject->mapElements.begin(); mapElemIt != worldObject->mapElements.end(); mapElemIt++)
+		mapElements.remove(*mapElemIt);
+	objects.remove(worldObject);
+	delete worldObject;
+	worldUpdateMutex.unlock();
 }
 
 std::string World::Serialize() {

@@ -38,10 +38,9 @@ void RunningGear::updateMoving(float delta) {
 
 		float deltaX = currentDistanceForMoving * cos(robot->frame->rotation);
 		float deltaY = currentDistanceForMoving * sin(-robot->frame->rotation);
-		robot->frame->x += deltaX;
-		robot->frame->y += deltaY;
-		robot->frame->rotationCenterX += deltaX;
-		robot->frame->rotationCenterY += deltaY;
+
+		for(auto robotMapElemsIt = robot->mapElements.begin(); robotMapElemsIt != robot->mapElements.end(); robotMapElemsIt++)
+			(*robotMapElemsIt)->Move(deltaX, deltaY);
 
 		leftDistanceForMoving -= currentDistanceForMoving;
 	}
@@ -52,7 +51,9 @@ void RunningGear::updateRotation(float delta) {
 		float maxAngleForRotation = rotationSpeed * delta;
 		float currentAngleForRotation = std::min<float>(maxAngleForRotation, abs(leftAngleForRotation)) * (leftAngleForRotation > 0? 1.0F : -1.0F);
 
-		robot->frame->rotation += currentAngleForRotation;
+		for(auto robotMapElemsIt = robot->mapElements.begin(); robotMapElemsIt != robot->mapElements.end(); robotMapElemsIt++)
+			(*robotMapElemsIt)->Rotate(currentAngleForRotation);
+
 		leftAngleForRotation -= currentAngleForRotation;
 	}
 }

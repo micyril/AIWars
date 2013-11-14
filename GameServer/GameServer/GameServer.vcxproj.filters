@@ -16,6 +16,9 @@
     <Filter Include="world\robot\components">
       <UniqueIdentifier>{c113eab5-ec01-4b1d-979a-e22c89369f80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="world\robot\components\gun">
+      <UniqueIdentifier>{bf6e51e5-0029-403d-bc8c-50dd83ecdcb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="world\world.h">
@@ -61,6 +64,12 @@
     <ClInclude Include="world\robot\components\robotcomponent.h">
       <Filter>world\robot\components</Filter>
     </ClInclude>
+    <ClInclude Include="world\robot\components\gun\bullet.h">
+      <Filter>world\robot\components\gun</Filter>
+    </ClInclude>
+    <ClInclude Include="world\robot\components\gun\gun.h">
+      <Filter>world\robot\components\gun</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="world\robot\robot.cpp">
@@ -83,6 +92,12 @@
     </ClCompile>
     <ClCompile Include="world\collisions\collisionchecker.cpp">
       <Filter>world\collisions</Filter>
+    </ClCompile>
+    <ClCompile Include="world\robot\components\gun\gun.cpp">
+      <Filter>world\robot\components\gun</Filter>
+    </ClCompile>
+    <ClCompile Include="world\robot\components\gun\bullet.cpp">
+      <Filter>world\robot\components\gun</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

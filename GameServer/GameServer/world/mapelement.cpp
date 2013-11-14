@@ -28,11 +28,29 @@ std::string Rectangle::Serialize() {
 }
 
 MapElement::MapElement(int width, int height, float x, float y, float rotation, int layer) : 
-		Rectangle(width, height, x, y, rotation), layer(layer) {}
+	Rectangle(width, height, x, y, rotation), layer(layer) {}
+
+MapElement::MapElement(int width, int height, float x, float y, float rotationCenterX, float rotationCenterY, float rotation, int layer) :
+	Rectangle(width, height, x, y, rotationCenterX, rotationCenterY, rotation), layer(layer) {}
 
 std::string MapElement::serializeWithoutBrackets() {
 	stringstream stream;
 	stream << Rectangle::serializeWithoutBrackets() << "," << endl <<
 			  "\"layer\": " << this->layer;
 	return stream.str();
+}
+
+void MapElement::Move(float deltaX, float deltaY) {
+	x += deltaX;
+	y += deltaY;
+	rotationCenterX += deltaX;
+	rotationCenterY += deltaY;
+}
+
+void MapElement::Move(float distance) {
+	Move(distance * cos(rotation), distance * sin(-rotation));
+}
+
+void MapElement::Rotate(float angle) {
+	rotation += angle;
 }

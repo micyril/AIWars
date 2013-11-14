@@ -6,6 +6,9 @@
 class WorldObject {
 public:
 	std::list<MapElement*> mapElements;
-	virtual ~WorldObject() {}
+	virtual ~WorldObject() {
+		for(auto mapElemIt = mapElements.begin(); mapElemIt != mapElements.end(); mapElemIt++)
+			delete *mapElemIt;
+	}
 	virtual void Update(float delta) = 0;
 };

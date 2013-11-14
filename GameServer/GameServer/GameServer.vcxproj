@@ -84,6 +84,8 @@
     <ClCompile Include="world\collisions\collisionresolvermaster.cpp" />
     <ClCompile Include="world\collisions\resolvers\robotframescollisionresolver.cpp" />
     <ClCompile Include="world\mapelement.cpp" />
+    <ClCompile Include="world\robot\components\gun\bullet.cpp" />
+    <ClCompile Include="world\robot\components\gun\gun.cpp" />
     <ClCompile Include="world\robot\components\runninggear.cpp" />
     <ClCompile Include="world\robot\robot.cpp" />
     <ClCompile Include="world\world.cpp" />
@@ -98,6 +100,8 @@
     <ClInclude Include="world\collisions\resolvers\collisionresolvers.h" />
     <ClInclude Include="world\collisions\resolvers\robotframescollisionresolver.h" />
     <ClInclude Include="world\mapelement.h" />
+    <ClInclude Include="world\robot\components\gun\bullet.h" />
+    <ClInclude Include="world\robot\components\gun\gun.h" />
     <ClInclude Include="world\robot\components\robotcomponent.h" />
     <ClInclude Include="world\robot\components\runninggear.h" />
     <ClInclude Include="world\robot\exceptions.h" />

@@ -15,7 +15,7 @@ public:
 
 	virtual ~RobotComponent() {}
 	virtual std::string Execute(const std::string &command, const std::string &arg) = 0;
-	void SetRobot(Robot *robot) { 
+	virtual void SetRobot(Robot *robot) { 
 		this->robot = robot; 
 	}
 };
