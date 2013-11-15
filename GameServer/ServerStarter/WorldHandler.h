@@ -5,6 +5,7 @@
 #include "..\GameServer\world\mapelement.h"
 #include "..\GameServer\world\world.h"
 #include "..\GameServer\world\robot\components\runninggear.h"
+#include "..\GameServer\world\robot\components\gun\gun.h"
 #include "..\GameServer\world\robot\robot.h"
 #include "..\..\WebHandler\WebHandler\WebHandler.h"
 #include "..\GameServer\exceptions.h"
@@ -28,7 +29,7 @@ class WorldHandler
 	std::map<int, World*> worlds;
 	int worldId;
 
-	Robot* makeRobot(int width, int hieght, float x, float y);
+	Robot* makeRobot(int width, int hieght, float x, float y,  World* world);
 public:
 	WorldHandler(void);
 	void startGame(Client* cl1, Client* cl2 );

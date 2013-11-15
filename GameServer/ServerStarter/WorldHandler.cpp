@@ -13,13 +13,15 @@ WorldHandler::WorldHandler(void)
 
 	worldId = 0;
 }
-Robot* WorldHandler::makeRobot(int width, int hieght, float x, float y){
-	RobotFrame *robotFrame = new RobotFrame(width, hieght, x, y);
-	float movingSpeed = 10.0f;
-	float rotationSpeed = 1.0f;
+Robot* WorldHandler::makeRobot(int width, int height, float x, float y, World* world){
+	RobotFrame *robotFrame = new RobotFrame(width, height, x, y);
+	float movingSpeed = 20;
+	float rotationSpeed = 0.5;
 	RobotComponent *runningGear = new RunningGear(movingSpeed, rotationSpeed);
+	RobotComponent *gun = new Gun(world, width, width / 4);
 	std::list<RobotComponent*> robotComponents;
 	robotComponents.push_back(runningGear);
+	robotComponents.push_back(gun);
 	return new Robot(robotFrame, robotComponents);
 }
 void parceCommand(char* input, int size, std::string &command, std::string &arg){
@@ -121,14 +123,12 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 
 void WorldHandler::startGame(Client* cl1, Client* cl2){
 	
-	Robot* r1 = makeRobot(40,40, 100.0f, 100.0f);
-	Robot* r2 = makeRobot(40,40, 200.0f, 200.0f);
-
-	std::list<WorldObject*> worldObjects;
-	worldObjects.push_back(r1);
-	worldObjects.push_back(r2);
-
-	World* world = new World(500, 500, worldObjects);
+	World* world = new World(500, 500);
+	Robot* r1 = makeRobot(40,40, 100.0f, 100.0f, world);
+	Robot* r2 = makeRobot(40,40, 200.0f, 200.0f, world);
+	world->Add(r1);
+	world->Add(r2);
+	
 
 
 	this->worlds[worldId] = world;
