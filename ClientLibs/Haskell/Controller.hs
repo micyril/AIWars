@@ -23,52 +23,20 @@ endGame ctrl = do
 	return $ Controller id comm'
 	where Controller id comm  = ctrl
 
-move destination controller = do
-						 let request = produceRequest id cmdName (CommandArgument destination) 
+--------------- Command functions ---------------  
+produceCommand cmdName argument controller = do
+						 let request = produceRequest id cmdName argument
 						 response <- messageExchange request comm
 						 return $ parseResponse response cmdName 
 						 where 
 						 	   Controller id comm = controller
-						 	   cmdName = "MOV"
 
-rotate angle controller = do
-						 let request = produceRequest id cmdName (CommandArgument angle) 
-						 response <- messageExchange request comm
-						 return $ parseResponse response cmdName 
-						 where 
-						 	   Controller id comm = controller
-						 	   cmdName = "ROT"
+move destination controller = produceCommand "MOV" (CommandArgument destination) controller
+						 
+rotate angle controller = produceCommand "ROT" (CommandArgument angle) controller
 
-fire controller = do
-						 let request = produceRequest id cmdName Nil 
-						 response <- messageExchange request comm
-						 return $ parseResponse response cmdName 
-						 where 
-						 	   Controller id comm = controller
-						 	   cmdName = "FR"
+fire controller = produceCommand "FR" Nil controller
 
-scan controller = do
-						 let request = produceRequest id cmdName Nil 
-						 response <- messageExchange request comm
-						 return $ parseResponse response cmdName 
-						 where 
-						 	   Controller id comm = controller
-						 	   cmdName = "SC"
-
-test ctrl = do
-	ans <- move 1.2 ctrl
-	print ans
-	ans <- rotate 10.1 ctrl
-	print ans
-	ans <- fire ctrl
-	print ans
-	ans <- scan ctrl
-	print ans
-
-
-main = do
-	ctrl <- getController "192.168.0.2" "2001" "0"
-	ctrl' <- ready ctrl
-	mapM_ (\x -> test ctrl') [0..1000]
-	endGame ctrl'
-	print "OK"
+scan controller = produceCommand "SC" Nil controller
+--------------- ---------------- ---------------
+--------------- ---------------- ---------------
