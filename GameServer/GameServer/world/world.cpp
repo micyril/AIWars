@@ -8,8 +8,7 @@ using namespace std;
 
 World::World(int width, int height) : width(width), height(height) {}
 
-World::World(int width, int height, std::list<WorldObject*>& objects) : objects(objects) {
-	World(width, height);
+World::World(int width, int height, std::list<WorldObject*>& objects) : objects(objects), width(width), height(height) {
 	for(auto it = objects.begin(); it != objects.end(); it++)
 		for(auto mapElemIt = (*it)->mapElements.begin(); mapElemIt != (*it)->mapElements.end(); mapElemIt++)
 			mapElements.push_back(*mapElemIt);
