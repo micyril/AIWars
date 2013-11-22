@@ -9,13 +9,15 @@ var GameStatus = {
 };
 var MapSize, Canvas, Context;
 var Padding;
+var TempCanvas = $("<canvas></canvas>");
+var TempContext = TempCanvas.get(0).getContext("2d");
 
 
 $(function() {
 	socket = new WebSocket("ws://" + location.hostname);
 	socket.onmessage = function (event) {
 		var msg = JSON.parse(event.data);
-		console.log(msg.mtype);
+		console.log(msg.type);
 		window[msg.mtype](msg);
 	};
 	socket.onopen = function() { 
@@ -73,11 +75,11 @@ function game_info(msg) {
 	$(window).resize(resizeCanvas);
 
 	Context = Canvas.get(0).getContext("2d");
-	Context.fillRect(0, 0, Canvas.width(), Canvas.height());
 	Context.clear = function() {
-		Context.fillStyle = "#000000";
-		Context.fillRect(0, 0, Canvas.width(), Canvas.height());
+		this.fillStyle = "#000000";
+		this.fillRect(0, 0, Canvas.width(), Canvas.height());
 	}
+	Context.clear();
 }
 
 function action(msg) {
@@ -108,7 +110,7 @@ function action_update(msg) {
 function translateCoords(c) {
 	c.x = c.x / MapSize.width * Canvas.width();
 	c.y = c.y / MapSize.height * Canvas.height();
-	return c;	
+	return c;
 }
 
 function MapElement(x, y, width, height, rx, ry, a) {
@@ -146,8 +148,15 @@ function resizeCanvas() {
 		w = area.height * map_r - BORDER_WIDTH*2;
 		h = area.height - BORDER_WIDTH*2;
 	}
-	Canvas.width(w);
-	Canvas.height(h);
+	// тупой канвас - ресайзится через жопу!
+	//Canvas.width(w);
+	//Canvas.height(h);
+	TempCanvas.attr("width", w);
+	TempCanvas.attr("height", h);
+	TempContext.drawImage(Canvas.get(0), 0, 0, w, h);
+	Canvas.attr("width", w);
+	Canvas.attr("height", h);
+	Context.drawImage(TempCanvas.get(0), 0, 0, w, h);
 }
 
 // создает новую информационную плашку или обновляет значение в существующей
