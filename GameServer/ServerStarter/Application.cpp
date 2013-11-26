@@ -17,7 +17,7 @@ void Application::onConnect(Client* c){
 	m.lock();
 	clients[c->id] = c;
 	c->sendSelfInfo();
-	if(clientsToRun.find(c->id) == clientsToRun.end()){
+	if(clientsToRun.find(c->id) == clientsToRun.end()){//Todo move it to listen
 		if(!waitingClients.empty()){
 			int otherClient = waitingClients.front()->id;
 			clientsToRun[c->id] = otherClient;
@@ -31,8 +31,8 @@ void Application::onConnect(Client* c){
 	m.unlock();
 	std::cerr << "client added" << std::endl;
 }
-void Application::listenOnPort(int port){
-	WorldHandler wh;
+void Application::listenOnPort(int port){//ToDo decomposite it
+	WorldHandler wh(2);
 	 WSADATA wsaData;
     int iResult;
 
@@ -49,41 +49,49 @@ void Application::listenOnPort(int port){
 
 
     iResult = ::bind( ListenSocket, (sockaddr*)&addr, sizeof(addr));
-   
+	//ToDo problems
+	/*
+	* reconnecting if game was crashed
+	*/
 
 
     iResult = listen(ListenSocket, SOMAXCONN);
     
 	char buff[SIZE_BUFFER];
-
-	while(1){
-		if(clients.empty())
-			continue;
-		ClientSocket = accept(ListenSocket, NULL, NULL);
+	try{
+		while(1){
+			if(clients.empty())
+				continue;
+			ClientSocket = accept(ListenSocket, NULL, NULL);
 		
-		//TODO check wrong value
-		recv(ClientSocket, buff, SIZE_BUFFER, 0);
-		int idClient = atoi(buff);
-		std::cerr << "Client " << idClient << " is connected" << endl;
-		if(clients.find(idClient) == clients.end())
-			continue;
-		clients[idClient]->commandSocket = ClientSocket;
-		isClientConnect.insert(idClient);
-		std::cerr << "Client " << idClient << " waiting for partner..." << endl;
-		if(clientsToRun.size() >= 2){
-			std::set<int>::iterator it = isClientConnect.find(clientsToRun[idClient]);
-			
-			if(it != isClientConnect.end()){
-				cerr << "start game " << idClient << " VS " << clientsToRun[idClient] << endl;
-				wh.startGame(clients[idClient], clients[clientsToRun[idClient]]);
-				std::set<int>::iterator it1 = isClientConnect.find(idClient);
-				isClientConnect.erase(it1);
-				isClientConnect.erase(it);
-
+			//TODO check wrong value
+			recv(ClientSocket, buff, SIZE_BUFFER, 0);
+			int idClient = atoi(buff);
+			std::cerr << "Client " << idClient << " is connected" << endl;
+			if(clients.find(idClient) == clients.end()){
+				std::cerr << "Unkonw client: " << idClient << endl;
+				continue;
 			}
-		}
+			clients[idClient]->commandSocket = ClientSocket;
+			isClientConnect.insert(idClient);
+			std::cerr << "Client " << idClient << " waiting for partner..." << endl;
+			if(clientsToRun.size() >= 2){
+				std::set<int>::iterator it = isClientConnect.find(clientsToRun[idClient]);
+			
+				if(it != isClientConnect.end()){
+					cerr << "start game " << idClient << " VS " << clientsToRun[idClient] << endl;
+					wh.startGame(clients[idClient], clients[clientsToRun[idClient]]);
+					clients.erase(clients.find(idClient));//ToDo we can get reconnect with it, make check here
+					clients.erase(clients.find(clientsToRun[idClient]));
+					
+				}
+			}
 
         
+		}
+	}
+	catch(...){
+		std::cerr << "FAIL" << std::endl;
 	}
 }
 
