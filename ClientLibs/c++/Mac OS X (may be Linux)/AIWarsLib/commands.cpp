@@ -77,7 +77,7 @@ int Command::parse_response(std::string response){
 }
 
 std::string Command::produce_request(std::string response){
-    return response + Message::end_line;
+    return response;
 }
 //------------------------------------------------
 //------------------------------------------------
