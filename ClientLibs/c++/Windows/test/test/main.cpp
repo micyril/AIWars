@@ -18,16 +18,16 @@ int main(int argc, char *argv[])
     if(ctrl.ready()){
         cout<<"start"<<endl;
         for(int i = 0; i < 1000; i++){
-            //cout<<ctrl.move(0.1)<<" ";
-            //cout<<ctrl.fire()<<" ";
-            //cout<<ctrl.rotate(10)<<" ";
+            cout<<ctrl.move(0.1)<<" ";
+            cout<<ctrl.fire()<<" ";
+            cout<<ctrl.rotate(10)<<" ";
             ScanCommandAnswer answ = ctrl.scan();
             if (answ.scannedWorldObjects.size() == 0){
 			
-                //cout << "problem" << endl;
+                cout << "problem" << endl;
 			}
             else{
-                //cout<<answ.scannedWorldObjects[1].type<<endl;
+                cout<<answ.scannedWorldObjects[1].type<<endl;
             }
 
         }

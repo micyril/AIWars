@@ -77,7 +77,7 @@ int Command::parse_response(std::string response){
 }
 
 std::string Command::produce_request(std::string response){
-    return response + Message::end_line;
+    return response;
 }
 //------------------------------------------------
 //------------------------------------------------
@@ -133,7 +133,7 @@ ScanCommandAnswer ScanCommand::parse_response(std::string response){
 
     std::vector<std::string> args = Tools::StringSplitter::split(msg.args_line,' ');
     std::vector<WorldObject> parsed_args;
-    for(int i = 2; i < args.size(); i+=3){
+    for(int i = 2; i < (int)args.size(); i+=3){
        parsed_args.push_back(WorldObject(args[i-2],Tools::FromStrConverter<float>::convert(args[i-1]),Tools::FromStrConverter<float>::convert(args[i])));
     }
 
