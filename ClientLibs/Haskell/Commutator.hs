@@ -1,6 +1,7 @@
 module Commutator where
 import Network.Socket hiding (send, sendTo, recv, recvFrom)
 import Network.Socket.ByteString (send, recv)
+import Tools
 import qualified Data.ByteString.Char8 as B8
 
 
@@ -8,6 +9,9 @@ import qualified Data.ByteString.Char8 as B8
 type State = Int
 type ServerInfo = AddrInfo
 data Commutator  = Commutator Socket ServerInfo State 
+
+endLine :: String
+endLine = "\r\n"
 
 getCommutator :: String -> String -> IO Commutator
 getCommutator host port = withSocketsDo $ do 
@@ -24,12 +28,12 @@ connectCommutator comm = do
 
 sendAll :: Socket -> String -> IO Int
 sendAll socket message = do
-			send socket $ B8.pack message
+			send socket $ B8.pack (message ++ endLine)
 
 recvAll :: Socket -> IO String
 recvAll socket = do
 			out <- recv socket 1024
-			return $ B8.unpack out
+			return $  erase (B8.unpack out) endLine
 
 messageExchange :: String -> Commutator -> IO String
 messageExchange message comm =  if (state == 1) then do

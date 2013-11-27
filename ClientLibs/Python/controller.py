@@ -23,12 +23,12 @@ class Controller:
 
     def ready(self):
         if(self.comm.up_connection()):
-            return self.comm.hand_shake(protocol.Protocol.get_simple_msg_line(str(self.ID)))
+            return self.comm.hand_shake(str(self.ID))
         else:
             return False
 
     def end_game(self):
-        return self.comm.down_connection(protocol.Protocol.get_simple_msg_line("EOG"))
+        return self.comm.down_connection("EOG")
 
     def move(self,destination):
         request = self.MoveCommand.produce_request(self.ID,destination)

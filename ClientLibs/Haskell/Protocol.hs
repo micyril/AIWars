@@ -9,15 +9,11 @@ type ArgsLine = String
 data Message = Message (Head) (RawCommand) (ArgsLine)
 instance Show (Message) where show (Message head rawcommand argsline) = head ++ " " ++ rawcommand ++ " " ++ argsline
 
-endLine :: String
-endLine = "\r\n"
-
 
 getMessageByLine :: String -> Message
 getMessageByLine strline = Message head rawcommand argsline
 	where 
-		  [head,rawcommand,argsline] = parseWords $ split clearline ' ' 2
-		  clearline = erase strline endLine
+		  [head,rawcommand,argsline] = parseWords $ split strline ' ' 2
 
 parseWords :: [String] -> [String]
 parseWords words = parseWords' (reverse words) ["","",""]
@@ -28,14 +24,11 @@ parseWords' (word:words) list = parseWords' words (word : (init list))
 
 
 getLineByMessage :: Message -> String
-getLineByMessage message = show message ++ endLine
+getLineByMessage message = show message
 
 getLineByFields :: Head -> RawCommand -> ArgsLine -> String
-getLineByFields head rawcommand argsline = head ++ " " ++ rawcommand ++ " " ++ argsline ++ endLine
+getLineByFields head rawcommand argsline = head ++ " " ++ rawcommand ++ " " ++ argsline
 
-
-getSimpleMessageLine :: String -> String
-getSimpleMessageLine str = str ++ endLine
 
 --main = do
 --	putStrLn head
