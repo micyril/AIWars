@@ -3,46 +3,44 @@
 #include "world.h"
 #include "robot\robot.h"
 #include "..\exceptions.h"
+#include "collisions\collisionchecker.h"
+#include "collisions\collisionresolvermaster.h"
 
 using namespace std;
 
 World::World(int width, int height) : width(width), height(height) {}
 
-World::World(int width, int height, std::list<WorldObject*>& objects) : objects(objects) {
-	World(width, height);
+World::World(int width, int height, std::list<WorldObject*>& objects) : objects(objects), width(width), height(height) {
 	for(auto it = objects.begin(); it != objects.end(); it++)
 		for(auto mapElemIt = (*it)->mapElements.begin(); mapElemIt != (*it)->mapElements.end(); mapElemIt++)
 			mapElements.push_back(*mapElemIt);
 }
 
-World::~World()
-{
+World::~World() {
 	for(auto it = objects.begin(); it != objects.end(); it++)
 		delete *it;
 }
 
 void World::Update(float delta) {
-	worldUpdateMutex.lock();
-	for(auto it = objects.begin(); it != objects.end(); it++)
-		(*it)->Update(delta);
-	worldUpdateMutex.unlock();
+	for(auto objectIt = objects.begin(); objectIt != objects.end(); objectIt++) {
+		(*objectIt)->Update(delta);
+		checkAndResolveCollisionsFor(*objectIt);
+	}
+
+	deleteObjects();
+	addObjects();
 }
 
 void World::Add(WorldObject *worldObject) {
-	worldUpdateMutex.lock();
-	objects.push_back(worldObject);
-	for(auto mapElemIt = worldObject->mapElements.begin(); mapElemIt != worldObject->mapElements.end(); mapElemIt++)
-		mapElements.push_back(*mapElemIt);
-	worldUpdateMutex.unlock();
+	mutexForAdding.lock();
+	objectsForAdding.push(worldObject);
+	mutexForAdding.unlock();
 }
 
 void World::Delete(WorldObject *worldObject) {
-	worldUpdateMutex.lock();
-	for(auto mapElemIt = worldObject->mapElements.begin(); mapElemIt != worldObject->mapElements.end(); mapElemIt++)
-		mapElements.remove(*mapElemIt);
-	objects.remove(worldObject);
-	delete worldObject;
-	worldUpdateMutex.unlock();
+	mutexForDeleting.lock();
+	objectsForDeleting.push(worldObject);
+	mutexForDeleting.unlock();
 }
 
 std::string World::Serialize() {
@@ -53,4 +51,36 @@ std::string World::Serialize() {
 	stream << "}";
 
 	return stream.str();
+}
+
+void World::checkAndResolveCollisionsFor(WorldObject *object) {
+	for (auto objectMEIt = object->mapElements.begin(); objectMEIt != object->mapElements.end(); objectMEIt++)
+		for (auto mapElementIt = mapElements.begin(); mapElementIt != mapElements.end();  mapElementIt++)
+			if(*objectMEIt != *mapElementIt && CollisionChecker::Check(*objectMEIt, *mapElementIt))
+				CollisionResolverMaster::Resolve(*mapElementIt, *objectMEIt);
+}
+
+void World::deleteObjects() {
+	mutexForDeleting.lock();
+	while(objectsForDeleting.size() > 0) {
+		WorldObject *worldObject = objectsForDeleting.front();
+		for(auto mapElemIt = worldObject->mapElements.begin(); mapElemIt != worldObject->mapElements.end(); mapElemIt++)
+			mapElements.remove(*mapElemIt);
+		objects.remove(worldObject);
+		objectsForDeleting.pop();
+		delete worldObject;
+	}
+	mutexForDeleting.unlock();
+}
+
+void World::addObjects() { 
+	mutexForAdding.lock();
+	while(objectsForAdding.size() > 0) {
+		WorldObject *worldObject = objectsForAdding.front();
+		objects.push_back(worldObject);
+		for(auto mapElemIt = worldObject->mapElements.begin(); mapElemIt != worldObject->mapElements.end(); mapElemIt++)
+			mapElements.push_back(*mapElemIt);
+		objectsForAdding.pop();
+	}
+	mutexForAdding.unlock();
 }

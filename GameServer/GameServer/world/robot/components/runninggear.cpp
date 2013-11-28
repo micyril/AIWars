@@ -5,10 +5,40 @@
 #include "../exceptions.h"
 #include "../robot.h"
 
+MovementTask::MovementTask(Robot *robot) :
+	robot(robot), deltaX(0.0F), deltaY(0.0F), rotation(0.0F) {}
+
+void MovementTask::SetMovement(float deltaX, float deltaY) {
+	this->deltaX = deltaX;
+	this->deltaY = deltaY;
+}
+
+void MovementTask::SetRotation(float rotation) {
+	this->rotation = rotation;
+}
+
+void MovementTask::Perform() {
+	for(auto mapElemIt = robot->mapElements.begin(); mapElemIt != robot->mapElements.end(); mapElemIt++) {
+		(*mapElemIt)->Move(deltaX, deltaY);
+		(*mapElemIt)->Rotate(rotation);
+	}
+}
+
 RunningGear::RunningGear(float movingSpeed, float rotationSpeed) : 
-	movingSpeed(movingSpeed), rotationSpeed(rotationSpeed), leftDistanceForMoving(0), leftAngleForRotation(0) {
+	movingSpeed(movingSpeed), rotationSpeed(rotationSpeed), leftDistanceForMoving(0), leftAngleForRotation(0), undoMovementTask(NULL) {
 		supportedCommands.push_back("MOV");
 		supportedCommands.push_back("ROT");
+}
+
+RunningGear::~RunningGear() {
+	if(undoMovementTask != NULL)
+		delete undoMovementTask;
+}
+
+void RunningGear::SetRobot(Robot *robot) {
+	RobotComponent::SetRobot(robot);
+	undoMovementTask = new MovementTask(robot);
+	robot->SetUndoLastMovementTask(undoMovementTask);
 }
 
 std::string RunningGear::Execute(const std::string &command, const std::string &arg) {
@@ -25,8 +55,10 @@ std::string RunningGear::Execute(const std::string &command, const std::string &
 }
 
 void RunningGear::Update(float delta) {
-	updateMoving(delta);
-	updateRotation(delta);
+	if(robot->frame->GetHealth() > 0) {
+		updateMoving(delta);
+		updateRotation(delta);
+	}
 }
 
 void RunningGear::updateMoving(float delta) {
@@ -34,16 +66,18 @@ void RunningGear::updateMoving(float delta) {
 		float maxDistanceForMoving = movingSpeed * delta;
 		float currentDistanceForMoving = std::min<float>(maxDistanceForMoving, leftDistanceForMoving);
 
-		//todo: cooperate coordinates axes choosing between us (server) and java script client
-
 		float deltaX = currentDistanceForMoving * cos(robot->frame->rotation);
 		float deltaY = currentDistanceForMoving * sin(-robot->frame->rotation);
 
 		for(auto robotMapElemsIt = robot->mapElements.begin(); robotMapElemsIt != robot->mapElements.end(); robotMapElemsIt++)
 			(*robotMapElemsIt)->Move(deltaX, deltaY);
 
+		undoMovementTask->SetMovement(-deltaX, -deltaY);
+
 		leftDistanceForMoving -= currentDistanceForMoving;
 	}
+	else
+		undoMovementTask->SetMovement(0.0F, 0.0F);
 }
 
 void RunningGear::updateRotation(float delta) {
@@ -54,6 +88,10 @@ void RunningGear::updateRotation(float delta) {
 		for(auto robotMapElemsIt = robot->mapElements.begin(); robotMapElemsIt != robot->mapElements.end(); robotMapElemsIt++)
 			(*robotMapElemsIt)->Rotate(currentAngleForRotation);
 
+		undoMovementTask->SetRotation(-currentAngleForRotation);
+
 		leftAngleForRotation -= currentAngleForRotation;
 	}
+	else
+		undoMovementTask->SetRotation(0.0F);
 }

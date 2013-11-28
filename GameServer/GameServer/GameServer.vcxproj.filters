@@ -46,9 +46,6 @@
     <ClInclude Include="world\collisions\resolvers\collisionresolver.h">
       <Filter>world\collisions\resolvers</Filter>
     </ClInclude>
-    <ClInclude Include="world\collisions\resolvers\robotframescollisionresolver.h">
-      <Filter>world\collisions\resolvers</Filter>
-    </ClInclude>
     <ClInclude Include="world\collisions\resolvers\collisionresolvers.h">
       <Filter>world\collisions\resolvers</Filter>
     </ClInclude>
@@ -70,6 +67,15 @@
     <ClInclude Include="world\robot\components\gun\gun.h">
       <Filter>world\robot\components\gun</Filter>
     </ClInclude>
+    <ClInclude Include="world\collisions\resolvers\robotcollisionresolver.h">
+      <Filter>world\collisions\resolvers</Filter>
+    </ClInclude>
+    <ClInclude Include="world\robot\task.h">
+      <Filter>world\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="world\collisions\resolvers\bulletcollisionresolver.h">
+      <Filter>world\collisions\resolvers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="world\robot\robot.cpp">
@@ -84,9 +90,6 @@
     <ClCompile Include="world\collisions\collisionresolvermaster.cpp">
       <Filter>world\collisions</Filter>
     </ClCompile>
-    <ClCompile Include="world\collisions\resolvers\robotframescollisionresolver.cpp">
-      <Filter>world\collisions\resolvers</Filter>
-    </ClCompile>
     <ClCompile Include="world\robot\components\runninggear.cpp">
       <Filter>world\robot\components</Filter>
     </ClCompile>
@@ -98,6 +101,12 @@
     </ClCompile>
     <ClCompile Include="world\robot\components\gun\bullet.cpp">
       <Filter>world\robot\components\gun</Filter>
+    </ClCompile>
+    <ClCompile Include="world\collisions\resolvers\robotcollisionresolver.cpp">
+      <Filter>world\collisions\resolvers</Filter>
+    </ClCompile>
+    <ClCompile Include="world\collisions\resolvers\bulletcollisionresolver.cpp">
+      <Filter>world\collisions\resolvers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

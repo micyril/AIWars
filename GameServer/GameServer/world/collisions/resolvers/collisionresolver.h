@@ -5,5 +5,5 @@
 class CollisionResolver {
 public:
 	virtual ~CollisionResolver() {}
-	virtual void Resolve(MapElement *mapElement1, MapElement *mapElement2) = 0;
+	virtual void Resolve(MapElement *subject, MapElement *object) = 0;
 };

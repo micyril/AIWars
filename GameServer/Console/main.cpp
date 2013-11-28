@@ -18,14 +18,14 @@ Robot* makeRobot(int width, int height, float x, float y, World *world) {
 
 void doLoobBody(World &world, Client* const c, int sleepPeriod) {
 	Sleep(sleepPeriod);
-	c->notifyUpdate(world.getElements());
 	world.Update(sleepPeriod / 1000.0F);
+	c->notifyUpdate(world.getElements());
 }
 
 void OnConnect(Client *c) {
 	World world = World(500, 500);
 
-	Robot* r1 = makeRobot(40, 40, 230.0f, 100.0f, &world);
+	Robot* r1 = makeRobot(40, 40, 100.0f, 200.0f, &world);
 	Robot* r2 = makeRobot(40, 40, 200.0f, 200.0f, &world);
 
 	world.Add(r1);
@@ -37,14 +37,15 @@ void OnConnect(Client *c) {
 	c->notifyStart();
 	int sleepPeriod = 20;
 
-	r1->Execute("MOV", "120.0");
-	r1->Execute("ROT", "-1.57");
-	r2->Execute("FR", "");
-	
-	for(int i = 0; i < 25; i++)
-		doLoobBody(world, c, sleepPeriod);
+	//r1->Execute("MOV", "120.0");
 	r1->Execute("FR", "");
-	r2->Execute("FR", "");
+	//r1->Execute("ROT", "-1.57");
+	//r2->Execute("FR", "");
+	
+	for(int i = 0; i < 26; i++)
+		doLoobBody(world, c, sleepPeriod);
+	//r1->Execute("FR", "");
+	//r2->Execute("FR", "");
 	while(true)
 		doLoobBody(world, c, sleepPeriod);
 }

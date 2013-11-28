@@ -1,24 +1,39 @@
 #include "robot.h"
 #include "exceptions.h"
 
-std::string RobotFrame::type = "RobotFrame";
+std::string RobotMapElement::type = "RobotMapElement";
 
-RobotFrame::RobotFrame(int width, int height, float x, float y) :
-	MapElement(width, height, x, y) {}
+RobotMapElement::RobotMapElement(int width, int height, float x, float y, int health) :
+	MapElement(width, height, x, y), health(health) {}
 
-void RobotFrame::SetRobot(Robot *robot) {
+void RobotMapElement::SetRobot(Robot *robot) {
 	this->robot = robot;
 }
 
-std::string RobotFrame::GetType() {
+Robot * const RobotMapElement::GetRobot() {
+	return robot;
+}
+
+void RobotMapElement::Damage(int points) {
+	health = std::max<int>(health - points, 0);
+}
+
+int RobotMapElement::GetHealth() {
+	return health;
+}
+
+std::string RobotMapElement::GetType() {
 	return GetClassType();
 }
 
-std::string RobotFrame::GetClassType() {
+std::string RobotMapElement::GetClassType() {
 	return type;
 }
 
-Robot::Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents) : frame(frame) {
+RobotFrame::RobotFrame(int width, int height, float x, float y) :
+	RobotMapElement(width, height, x, y) {}
+
+Robot::Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents) : frame(frame), undoLastMovementTask(NULL) {
 	frame->SetRobot(this);
 	mapElements.push_back(frame);
 	for(std::list<RobotComponent*>::iterator it = robotComponents.begin(); it != robotComponents.end(); it++) {
@@ -41,4 +56,15 @@ std::string Robot::Execute(const std::string &command, const std::string &arg) {
 		throw NotSupportedCommandException(command);
 	//todo: maybe need to catch exeptions
 	return it->second->Execute(command, arg);
+}
+
+void Robot::SetUndoLastMovementTask(Task *undoLastMovementTask) {
+	this->undoLastMovementTask = undoLastMovementTask;
+}
+
+void Robot::UndoLastMovement() {
+	if (undoLastMovementTask != NULL)
+		undoLastMovementTask->Perform();
+	else
+		throw NotDefinedTaskException("to undo last movement");
 }

@@ -94,6 +94,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionCheckerTest.cpp" />
     <ClCompile Include="CollisionResolverMasterTest.cpp" />
     <ClCompile Include="RunningGearTest.cpp" />
   </ItemGroup>

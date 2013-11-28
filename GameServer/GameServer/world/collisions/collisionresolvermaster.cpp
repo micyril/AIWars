@@ -14,17 +14,17 @@ void CollisionResolverMaster::AddNewCollisionResolver(std::string mapElementType
 	crm.mapElementsTypesToCollisionResolver.insert(std::pair< std::string, CollisionResolver* >(mapElementType1 + " " + mapElementType2, collisionResolver));
 }
 
-void CollisionResolverMaster::Resolve(MapElement *mapElement1, MapElement *mapElement2) {
+void CollisionResolverMaster::Resolve(MapElement *subject, MapElement *object) {
 	if(areResolversInitialized == false) {
 		defineCollisionResolvers();
 		areResolversInitialized = true;
 	}
 
 	std::map<std::string, CollisionResolver* >::iterator it = 
-		crm.mapElementsTypesToCollisionResolver.find(mapElement1->GetType() + " " + mapElement2->GetType());
+		crm.mapElementsTypesToCollisionResolver.find(subject->GetType() + " " + object->GetType());
 
 	if (it == crm.mapElementsTypesToCollisionResolver.end())
-		throw CollisionResolverNotFoundException(mapElement1->GetType(), mapElement2->GetType());
+		throw CollisionResolverNotFoundException(subject->GetType(), object->GetType());
 
-	it->second->Resolve(mapElement1, mapElement2);
+	it->second->Resolve(subject, object);
 }

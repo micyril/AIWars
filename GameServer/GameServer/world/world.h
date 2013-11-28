@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <queue>
 #include <mutex>
 #include "worldobject.h"
 #include "mapelement.h"
@@ -14,7 +15,14 @@ private:
 	//todo: use safe pointers
 	std::list<WorldObject*> objects;
 	std::list<MapElement*> mapElements;
-	std::mutex worldUpdateMutex;
+	std::queue<WorldObject*> objectsForAdding;
+	std::queue<WorldObject*> objectsForDeleting;
+	std::mutex mutexForAdding;
+	std::mutex mutexForDeleting;
+
+	void checkAndResolveCollisionsFor(WorldObject *object);
+	void deleteObjects();
+	void addObjects();
 
 public:
 	World(int width, int height);

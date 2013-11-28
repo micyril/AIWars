@@ -1,7 +1,9 @@
 #pragma once 
 
-#include "robotframescollisionresolver.h"
+#include "robotcollisionresolver.h"
+#include "bulletcollisionresolver.h"
 
 void defineCollisionResolvers() {
-	RobotFramesCollisionResolver::Initilize();
+	RobotCollisionResolver::Initilize();
+	BulletCollisionResolver::Initilize();
 }
