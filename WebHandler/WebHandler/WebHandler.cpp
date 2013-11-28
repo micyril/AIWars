@@ -107,7 +107,7 @@ DWORD WINAPI WebHandler::Listener(void* param) {
 	while (1) {
 		auto p  = new pair<SOCKET, SOCKADDR_IN>();
 		int l = sizeof(p->second);
-		p->first = accept(s, (sockaddr*)&p->second, &l);		
+		p->first = accept(s, (sockaddr*)&(p->second), &l);		
 		PTP_WORK work = CreateThreadpoolWork(&HttpRequestHandler, (void*)p, &pool_env);
 		if (0 == work) {
 			cerr << "can't create threadpool work" << endl;
@@ -183,6 +183,9 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 
 	if (ws) {
 		Client *cl = new Client(s, id++);
+#ifdef _DEBUG
+		cout << "Client created (" << cl << ") with socket " << s << endl;
+#endif
 		clients.push_back(cl);
 		if (on_connect)
 			on_connect(cl);

@@ -1,17 +1,17 @@
 #include "WorldHandler.h"
 #include <iostream>
 #include "time.h"
+#include "const.h"
 #define MAX_CONNECTIONS (100)
 
-WorldHandler::WorldHandler(void)
+WorldHandler::WorldHandler(int max_clients)
 {
 	/*InitializeThreadpoolEnvironment(&pool_env);
 	pool = CreateThreadpool(0);		
 	SetThreadpoolThreadMinimum(pool, MAX_CONNECTIONS);
 	SetThreadpoolThreadMaximum(pool, MAX_CONNECTIONS);
 	SetThreadpoolCallbackPool(&pool_env, pool);*/
-
-	worldId = 0;
+	this->max_clients = 2;
 }
 Robot* WorldHandler::makeRobot(int width, int height, float x, float y, World* world){
 	RobotFrame *robotFrame = new RobotFrame(width, height, x, y);
@@ -45,78 +45,116 @@ DWORD WINAPI clientThread(LPVOID lpParam){
     int recvbuflen = 1024;
 	std::string command("");
 	std::string arg;
-	std::string ack = "ACK\r\n";//ToDo move it to constants
-	std::string eog = "EOG\r\n";
-	send(info->c->commandSocket, ack.data(), ack.length(), 0);
-     while (1) {
-		iResult = recv(info->c->commandSocket, recvbuf, recvbuflen, 0);
-        if (iResult > 0) {
-			if (strcmp(recvbuf, "EOG") == 0){
-				std::stringstream ss;
-				std::string answer = info->r->Execute(command, arg); 
-				answer = eog;//ToDo just for test, get rip of that
-				iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
-				break;
-			}
-			parceCommand(recvbuf, iResult, command, arg);
+	
+	send(info->c->commandSocket, ack.c_str(), ack.length(), 0);
+	try{
+		 while (1) {
+			iResult = recv(info->c->commandSocket, recvbuf, recvbuflen, 0);
+			if (iResult > 0) {
+				if (std::string(recvbuf).find(eog) != -1){
+					cerr << "End of game client: " << info->c->id << std::endl;
+					iSendResult = send( info->c->commandSocket, eog.c_str(), eog.length(), 0 );
+					closesocket(info->c->commandSocket); 
+					//delete info->r;
+					//delete info->c;
+					*(info->isWorking) = 0;
+					return 0;
+				}
+				parceCommand(recvbuf, iResult, command, arg);
 			
-			try{
-				std::string answer = info->r->Execute(command, arg); 
-				answer = ack;//ToDo just for test, get rip of that
-				iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
-			}
-			catch(NotSupportedCommandException &ex){
-				cerr << ex.what() << endl;
+				try{
+					std::string answer = info->r->Execute(command, arg); 
+					iSendResult = send( info->c->commandSocket, ack.c_str(), ack.length(), 0 );
+				}
+				catch(NotSupportedCommandException &ex){
+					cerr << "fail command" << endl;
 
+				}
+				catch(...){
+					std::cerr << "FAIL" << std::endl;
+				}
+				if (iSendResult == SOCKET_ERROR) {
+					throw SocketConnectionException(); 
+				}
 			}
-			catch(...){
-				std::cerr << "FAIL" << std::endl;
+			else{
+				cerr << "Client was crashed: " << info->c->id << std::endl;
+				iSendResult = send( info->c->commandSocket, eog.c_str(), eog.length(), 0 );
+				closesocket(info->c->commandSocket); 
+				//delete info->r;
+				//delete info->c;
+				*(info->isWorking) = -1;
+				return 1;
 			}
-            if (iSendResult == SOCKET_ERROR) {
-				throw SocketConnectionException(); 
-            }
-        }
-		else{
-			std::string answer = eog;//ToDo just for test, get rip of that
-			iSendResult = send( info->c->commandSocket, answer.data(), answer.size(), 0 );
-			closesocket(info->c->commandSocket); 
 		}
-    }
+	}
+	catch(SocketConnectionException &ex){
+		std::cerr << "fail socket" << std::endl;
+		closesocket(info->c->commandSocket); 
+		//delete info->r;
+		//delete info->c;
+		*(info->isWorking) = -1;
+		return 1;
+	}
+	catch(...){
+		std::cerr << "FAIL" << std::endl;
+		closesocket(info->c->commandSocket); 
+		//delete info->r;
+		//delete info->c;
+		*(info->isWorking) = -1;
+		return 1;
+	}
 }
 #include "../GameServer/world/collisions/collisionchecker.h"
 DWORD WINAPI worldThread( LPVOID lpParam ){
 	worldInfo* info = (worldInfo*)lpParam;
 	int sleepPeriod = 20;
 
-	info->c1info->c->sendSelfInfo();
-	info->c1info->c->sendEnemyInfo(info->c2info->c->id);
-	info->c1info->c->sendGameInfo(info->world);
-	info->c2info->c->sendSelfInfo();
-	info->c2info->c->sendEnemyInfo(info->c1info->c->id);
-	info->c2info->c->sendGameInfo(info->world);
-
-
-	info->c1info->c->notifyStart();
-	info->c2info->c->notifyStart();
-	CreateThread(NULL, NULL, clientThread, info->c1info, NULL, NULL);
-	CreateThread(NULL, NULL, clientThread, info->c2info, NULL, NULL);
+	for(int i = 0;i<info->max_clients;i++){
+		(*info->clinfo)[i]->c->sendSelfInfo();
+		//(*clients)[i]->c->sendEnemyInfo(info->c2info->c->id);
+		(*info->clinfo)[i]->c->sendGameInfo(info->world);
+		(*info->clinfo)[i]->c->notifyStart();
+		CreateThread(NULL, NULL, clientThread, (*info->clinfo)[i], NULL, NULL);
+	}
 	Sleep(sleepPeriod);
 	clock_t start, end;
-	while(true) {
+	bool game_alive = true;
+	int winner = 0;
+	while(game_alive) {
+		game_alive = false;
 		start = clock();
 		Sleep(20);//dont work without
 		info->world->Update(sleepPeriod / 1000.0f);
-		info->c1info->c->notifyUpdate(info->world->getElements());
-		info->c2info->c->notifyUpdate(info->world->getElements());
+		//(*clients)[i]->winner = info->world->winner;
+		for(int i = 0;i<info->max_clients;i++){
+			(*info->clinfo)[i]->c->notifyUpdate(info->world->getElements());
+			switch((*info->active_clients)[i]){
+				case 0:
+					break;
+				case 1:
+					game_alive = true;
+					break;
+				case -1:
+					winner = (*info->clinfo)[i]->c->id;//enemy id here
+					break;
+			}
+		}
 		//system("cls");
-		if(CollisionChecker::Check(info->c1info->r->frame, info->c2info->r->frame))
+		if(CollisionChecker::Check((*info->clinfo)[0]->r->frame, (*info->clinfo)[1]->r->frame))
 			cerr << "collision" << endl;
 		end = clock();
 		sleepPeriod = end - start;
 	}
-	
-	//info.cl1->notifyFinish();
-	//info.cl2->notifyFinish();
+	std::cerr << "Game was ended: winner is " << winner << std::endl;
+	for(int i = 0;i<info->max_clients;i++){
+		(*info->clinfo)[i]->c->notifyFinish(winner);
+		delete (*info->clinfo)[i];
+	}
+	delete info->active_clients;
+	delete info->clinfo;
+	delete info->world;
+	delete info;
 	return 0;
 }
 
@@ -124,36 +162,30 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 void WorldHandler::startGame(Client* cl1, Client* cl2){
 	
 	World* world = new World(500, 500);
-	Robot* r1 = makeRobot(40,40, 100.0f, 100.0f, world);
-	Robot* r2 = makeRobot(40,40, 200.0f, 200.0f, world);
-	world->Add(r1);
-	world->Add(r2);
+
+	std::vector<Client*> clients(max_clients);//ToDo move it to argument of this function
+	clients[0] = cl1;
+	clients[1] = cl2;
 	
-
-
-	this->worlds[worldId] = world;
-	worldId++;
-	cl1->worldId = worldId;
-	cl2->worldId = worldId;
-
 	worldInfo *winfo = new worldInfo;
-
-	clientInfo* c1info = new clientInfo;
-	c1info->c = cl1;
-	c1info->r = r1;
-
-	clientInfo* c2info = new clientInfo;
-	c2info->c = cl2;
-	c2info->r = r2;
-
-	winfo->c1info = c1info;
-	winfo->c2info = c2info;
+	winfo->clinfo = new std::vector<clientInfo*>(max_clients);
+	winfo->active_clients = new std::vector<char>(max_clients);// 0 - not work, -1 - crashed, 1 - busy
+	winfo->max_clients = max_clients;
 	winfo->world = world;
-
+	std::vector<clientInfo*>* clinfo = winfo->clinfo;
+	for(int i = 0;i<max_clients;i++){
+		(*clinfo)[i] = new clientInfo;
+		(*clinfo)[i]->c = clients[i];
+		(*clinfo)[i]->r = makeRobot(40,40, 100.0f + i*100.0f, 100.0f + i*100.0f, world);
+		world->Add((*clinfo)[i]->r);
+		
+		(*winfo->active_clients)[i] = true;
+		(*clinfo)[i]->isWorking = &(*winfo->active_clients)[i];
+	}
+	
 	CreateThread(NULL, NULL, worldThread, winfo, NULL, NULL);
+	
 }
 WorldHandler::~WorldHandler(void)
 {
-	for(std::map<int, World*>::iterator it = worlds.begin();it!= worlds.end();it++ )
-		delete it->second;
 }

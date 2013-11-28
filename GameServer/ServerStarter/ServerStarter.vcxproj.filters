@@ -8,5 +8,6 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="WorldHandler.h" />
+    <ClInclude Include="const.h" />
   </ItemGroup>
 </Project>

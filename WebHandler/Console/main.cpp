@@ -11,7 +11,10 @@ void OnConnect(Client *c) {
 	c->sendGameInfo(w);
 	Sleep(500);
 	c->notifyStart();
-	c->notifyUpdate(w->getElements());
+	while (1) {
+		c->notifyUpdate(w->getElements());
+		Sleep(20);
+	}
 }
 
 Robot* makeRobot(int width, int hieght, float x, float y) {
@@ -25,14 +28,16 @@ Robot* makeRobot(int width, int hieght, float x, float y) {
 }
 
 int main() {
-	Robot* r1 = makeRobot(40,40, 100.0f, 100.0f);
-	Robot* r2 = makeRobot(40,40, 200.0f, 200.0f);
+	Robot* r1 = makeRobot(40, 40, 10.0f, 10.0f);
+	Robot* r2 = makeRobot(40, 40, 10.0f, 450.0f);
+	Robot* r3 = makeRobot(40, 40, 450.0f, 10.0f);
+	Robot* r4 = makeRobot(40, 40, 450.0f, 450.0f);
 
-	std::list<WorldObject*> worldObjects;
-	worldObjects.push_back(r1);
-	worldObjects.push_back(r2);
-
-	w = new World(500, 500, worldObjects);
+	w = new World(500, 500);
+	w->Add(r1);
+	w->Add(r2);
+	w->Add(r3);
+	w->Add(r4);
 
 	HANDLE h = WebHandler::StartHttp();
 	WebHandler::setOnConnectCallback(&OnConnect);

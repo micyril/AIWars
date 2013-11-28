@@ -29,7 +29,7 @@ class Command:
         pass
     
     def produce_request(self,response):
-        return response + protocol.Message.end_line
+        return response
 
     def parse_response(self,response):
         if(response == ""):

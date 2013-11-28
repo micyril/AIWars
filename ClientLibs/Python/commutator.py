@@ -1,6 +1,8 @@
 import socket
 
 class Commutator:
+    end_line = "\r\n"
+
     def __init__(self, hostname = "localhost", port = "1234"):
         self.port = int(port)
         self.host = hostname
@@ -8,6 +10,7 @@ class Commutator:
         self.buffer_size = 1024
         self.buffer = []
         self.socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+
         
     def up_connection(self):
         try:        
@@ -19,6 +22,7 @@ class Commutator:
             return False
 
     def send_all(self,msg):
+        msg += self.end_line
         try:
             if (self.connected):
                 self.socket.sendall(msg) 
@@ -29,6 +33,9 @@ class Commutator:
         try:
             self.buffer = self.socket.recv(self.buffer_size)
             if(len(self.buffer) > 0):
+                index = self.buffer.find(self.end_line)
+                if (index != -1):
+                    self.buffer = self.buffer.replace(self.end_line,'')
                 return str(self.buffer)
             else:
                 raise socket.error

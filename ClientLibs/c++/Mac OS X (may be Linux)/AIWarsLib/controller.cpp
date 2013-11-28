@@ -22,7 +22,7 @@ int Controller::state_process(int state){
 
 bool Controller::ready(){
     if(this->comm.up_connection()){
-        return this->comm.hand_shake(Protocol::get_simple_msg_line(Tools::ToStrConverter<int>::convert(this->ID)));
+        return this->comm.hand_shake(Tools::ToStrConverter<int>::convert(this->ID));
     } else return false;
 }
 

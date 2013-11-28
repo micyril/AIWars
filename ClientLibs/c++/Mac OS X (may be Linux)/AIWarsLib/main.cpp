@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
             if (answ.scannedWorldObjects.size() == 0)
                 cout << "problem" << endl;
             else{
-                cout<<answ.scannedWorldObjects[1].type<<endl;
+                cout<<answ.scannedWorldObjects[2].type<<endl;
             }
 
         }

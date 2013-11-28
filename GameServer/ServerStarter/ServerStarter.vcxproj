@@ -26,6 +26,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="WorldHandler.h" />
+    <ClInclude Include="const.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{337EA671-FEE4-476F-9222-BFF5CC9F90FA}</ProjectGuid>

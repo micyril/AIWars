@@ -1,6 +1,8 @@
 #include "commutator.h"
 
 
+std::string Commutator::end_line = "\r\n";
+
 Commutator::Commutator(std::string hostname,std::string port)
 {
     this->port = atoi(port.c_str());
@@ -11,6 +13,7 @@ Commutator::Commutator(std::string hostname,std::string port)
 }
 
 void Commutator::send_all(std::string msg){
+    msg += this->end_line;
     size_t i = 0;
     size_t msg_len = msg.length();
     const char * raw_msg = msg.c_str();
@@ -28,6 +31,11 @@ std::string Commutator::recv_all(){
         std::cerr << "Error, problems with receiving!" << std::endl;
         return "";
     }
+
+    size_t index = tmp.find(this->end_line,this->end_line.length());
+    if(index != std::string::npos)
+        tmp.erase(index);
+
     return tmp;
 }
 

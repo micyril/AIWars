@@ -13,13 +13,13 @@ getController ip port id = do
 ready :: Controller -> IO Controller
 ready ctrl = do
 	comm' <- connectCommutator comm  
-	handShake (id ++ "\r\n") comm'
+	handShake id comm'
 	return $ Controller id comm'
 	where Controller id comm  = ctrl
 
 endGame :: Controller -> IO Controller
 endGame ctrl = do
-	comm' <- disconnectCommutator "EOG\r\n" comm
+	comm' <- disconnectCommutator "EOG" comm
 	return $ Controller id comm'
 	where Controller id comm  = ctrl
 

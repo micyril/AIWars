@@ -10,14 +10,18 @@
 #include "..\..\WebHandler\WebHandler\WebHandler.h"
 #include "..\GameServer\exceptions.h"
 #include <map>
+#include <vector>
 struct clientInfo{
+	int winner;
 	Client* c;
 	Robot* r;
+	char* isWorking;
 };
 struct worldInfo{
+	int max_clients;
 	World* world;
-	clientInfo* c1info;
-	clientInfo* c2info;
+	std::vector<clientInfo*>* clinfo;
+	std::vector<char>* active_clients;
 };
 
 
@@ -26,12 +30,10 @@ class WorldHandler
 {
 	/*static TP_CALLBACK_ENVIRON pool_env;
 	static PTP_POOL pool;*/
-	std::map<int, World*> worlds;
-	int worldId;
-
+	int max_clients;
 	Robot* makeRobot(int width, int hieght, float x, float y,  World* world);
 public:
-	WorldHandler(void);
+	WorldHandler(int max_clients_in_game);
 	void startGame(Client* cl1, Client* cl2 );
 	~WorldHandler(void);
 };
