@@ -39,5 +39,15 @@ namespace Tests
 			Assert::IsFalse(CollisionChecker::Check(&element3, &element4));
 		}
 
+		TEST_METHOD(TestCheckRotatedElements)
+		{
+			RobotMapElement element1(40, 40, 200, 200);
+			RobotMapElement element2(40, 10, 196.488998F, 171.402786F);
+			element2.rotationCenterX = 196.488998F;
+			element2.rotationCenterY = 176.402786F;
+			element2.rotation = -0.75F;
+
+			Assert::IsTrue(CollisionChecker::Check(&element1, &element2));
+		}
 	};
 }

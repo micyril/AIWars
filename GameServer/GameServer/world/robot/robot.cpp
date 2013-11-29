@@ -33,7 +33,7 @@ std::string RobotMapElement::GetClassType() {
 RobotFrame::RobotFrame(int width, int height, float x, float y) :
 	RobotMapElement(width, height, x, y) {}
 
-Robot::Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents) : frame(frame), undoLastMovementTask(NULL) {
+Robot::Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents) : frame(frame), robotComponents(robotComponents), undoLastMovementTask(NULL) {
 	frame->SetRobot(this);
 	mapElements.push_back(frame);
 	for(std::list<RobotComponent*>::iterator it = robotComponents.begin(); it != robotComponents.end(); it++) {
@@ -46,8 +46,8 @@ Robot::Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents) : f
 }
 
 void Robot::Update(float delta) {
-	for(std::map<std::string, RobotComponent*>::iterator it = commandToRobotComponent.begin(); it != commandToRobotComponent.end(); it++)
-		it->second->Update(delta);
+	for(auto it = robotComponents.begin(); it != robotComponents.end(); it++)
+		(*it)->Update(delta);
 }
 
 std::string Robot::Execute(const std::string &command, const std::string &arg) {

@@ -36,6 +36,7 @@ class Robot : public WorldObject {
 private:
 	//todo: use safe pointers
 	std::map<std::string, RobotComponent*> commandToRobotComponent;
+	std::list<RobotComponent *> robotComponents;
 	Task *undoLastMovementTask;
 
 public:

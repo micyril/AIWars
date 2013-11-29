@@ -5,7 +5,7 @@
 std::string BulletBody::type = "BulletBody";
 
 BulletBody::BulletBody(int damageInfluence, int width, int height, float x, float y, float rotationCenterX, float rotationCenterY, float rotation) : 
-	MapElement(width, height, x, y, rotationCenterX, rotationCenterY, rotation), damageInfluence(damageInfluence) {}
+	MapElement(width, height, x, y, rotationCenterX, rotationCenterY, rotation), damageInfluence(damageInfluence), isDestroyed(false) {}
 
 int BulletBody::GetDamageInfluence() {
 	return damageInfluence;

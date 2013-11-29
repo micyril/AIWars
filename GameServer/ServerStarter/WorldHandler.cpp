@@ -140,9 +140,6 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 					break;
 			}
 		}
-		//system("cls");
-		if(CollisionChecker::Check((*info->clinfo)[0]->r->frame, (*info->clinfo)[1]->r->frame))
-			cerr << "collision" << endl;
 		end = clock();
 		sleepPeriod = end - start;
 	}

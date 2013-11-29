@@ -7,8 +7,8 @@ using namespace std;
 
 Mat2::Mat2(float rot){
 		a00 = cos(rot);
-		a01 = -sin(rot);
-		a10 = sin(rot);
+		a01 = sin(rot);
+		a10 = -sin(rot);
 		a11 = cos(rot);
 	}
 Point operator-(Point p0, Point p1){
@@ -118,48 +118,45 @@ bool CollisionChecker::checkEdges(std::vector<Edge> &rect0, std::vector<Edge> &r
 }
 
 bool CollisionChecker::Check(MapElement *mapElement0, MapElement *mapElement1) {
-	Point a(1,1);
-	Point b(1,1);
-	Point c = a + b;
 	Mat2 m0(mapElement0->rotation);
 	std::vector<Point> rect0(4);
 	Point center(mapElement0->rotationCenterX, mapElement0->rotationCenterY);//должно быть в mapElement
 	Point shift;
-	shift.x = -mapElement0->width*0.5f;
-	shift.y = -mapElement0->height*0.5f;
-	rect0[0] = center + (m0*shift);
+	shift.x = mapElement0->x;
+	shift.y = mapElement0->y;
+	rect0[0] = (m0*(shift - center)) + center;
 
-	shift.x = -mapElement0->width*0.5f;
-	shift.y = +mapElement0->height*0.5f;
-	rect0[1] = center + (m0*shift);
+	shift.x = mapElement0->x;
+	shift.y = mapElement0->y + mapElement0->height;
+	rect0[1] = (m0*(shift - center)) + center;
 
-	shift.x = +mapElement0->width*0.5f;
-	shift.y = +mapElement0->height*0.5f;
-	rect0[2] = center + (m0*shift);
+	shift.x = mapElement0->x + mapElement0->width;
+	shift.y = mapElement0->y + mapElement0->height;
+	rect0[2] = (m0*(shift - center)) + center;
 
-	shift.x = +mapElement0->width*0.5f;
-	shift.y = -mapElement0->height*0.5f;
-	rect0[3] = center + (m0*shift);
+	shift.x = mapElement0->x + mapElement0->width;
+	shift.y = mapElement0->y;
+	rect0[3] = (m0*(shift - center)) + center;
 
 
 	Mat2 m1(mapElement1->rotation);
 	std::vector<Point> rect1(4);
 	center = Point(mapElement1->rotationCenterX, mapElement1->rotationCenterY);//должно быть в mapElement
-	shift.x = -mapElement1->width*0.5f;
-	shift.y = -mapElement1->height*0.5f;
-	rect1[0] = center + (m1*shift);
+	shift.x = mapElement1->x;
+	shift.y = mapElement1->y;
+	rect1[0] = (m1*(shift - center)) + center;
 
-	shift.x = -mapElement1->width*0.5f;
-	shift.y = +mapElement1->height*0.5f;
-	rect1[1] = center + (m1*shift);
+	shift.x = mapElement1->x;
+	shift.y = mapElement1->y+mapElement1->height;
+	rect1[1] = (m1*(shift - center)) + center;
 
-	shift.x = +mapElement1->width*0.5f;
-	shift.y = +mapElement1->height*0.5f;
-	rect1[2] = center + (m1*shift);
+	shift.x = mapElement1->x+mapElement1->width;
+	shift.y = mapElement1->y+mapElement1->height;
+	rect1[2] = (m1*(shift - center)) + center;
 
-	shift.x = +mapElement1->width*0.5f;
-	shift.y = -mapElement1->height*0.5f;
-	rect1[3] = center + (m1*shift);
+	shift.x = mapElement1->x+mapElement1->width;
+	shift.y = mapElement1->y;
+	rect1[3] = (m1*(shift - center)) + center;
 
 	std::vector<Edge> rect0_edges(4);
 	std::vector<Edge> rect1_edges(4);
