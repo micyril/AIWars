@@ -23,21 +23,27 @@ std::string Rectangle::serializeWithoutBrackets() {
 
 std::string Rectangle::Serialize() {
 	stringstream stream;
-	stream << "{" << endl << serializeWithoutBrackets() << endl << "}";
+	stream << "{" << serializeWithoutBrackets() << "}";
 	return stream.str();
 }
 
-MapElement::MapElement(int width, int height, float x, float y, float rotation, int layer) : 
-	Rectangle(width, height, x, y, rotation), layer(layer) {}
+int MapElement::lastId = -1;
 
-MapElement::MapElement(int width, int height, float x, float y, float rotationCenterX, float rotationCenterY, float rotation, int layer) :
-	Rectangle(width, height, x, y, rotationCenterX, rotationCenterY, rotation), layer(layer) {}
+MapElement::MapElement(std::string &viewType, int width, int height, float x, float y, float rotation, int layer) : 
+	viewType(viewType), Rectangle(width, height, x, y, rotation), layer(layer) { defineId(); }
+
+MapElement::MapElement(std::string &viewType, int width, int height, float x, float y, float rotationCenterX, float rotationCenterY, float rotation, int layer) :
+	viewType(viewType), Rectangle(width, height, x, y, rotationCenterX, rotationCenterY, rotation), layer(layer) { defineId(); }
 
 std::string MapElement::serializeWithoutBrackets() {
 	stringstream stream;
-	stream << Rectangle::serializeWithoutBrackets() << "," << endl <<
-			  "\"layer\": " << this->layer;
+	stream << Rectangle::serializeWithoutBrackets() << "," << "\"layer\": " << 
+		layer << ","  << "\"type\": \"" << viewType << "\", " << "\"id\": " << id;
 	return stream.str();
+}
+
+void MapElement::defineId() {
+	id = ++lastId;
 }
 
 void MapElement::Move(float deltaX, float deltaY) {

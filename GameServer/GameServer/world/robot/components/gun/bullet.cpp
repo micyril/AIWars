@@ -5,7 +5,7 @@
 std::string BulletBody::type = "BulletBody";
 
 BulletBody::BulletBody(int damageInfluence, int width, int height, float x, float y, float rotationCenterX, float rotationCenterY, float rotation) : 
-	MapElement(width, height, x, y, rotationCenterX, rotationCenterY, rotation), damageInfluence(damageInfluence), isDestroyed(false) {}
+	MapElement(std::string("Bullet"), width, height, x, y, rotationCenterX, rotationCenterY, rotation), damageInfluence(damageInfluence), isDestroyed(false) {}
 
 int BulletBody::GetDamageInfluence() {
 	return damageInfluence;
@@ -43,7 +43,7 @@ BulletFactory::BulletFactory(GunBarrel *barrel, World *world, float bulletsSpeed
 	barrel(barrel), world(world), bulletsSpeed(bulletsSpeed), bulletsDamageInfluence(bulletsDamageInfluence) {}
 
 Bullet *BulletFactory::Create() {
-	BulletBody* bulletBody = new BulletBody(bulletsDamageInfluence, barrel->width / 5, barrel->height, barrel->x + barrel->width + 0.001, barrel->y, 
+	BulletBody* bulletBody = new BulletBody(bulletsDamageInfluence, barrel->width / 5, barrel->height, barrel->x + barrel->width + 0.001F, barrel->y, 
 		barrel->rotationCenterX, barrel->rotationCenterY, barrel->rotation);
 	return new Bullet(bulletBody, world, bulletsSpeed);
 }

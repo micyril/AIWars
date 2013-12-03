@@ -17,8 +17,11 @@ private:
 protected:
 	Robot *robot;
 
+	virtual std::string serializeWithoutBrackets();
+
 public:
-	RobotMapElement(int width, int height, float x = 0, float y = 0, int health = 100);
+	RobotMapElement(std::string viewType, int width, int height, float x = 0, float y = 0, int health = 100);
+	virtual ~RobotMapElement() = 0 { };
 	void SetRobot(Robot *robot);
 	Robot * const GetRobot();
 	void Damage(int points);
@@ -34,10 +37,13 @@ public:
 
 class Robot : public WorldObject {
 private:
-	//todo: use safe pointers
 	std::map<std::string, RobotComponent*> commandToRobotComponent;
 	std::list<RobotComponent *> robotComponents;
 	Task *undoLastMovementTask;
+	int id;
+	static int lastId;
+
+	void defineId();
 
 public:
 	Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents);
@@ -47,4 +53,5 @@ public:
 	virtual void Update(float delta);
 	void SetUndoLastMovementTask(Task *undoLastMovementTask);
 	void UndoLastMovement();
+	int GetId() { return id; }
 };

@@ -1,7 +1,7 @@
 #include "gun.h"
 #include "../../exceptions.h"
 
-GunBarrel::GunBarrel(int length, int width) : RobotMapElement(length, width, 0.0F, 0.0F) {}
+GunBarrel::GunBarrel(int length, int width) : RobotMapElement("GunBarrel", length, width, 0.0F, 0.0F) {}
 
 Gun::Gun(World *world, int length, int width, float rateOfFire, float bulletsSpeed, int bulletsDamageInfluence) : 
 	world(world), barrel(new GunBarrel(length, width)), bulletFactory(barrel, world, bulletsSpeed, bulletsDamageInfluence), nextShotWaitingTime(0.0F) {  //todo: do it more beautiful

@@ -1,10 +1,11 @@
+#include <sstream>
 #include "robot.h"
 #include "exceptions.h"
 
 std::string RobotMapElement::type = "RobotMapElement";
 
-RobotMapElement::RobotMapElement(int width, int height, float x, float y, int health) :
-	MapElement(width, height, x, y), health(health) {}
+RobotMapElement::RobotMapElement(std::string viewType, int width, int height, float x, float y, int health) :
+	MapElement(viewType, width, height, x, y), health(health) {}
 
 void RobotMapElement::SetRobot(Robot *robot) {
 	this->robot = robot;
@@ -30,8 +31,16 @@ std::string RobotMapElement::GetClassType() {
 	return type;
 }
 
+std::string RobotMapElement::serializeWithoutBrackets() {
+	std::stringstream stream;
+	stream << MapElement::serializeWithoutBrackets() << "," << "\"robotId\": " << robot->GetId();
+	return stream.str();
+}
+
 RobotFrame::RobotFrame(int width, int height, float x, float y) :
-	RobotMapElement(width, height, x, y) {}
+	RobotMapElement("RobotFrame", width, height, x, y) {}
+
+int Robot::lastId = -1;
 
 Robot::Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents) : frame(frame), robotComponents(robotComponents), undoLastMovementTask(NULL) {
 	frame->SetRobot(this);
@@ -43,6 +52,7 @@ Robot::Robot(RobotFrame *frame, std::list<RobotComponent*>& robotComponents) : f
 			mapElements.push_back(*mapElemIt);
 		(*it)->SetRobot(this);
 	}
+	defineId();
 }
 
 void Robot::Update(float delta) {
@@ -67,4 +77,8 @@ void Robot::UndoLastMovement() {
 		undoLastMovementTask->Perform();
 	else
 		throw NotDefinedTaskException("to undo last movement");
+}
+
+void Robot::defineId() {
+	id = ++lastId;
 }
