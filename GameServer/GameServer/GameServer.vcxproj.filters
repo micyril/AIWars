@@ -19,6 +19,12 @@
     <Filter Include="world\robot\components\gun">
       <UniqueIdentifier>{bf6e51e5-0029-403d-bc8c-50dd83ecdcb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="world\robot\components\visualscanner">
+      <UniqueIdentifier>{502418c7-6328-4ae7-af54-097b8a184dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{c45b2602-2fd6-4616-9305-de744b0daf9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="world\world.h">
@@ -76,6 +82,12 @@
     <ClInclude Include="world\collisions\resolvers\bulletcollisionresolver.h">
       <Filter>world\collisions\resolvers</Filter>
     </ClInclude>
+    <ClInclude Include="world\robot\components\visualscanner\measurer.h">
+      <Filter>world\robot\components\visualscanner</Filter>
+    </ClInclude>
+    <ClInclude Include="math\math.h">
+      <Filter>math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="world\robot\robot.cpp">
@@ -107,6 +119,12 @@
     </ClCompile>
     <ClCompile Include="world\collisions\resolvers\bulletcollisionresolver.cpp">
       <Filter>world\collisions\resolvers</Filter>
+    </ClCompile>
+    <ClCompile Include="world\robot\components\visualscanner\measurer.cpp">
+      <Filter>world\robot\components\visualscanner</Filter>
+    </ClCompile>
+    <ClCompile Include="math\math.cpp">
+      <Filter>math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

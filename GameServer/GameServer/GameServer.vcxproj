@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="math\math.cpp" />
     <ClCompile Include="world\collisions\collisionchecker.cpp" />
     <ClCompile Include="world\collisions\collisionresolvermaster.cpp" />
     <ClCompile Include="world\collisions\resolvers\bulletcollisionresolver.cpp" />
@@ -88,11 +89,13 @@
     <ClCompile Include="world\robot\components\gun\bullet.cpp" />
     <ClCompile Include="world\robot\components\gun\gun.cpp" />
     <ClCompile Include="world\robot\components\runninggear.cpp" />
+    <ClCompile Include="world\robot\components\visualscanner\measurer.cpp" />
     <ClCompile Include="world\robot\robot.cpp" />
     <ClCompile Include="world\world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exceptions.h" />
+    <ClInclude Include="math\math.h" />
     <ClInclude Include="world\collisions\collisionchecker.h" />
     <ClInclude Include="world\collisions\collisionresolvermaster.h" />
     <ClInclude Include="world\collisions\collisions.h" />
@@ -102,6 +105,7 @@
     <ClInclude Include="world\collisions\resolvers\collisionresolvers.h" />
     <ClInclude Include="world\collisions\resolvers\robotcollisionresolver.h" />
     <ClInclude Include="world\mapelement.h" />
+    <ClInclude Include="world\robot\components\visualscanner\measurer.h" />
     <ClInclude Include="world\robot\task.h" />
     <ClInclude Include="world\robot\components\gun\bullet.h" />
     <ClInclude Include="world\robot\components\gun\gun.h" />

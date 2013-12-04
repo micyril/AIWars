@@ -1,35 +1,11 @@
 #include "collisionchecker.h"
 #include "../../exceptions.h"
+
 using namespace std;
 #define EPSILON 1e-9f
 #define dot(u,v)   ((u).x * (v).x + (u).y * (v).y)
 #define perp(u,v)  ((u).x * (v).y - (u).y * (v).x)
 
-Mat2::Mat2(float rot){
-		a00 = cos(rot);
-		a01 = sin(rot);
-		a10 = -sin(rot);
-		a11 = cos(rot);
-	}
-Point operator-(Point p0, Point p1){
-	return Point(p0.x - p1.x, p0.y - p1.y);
-}
-
-Point operator+(Point p0, Point p1){
-	return Point(p0.x + p1.x, p0.y + p1.y);
-}
-Point operator*(float a, Point p){
-		return Point(a*p.x, a*p.y);
-}
-bool operator==(Point p0, Point p1){
-	return (fabs(p0.x - p1.x) < EPSILON) &&  (fabs(p0.y - p1.y) < EPSILON);
-}
-bool operator!=(Point p0, Point p1){
-	return (fabs(p0.x - p1.x) > EPSILON) ||  (fabs(p0.y - p1.y) > EPSILON);
-}
-Point operator*(Mat2 m, Point p){
-	return Point(m.a00*p.x + m.a01*p.y, m.a10*p.x + m.a11*p.y);
-}
 bool inSegment( Point P, Edge S)
 {
     if (S.first.x != S.second.x) {    // S is not  vertical

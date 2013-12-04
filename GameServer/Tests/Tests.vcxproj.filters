@@ -28,5 +28,8 @@
     <ClCompile Include="CollisionCheckerTest.cpp">
       <Filter>GameServer\world\collisions</Filter>
     </ClCompile>
+    <ClCompile Include="ScanTest.cpp">
+      <Filter>GameServer\world\collisions</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

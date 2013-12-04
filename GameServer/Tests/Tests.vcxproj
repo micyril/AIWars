@@ -94,6 +94,7 @@
     <ClCompile Include="CollisionCheckerTest.cpp" />
     <ClCompile Include="CollisionResolverMasterTest.cpp" />
     <ClCompile Include="RunningGearTest.cpp" />
+    <ClCompile Include="ScanTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
