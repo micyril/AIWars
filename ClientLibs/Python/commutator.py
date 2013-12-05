@@ -31,17 +31,35 @@ class Commutator:
 
     def recv_all(self):
         try:
-            self.buffer = self.socket.recv(self.buffer_size)
-            if(len(self.buffer) > 0):
-                index = self.buffer.find(self.end_line)
-                if (index != -1):
-                    self.buffer = self.buffer.replace(self.end_line,'')
-                return str(self.buffer)
-            else:
-                raise socket.error
-        except:
+            out_message = ""
+            condition = True
+            while condition :
+                self.buffer = self.socket.recv(self.buffer_size)
+                if(len(self.buffer) > 0):
+                    out_message += self.buffer
+                    condition = not self.check_message_intefrity(str(out_message))
+                else:
+                    raise socket.error
+
+            index = out_message.find(self.end_line)
+            if (index != -1):
+                out_message = out_message.replace(self.end_line,'')
+            return str(out_message)
+                
+        except socket.error:
             print "Error, problems with receiving!"
             return ""
+
+    def check_message_intefrity(self,msg):
+        j = len(msg) - 1
+        for i in range(len(self.end_line) - 1, -1 , -1):
+            if(j < 0):
+                return False
+            if(msg[j] != self.end_line[i]): 
+                return False
+            j -= 1
+        return True
+
 
     def exchange(self,request):
         if(self.connected):
