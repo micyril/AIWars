@@ -19,7 +19,7 @@ Robot* makeRobot(int width, int height, float x, float y, World *world) {
 void doLoobBody(World &world, Client* const c, int sleepPeriod) {
 	Sleep(sleepPeriod);
 	world.Update(sleepPeriod / 1000.0F);
-	c->notifyUpdate(world.getElements());
+	c->notifyUpdate((std::list<Serializable*>*)world.GetMapElements());
 }
 
 void OnConnect(Client *c) {

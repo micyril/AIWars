@@ -36,7 +36,7 @@ std::string VisualScanner::Execute(const std::string &command, const std::string
 		std::string space = " ";
 		auto allMapElements = world->GetMapElements();
 		float distanceToMapElement, directionToMapElement;
-		for(auto mapElemIt = allMapElements.begin(); mapElemIt != allMapElements.end(); mapElemIt++) {
+		for(auto mapElemIt = allMapElements->begin(); mapElemIt != allMapElements->end(); mapElemIt++) {
 			if (CollisionChecker::Check(&scanRectangle1, *mapElemIt) && CollisionChecker::Check(&scanRectangle2, *mapElemIt) && 
 				((*mapElemIt)->GetType() != RobotMapElement::GetClassType() || ((RobotMapElement*)*mapElemIt)->GetRobot() != robot)) {
 					Measurer::FindDistanceAndDirectionToRectangle(*mapElemIt, pointOfViewX, pointOfViewY, sectorBegin, sectorEnd, viewDistance, 

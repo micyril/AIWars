@@ -128,7 +128,7 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 		info->world->Update(sleepPeriod / 1000.0f);
 		//(*clients)[i]->winner = info->world->winner;
 		for(int i = 0;i<info->max_clients;i++){
-			(*info->clinfo)[i]->c->notifyUpdate(info->world->getElements());
+			(*info->clinfo)[i]->c->notifyUpdate((std::list<Serializable*>*)(info->world->GetMapElements()));
 			switch((*info->active_clients)[i]){
 				case 0:
 					break;
