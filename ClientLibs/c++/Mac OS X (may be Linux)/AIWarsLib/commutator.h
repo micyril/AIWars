@@ -22,6 +22,7 @@ private:
 
     void send_all(std::string msg);
     std::string recv_all();
+    bool check_message_integrity(std::string msg);
 
 public:
     Commutator(std::string hostname = "localhost",std::string port = "1234");

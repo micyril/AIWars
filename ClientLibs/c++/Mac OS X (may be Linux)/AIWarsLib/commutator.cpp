@@ -23,20 +23,37 @@ void Commutator::send_all(std::string msg){
 std::string Commutator::recv_all(){
     size_t i = 0;
     std::string tmp = "";
-    bzero(this->buffer,this->buffer_size);
-    if(recv(this->sock,this->buffer,this->buffer_size,0)){
-        tmp+=this->buffer;
-    }
-    else{
-        std::cerr << "Error, problems with receiving!" << std::endl;
-        return "";
-    }
+
+    do {
+
+        bzero(this->buffer,this->buffer_size);
+
+        if(recv(this->sock,this->buffer,this->buffer_size,0)){
+            tmp+=this->buffer;
+        }
+        else{
+            std::cerr << "Error, problems with receiving!" << std::endl;
+            return "";
+        }
+
+    } while(!this->check_message_integrity(tmp));
 
     size_t index = tmp.find(this->end_line,this->end_line.length());
     if(index != std::string::npos)
         tmp.erase(index);
 
     return tmp;
+}
+
+bool Commutator::check_message_integrity(std::string msg){
+    // checking occurrence of end_line in msg
+    int j = msg.size() - 1;
+
+    for(int i = this->end_line.size() - 1; i >= 0; i--, j--){
+        if(j < 0) return false;
+        if(msg[j] != this->end_line[i]) return false;
+    }
+    return true;
 }
 
 bool Commutator::up_connection(){
