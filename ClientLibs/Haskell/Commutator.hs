@@ -30,11 +30,23 @@ sendAll :: Socket -> String -> IO Int
 sendAll socket message = do
 			send socket $ B8.pack (message ++ endLine)
 
-recvAll :: Socket -> IO String
-recvAll socket = do
-			out <- recv socket 1024
-			return $  erase (B8.unpack out) endLine
+checkEndLineOccurrence :: String -> String -> Bool
+checkEndLineOccurrence msg endline  = checkEndLineOccurrence' (reverse msg) (reverse endline)
 
+checkEndLineOccurrence' msg [] = True
+checkEndLineOccurrence' [] endline = False
+checkEndLineOccurrence' (m:msg) (e:endline) = if m == e then checkEndLineOccurrence' msg endline
+											  else False
+
+recvAll :: Socket -> IO String
+recvAll socket = recvAll' socket ""
+recvAll' socket msg = do
+			out <- recv socket 1024
+			let msg' = B8.unpack out
+			let msg'' = msg ++ msg'
+			if checkEndLineOccurrence msg'' endLine then return $ erase msg'' endLine
+			else recvAll' socket msg'' 
+			
 messageExchange :: String -> Commutator -> IO String
 messageExchange message comm =  if (state == 1) then do
 									sendAll socket message
