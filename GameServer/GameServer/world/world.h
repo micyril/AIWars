@@ -33,6 +33,10 @@ public:
 	void Delete(WorldObject *worldObject);
 	virtual std::string Serialize();
 
+	const std::list<MapElement*>& GetMapElements() const {
+		return mapElements;
+	}
+
 	std::list<Serializable*>* getElements() {
 		return (std::list<Serializable*>*)&mapElements;
 	}

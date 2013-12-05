@@ -105,7 +105,7 @@ DWORD WINAPI clientThread(LPVOID lpParam){
 		return 1;
 	}
 }
-#include "../GameServer/world/collisions/collisionchecker.h"
+
 DWORD WINAPI worldThread( LPVOID lpParam ){
 	worldInfo* info = (worldInfo*)lpParam;
 	int sleepPeriod = 20;

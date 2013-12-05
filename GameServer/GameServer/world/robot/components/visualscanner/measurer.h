@@ -4,6 +4,6 @@
 
 class Measurer {
 public:
-	void FindDistanceAndDirectionToRectangle(Rectangle *rectangle, float x, float y, 
-		float sectorBegin, float sectorEnd, float max_distance,  float &distance, float &direction);
+	static void FindDistanceAndDirectionToRectangle(Rectangle *rectangle, float x, float y, 
+		float sectorBegin, float sectorEnd, float maxDistance,  float &distance, float &direction);
 };

@@ -88,6 +88,9 @@
     <ClInclude Include="math\math.h">
       <Filter>math</Filter>
     </ClInclude>
+    <ClInclude Include="world\robot\components\visualscanner\visualscanner.h">
+      <Filter>world\robot\components\visualscanner</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="world\robot\robot.cpp">
@@ -125,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="math\math.cpp">
       <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="world\robot\components\visualscanner\visualscanner.cpp">
+      <Filter>world\robot\components\visualscanner</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

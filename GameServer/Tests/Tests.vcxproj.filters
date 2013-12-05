@@ -17,6 +17,9 @@
     <Filter Include="GameServer\world\robot\components">
       <UniqueIdentifier>{37e165d4-dc38-44ba-abcc-e81045ef0725}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameServer\world\robot\components\visualscanner">
+      <UniqueIdentifier>{1661dd72-c72b-4e94-877a-a78fd208ab93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionResolverMasterTest.cpp">
@@ -28,8 +31,11 @@
     <ClCompile Include="CollisionCheckerTest.cpp">
       <Filter>GameServer\world\collisions</Filter>
     </ClCompile>
-    <ClCompile Include="ScanTest.cpp">
-      <Filter>GameServer\world\collisions</Filter>
+    <ClCompile Include="MeasurerTest.cpp">
+      <Filter>GameServer\world\robot\components\visualscanner</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualScannerTest.cpp">
+      <Filter>GameServer\world\robot\components\visualscanner</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
