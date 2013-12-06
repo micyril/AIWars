@@ -66,7 +66,7 @@ namespace Tests
 			float angle;
 			Measurer::FindDistanceAndDirectionToRectangle(&me, x,y,begin, end, max_distance,dist, angle);
 			Assert::IsTrue(fabs(dist - 20.0f) < 1e-5);
-			Assert::IsTrue(fabs(angle -  M_PI/3.0f) < 1e-5);
+			Assert::IsTrue(fabs(angle -  2.0f*M_PI/3.0f) < 1e-5);
 		}
 		TEST_METHOD(TestMeasureonEdgeRightCheck)
 		{
@@ -80,7 +80,7 @@ namespace Tests
 			float angle;
 			Measurer::FindDistanceAndDirectionToRectangle(&me, x,y,begin, end, max_distance,dist, angle);
 			Assert::IsTrue(fabs(dist - 20.0f) < 1e-5);
-			Assert::IsTrue(fabs(angle -  2.0f*M_PI/3.0f) < 1e-5);
+			Assert::IsTrue(fabs(angle -  M_PI/3.0f) < 1e-5);
 		}
 		TEST_METHOD(TestFindDistanceAndDirectionToAcrossRectangle)
 		{

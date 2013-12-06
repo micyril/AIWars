@@ -96,7 +96,7 @@ void Measurer::FindDistanceAndDirectionToRectangle(Rectangle *rectangle, float x
 		}
 	}
 	Point edge1 = closest_I - scan_center;
-	Point edge2 = Point(x - max_distance, y) - scan_center;
+	Point edge2 = Point(x + max_distance, y) - scan_center;
 	float angle = acos(dot(edge1, edge2)/(edge1.norm() * edge2.norm()));
 	if(sectorBegin < angle && angle < sectorEnd ){
 		distance = min_dist_to_vert;
@@ -105,7 +105,7 @@ void Measurer::FindDistanceAndDirectionToRectangle(Rectangle *rectangle, float x
 	}
 	if(sectorBegin > angle){
 		Mat2 rot(sectorBegin);
-		Point p = Segment_Crossing(closest_E, Edge(scan_center, (rot*(Point(x - max_distance, y)-scan_center)+scan_center)));
+		Point p = Segment_Crossing(closest_E, Edge(scan_center, (rot*(Point(x + max_distance, y)-scan_center)+scan_center)));
 		Point I;
 		distance = d(scan_center, p);
 		direction = sectorBegin;
