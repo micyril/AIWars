@@ -1,7 +1,7 @@
 #include "gun.h"
 #include "../../exceptions.h"
 
-GunBarrel::GunBarrel(int length, int width) : RobotMapElement("GunBarrel", length, width, 0.0F, 0.0F) {}
+GunBarrel::GunBarrel(int length, int width) : RobotMapElement("GunBarrel", length, width, Point(0.0F, 0.0F)) {}
 
 Gun::Gun(World *world, int length, int width, float rateOfFire, float bulletsSpeed, int bulletsDamageInfluence) : 
 	world(world), barrel(new GunBarrel(length, width)), bulletFactory(barrel, world, bulletsSpeed, bulletsDamageInfluence), nextShotWaitingTime(0.0F) {  //todo: do it more beautiful
@@ -18,10 +18,9 @@ void Gun::SetRobot(Robot *robot) {
 	RobotComponent::SetRobot(robot);
 	barrel->SetRobot(robot);
 
-	barrel->x = robot->frame->rotationCenterX;
-	barrel->y = robot->frame->rotationCenterY - 0.5F * barrel->height;
-	barrel->rotationCenterX = robot->frame->rotationCenterX;
-	barrel->rotationCenterY = robot->frame->rotationCenterY;
+	barrel->vertice.x = robot->frame->rotationCenter.x;
+	barrel->vertice.y = robot->frame->rotationCenter.y - 0.5F * barrel->height;
+	barrel->rotationCenter = robot->frame->rotationCenter;
 }
 
 std::string Gun::Execute(const std::string &command, const std::string &arg) {

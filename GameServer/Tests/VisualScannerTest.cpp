@@ -24,14 +24,14 @@ namespace Tests
 			return (i - 1) / 3;
 		};
 
-		static Robot* createRobot(int width, int height, float x, float y) {
-			RobotFrame *robotFrame = new RobotFrame(width, height, x, y);
+		static Robot* createRobot(int width, int height, Point p) {
+			RobotFrame *robotFrame = new RobotFrame(width, height, p);
 			std::list<RobotComponent*> robotComponents;
 			return new Robot(robotFrame, robotComponents);
 		}
 
-		static Robot* createRobotWithGunAndScanner(World *world, VisualScanner *visualScanner, int width, int height, float x, float y) {
-			RobotFrame *robotFrame = new RobotFrame(width, height, x, y);
+		static Robot* createRobotWithGunAndScanner(World *world, VisualScanner *visualScanner, int width, int height, Point p) {
+			RobotFrame *robotFrame = new RobotFrame(width, height, p);
 			Gun *gun = new Gun(world, 50, 50 / 4);
 			std::list<RobotComponent*> robotComponents;
 			robotComponents.push_back(gun);
@@ -47,7 +47,7 @@ namespace Tests
 			float viewDistance = 120.0F;
 			VisualScanner *visualScanner = new VisualScanner(&world, viewAngle, viewDistance);
 
-			Robot *robot = createRobotWithGunAndScanner(&world, visualScanner, 50, 50, 75, 75);
+			Robot *robot = createRobotWithGunAndScanner(&world, visualScanner, 50, 50, Point(75, 75));
 
 			world.Add(robot);
 			world.Update(0.0F);
@@ -64,9 +64,9 @@ namespace Tests
 			float viewDistance = 120.0F;
 			VisualScanner *visualScanner = new VisualScanner(&world, viewAngle, viewDistance);
 
-			Robot *robot = createRobotWithGunAndScanner(&world, visualScanner, 50, 50, 75, 75);
-			Robot *robot2 = createRobot(50, 50, 175, 75);
-			Robot *robot3 = createRobot(50, 50, 90, 130);
+			Robot *robot = createRobotWithGunAndScanner(&world, visualScanner, 50, 50, Point(75, 75));
+			Robot *robot2 = createRobot(50, 50, Point(175, 75));
+			Robot *robot3 = createRobot(50, 50, Point(90, 130));
 
 			world.Add(robot);
 			world.Add(robot2);
@@ -90,8 +90,8 @@ namespace Tests
 			float viewDistance = 120.0F;
 			VisualScanner *visualScanner = new VisualScanner(&world, viewAngle, viewDistance);
 
-			Robot *robot = createRobotWithGunAndScanner(&world, visualScanner, 50, 50, 75, 75);
-			Robot *robot2 = createRobot(50, 50, 80, 130);
+			Robot *robot = createRobotWithGunAndScanner(&world, visualScanner, 50, 50, Point(75, 75));
+			Robot *robot2 = createRobot(50, 50, Point(80, 130));
 
 			world.Add(robot);
 			world.Add(robot2);
@@ -109,8 +109,8 @@ namespace Tests
 			float viewDistance = 120.0F;
 			VisualScanner *visualScanner = new VisualScanner(&world, viewAngle, viewDistance);
 
-			Robot *robot = createRobotWithGunAndScanner(&world, visualScanner, 50, 50, 75, 75);
-			Robot *robot2 = createRobot(50, 50, 90, 130);
+			Robot *robot = createRobotWithGunAndScanner(&world, visualScanner, 50, 50, Point(75, 75));
+			Robot *robot2 = createRobot(50, 50, Point(90, 130));
 
 			world.Add(robot);
 			world.Add(robot2);

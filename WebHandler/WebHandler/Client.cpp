@@ -106,6 +106,7 @@ void Client::sendSelfInfo() {
 }
 
 void Client::sendEnemyInfo(int id) {
+	enemy_id = id;
 	sendObject(Info(false, id));
 }
 

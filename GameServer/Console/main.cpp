@@ -4,8 +4,8 @@
 #include "..\..\GameServer\GameServer\world\robot\robot.h"
 #include "..\..\GameServer\GameServer\world\robot\components\gun\gun.h"
 
-Robot* makeRobot(int width, int height, float x, float y, World *world) {
-	RobotFrame *robotFrame = new RobotFrame(width, height, x, y);
+Robot* makeRobot(int width, int height, Point p, World *world) {
+	RobotFrame *robotFrame = new RobotFrame(width, height, p);
 	float movingSpeed = 20;
 	float rotationSpeed = 0.5;
 	RobotComponent *runningGear = new RunningGear(movingSpeed, rotationSpeed);
@@ -25,8 +25,8 @@ void doLoobBody(World &world, Client* const c, int sleepPeriod) {
 void OnConnect(Client *c) {
 	World world = World(500, 500);
 
-	Robot* r1 = makeRobot(40, 40, 100.0f, 200.0f, &world);
-	Robot* r2 = makeRobot(40, 40, 200.0f, 200.0f, &world);
+	Robot* r1 = makeRobot(40, 40, Point(100.0f, 200.0f), &world);
+	Robot* r2 = makeRobot(40, 40, Point(200.0f, 200.0f), &world);
 
 	world.Add(r1);
 	world.Add(r2);

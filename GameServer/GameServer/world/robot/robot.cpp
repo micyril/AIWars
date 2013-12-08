@@ -4,8 +4,8 @@
 
 std::string RobotMapElement::type = "RobotMapElement";
 
-RobotMapElement::RobotMapElement(std::string viewType, int width, int height, float x, float y, int health) :
-	MapElement(viewType, width, height, x, y), health(health) {}
+RobotMapElement::RobotMapElement(std::string viewType, int width, int height, Point p, int health) :
+	MapElement(viewType, width, height, p), health(health) {}
 
 void RobotMapElement::SetRobot(Robot *robot) {
 	this->robot = robot;
@@ -37,8 +37,9 @@ std::string RobotMapElement::serializeWithoutBrackets() {
 	return stream.str();
 }
 
-RobotFrame::RobotFrame(int width, int height, float x, float y) :
-	RobotMapElement("RobotFrame", width, height, x, y) {}
+
+RobotFrame::RobotFrame(int width, int height, Point p) :
+	RobotMapElement("RobotFrame", width, height, p) {}
 
 int Robot::lastId = -1;
 

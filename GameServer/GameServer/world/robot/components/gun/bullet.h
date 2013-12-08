@@ -9,7 +9,7 @@ private:
 	bool isDestroyed;
 
 public:
-	BulletBody(int damageInfluence, int width, int height, float x, float y, float rotationCenterX, float rotationCenterY, float rotation = 0);
+	BulletBody(int damageInfluence, int width, int height, Point p, Point rotationCenter, float rotation = 0);
 	int GetDamageInfluence();
 	void Destroy();
 	bool IsDestroyed();

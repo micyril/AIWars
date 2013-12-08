@@ -6,13 +6,13 @@
 
 class MovementTask : public Task {
 private:
-	float deltaX, deltaY;
+	Point delta;
 	float rotation;
 	Robot *robot;
 
 public:
 	MovementTask(Robot *robot);
-	void SetMovement(float deltaX, float deltaY);
+	void SetMovement(Point delta);
 	void SetRotation(float rotation);
 	virtual void Perform();
 };

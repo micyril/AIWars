@@ -13,7 +13,7 @@ namespace Tests
 	public:
 		class NewMapElement : public MapElement {
 		public:
-			NewMapElement() : MapElement(std::string("NewMapElement"), 0, 0, 0, 0) {}
+			NewMapElement() : MapElement(std::string("NewMapElement"), 0, 0, Point(0.0f, 0.0f)) {}
 			virtual std::string GetType() { return "NewMapElement"; }
 		};
 

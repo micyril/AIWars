@@ -13,15 +13,17 @@ WorldHandler::WorldHandler(int max_clients)
 	SetThreadpoolCallbackPool(&pool_env, pool);*/
 	this->max_clients = 2;
 }
-Robot* WorldHandler::makeRobot(int width, int height, float x, float y, World* world){
-	RobotFrame *robotFrame = new RobotFrame(width, height, x, y);
+Robot* WorldHandler::makeRobot(int width, int height, Point p, World* world){
+	RobotFrame *robotFrame = new RobotFrame(width, height, p);
 	float movingSpeed = 20;
 	float rotationSpeed = 0.5;
 	RobotComponent *runningGear = new RunningGear(movingSpeed, rotationSpeed);
 	RobotComponent *gun = new Gun(world, width, width / 4);
+	VisualScanner *visualScanner = new VisualScanner(world);
 	std::list<RobotComponent*> robotComponents;
 	robotComponents.push_back(runningGear);
 	robotComponents.push_back(gun);
+	robotComponents.push_back(visualScanner);
 	return new Robot(robotFrame, robotComponents);
 }
 void parceCommand(char* input, int size, std::string &command, std::string &arg){
@@ -63,8 +65,16 @@ DWORD WINAPI clientThread(LPVOID lpParam){
 				parceCommand(recvbuf, iResult, command, arg);
 			
 				try{
+					cerr << command << endl;
 					std::string answer = info->r->Execute(command, arg); 
-					iSendResult = send( info->c->commandSocket, ack.c_str(), ack.length(), 0 );
+					if(answer.empty()){//ToDo убрать костыли
+						iSendResult = send( info->c->commandSocket, ack.c_str(), ack.length(), 0 );
+					}
+					else{
+
+						iSendResult = send( info->c->commandSocket, ("ACK " + answer + "\r\n").c_str(), answer.length() + 6, 0 );
+						cerr << "send" << endl;
+					}
 				}
 				catch(NotSupportedCommandException &ex){
 					cerr << "fail command" << endl;
@@ -136,7 +146,7 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 					game_alive = true;
 					break;
 				case -1:
-					winner = (*info->clinfo)[i]->c->id;//enemy id here
+					winner = (*info->clinfo)[i]->c->enemy_id;
 					break;
 			}
 		}
@@ -173,7 +183,7 @@ void WorldHandler::startGame(Client* cl1, Client* cl2){
 	for(int i = 0;i<max_clients;i++){
 		(*clinfo)[i] = new clientInfo;
 		(*clinfo)[i]->c = clients[i];
-		(*clinfo)[i]->r = makeRobot(40,40, 100.0f + i*100.0f, 100.0f + i*100.0f, world);
+		(*clinfo)[i]->r = makeRobot(40,40, Point(100.0f + i*100.0f, 100.0f), world);
 		world->Add((*clinfo)[i]->r);
 		
 		(*winfo->active_clients)[i] = true;

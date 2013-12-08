@@ -12,6 +12,7 @@ private:
 
 public:	
 	int id;
+	int enemy_id;
 	int worldId;
 	SOCKET commandSocket;
 

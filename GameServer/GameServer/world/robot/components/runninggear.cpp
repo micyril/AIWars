@@ -6,11 +6,11 @@
 #include "../robot.h"
 
 MovementTask::MovementTask(Robot *robot) :
-	robot(robot), deltaX(0.0F), deltaY(0.0F), rotation(0.0F) {}
+	robot(robot), delta(0.0F, 0.0F), rotation(0.0F) {}
 
-void MovementTask::SetMovement(float deltaX, float deltaY) {
-	this->deltaX = deltaX;
-	this->deltaY = deltaY;
+void MovementTask::SetMovement(Point deltaMove) {
+	this->delta = Point(deltaMove);
+
 }
 
 void MovementTask::SetRotation(float rotation) {
@@ -19,7 +19,7 @@ void MovementTask::SetRotation(float rotation) {
 
 void MovementTask::Perform() {
 	for(auto mapElemIt = robot->mapElements.begin(); mapElemIt != robot->mapElements.end(); mapElemIt++) {
-		(*mapElemIt)->Move(deltaX, deltaY);
+		(*mapElemIt)->Move(delta);
 		(*mapElemIt)->Rotate(rotation);
 	}
 }
@@ -66,18 +66,19 @@ void RunningGear::updateMoving(float delta) {
 		float maxDistanceForMoving = movingSpeed * delta;
 		float currentDistanceForMoving = std::min<float>(maxDistanceForMoving, leftDistanceForMoving);
 
-		float deltaX = currentDistanceForMoving * cos(robot->frame->rotation);
-		float deltaY = currentDistanceForMoving * sin(-robot->frame->rotation);
+		Point deltaMove;
+		deltaMove.x = currentDistanceForMoving * cos(robot->frame->getAngle());
+		deltaMove.y = currentDistanceForMoving * sin(-robot->frame->getAngle());
 
 		for(auto robotMapElemsIt = robot->mapElements.begin(); robotMapElemsIt != robot->mapElements.end(); robotMapElemsIt++)
-			(*robotMapElemsIt)->Move(deltaX, deltaY);
+			(*robotMapElemsIt)->Move(deltaMove);
 
-		undoMovementTask->SetMovement(-deltaX, -deltaY);
+		undoMovementTask->SetMovement(Point(-deltaMove.x, -deltaMove.y));
 
 		leftDistanceForMoving -= currentDistanceForMoving;
 	}
 	else
-		undoMovementTask->SetMovement(0.0F, 0.0F);
+		undoMovementTask->SetMovement(Point(0.0f, 0.0f));
 }
 
 void RunningGear::updateRotation(float delta) {
@@ -93,5 +94,5 @@ void RunningGear::updateRotation(float delta) {
 		leftAngleForRotation -= currentAngleForRotation;
 	}
 	else
-		undoMovementTask->SetRotation(0.0F);
+		undoMovementTask->SetRotation(0.0f);
 }

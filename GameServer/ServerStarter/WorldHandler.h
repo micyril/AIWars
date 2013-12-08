@@ -6,6 +6,7 @@
 #include "..\GameServer\world\world.h"
 #include "..\GameServer\world\robot\components\runninggear.h"
 #include "..\GameServer\world\robot\components\gun\gun.h"
+#include "..\GameServer\world\robot\components\visualscanner\visualscanner.h"
 #include "..\GameServer\world\robot\robot.h"
 #include "..\..\WebHandler\WebHandler\WebHandler.h"
 #include "..\GameServer\exceptions.h"
@@ -31,7 +32,7 @@ class WorldHandler
 	/*static TP_CALLBACK_ENVIRON pool_env;
 	static PTP_POOL pool;*/
 	int max_clients;
-	Robot* makeRobot(int width, int hieght, float x, float y,  World* world);
+	Robot* makeRobot(int width, int hieght, Point p,  World* world);
 public:
 	WorldHandler(int max_clients_in_game);
 	void startGame(Client* cl1, Client* cl2 );

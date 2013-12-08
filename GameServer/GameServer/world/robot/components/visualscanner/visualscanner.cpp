@@ -21,15 +21,14 @@ void VisualScanner::SetRobot(Robot *robot) {
 
 std::string VisualScanner::Execute(const std::string &command, const std::string &arg) {
 	if (command == "SC") {
-		float pointOfViewX = robot->frame->rotationCenterX;
-		float pointOfViewY = robot->frame->rotationCenterY;
-		float sectorBegin = robot->frame->rotation - viewAngle / 2.0F;
-		float sectorEnd = robot->frame->rotation + viewAngle / 2.0F;
+		Point pointOfView =  robot->frame->rotationCenter;
+		float sectorBegin = robot->frame->getAngle() - viewAngle / 2.0F;
+		float sectorEnd = robot->frame->getAngle() + viewAngle / 2.0F;
 
-		Rectangle scanRectangle1(viewDistance, scanRectangleHeight, pointOfViewX, pointOfViewY, 
-			pointOfViewX, pointOfViewY, sectorEnd);
-		Rectangle scanRectangle2(viewDistance, scanRectangleHeight, pointOfViewX, pointOfViewY - scanRectangleHeight, 
-			pointOfViewX, pointOfViewY, sectorBegin);
+		Rectangle scanRectangle1(viewDistance, scanRectangleHeight, pointOfView ,
+			pointOfView, sectorEnd);
+		Rectangle scanRectangle2(viewDistance, scanRectangleHeight, pointOfView - Point(0.0f, scanRectangleHeight), 
+			 pointOfView, sectorBegin);
 
 		std::stringstream serializationStream;
 		serializationStream << "RET";
@@ -39,7 +38,7 @@ std::string VisualScanner::Execute(const std::string &command, const std::string
 		for(auto mapElemIt = allMapElements->begin(); mapElemIt != allMapElements->end(); mapElemIt++) {
 			if (CollisionChecker::Check(&scanRectangle1, *mapElemIt) && CollisionChecker::Check(&scanRectangle2, *mapElemIt) && 
 				((*mapElemIt)->GetType() != RobotMapElement::GetClassType() || ((RobotMapElement*)*mapElemIt)->GetRobot() != robot)) {
-					Measurer::FindDistanceAndDirectionToRectangle(*mapElemIt, pointOfViewX, pointOfViewY, sectorBegin, sectorEnd, viewDistance, 
+					Measurer::FindDistanceAndDirectionToRectangle(*mapElemIt, pointOfView, sectorBegin, sectorEnd, viewDistance, 
 						distanceToMapElement, directionToMapElement);
 					serializationStream << space << (*mapElemIt)->GetType() << space << distanceToMapElement << space << directionToMapElement;
 			}

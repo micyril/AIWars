@@ -20,7 +20,8 @@ protected:
 	virtual std::string serializeWithoutBrackets();
 
 public:
-	RobotMapElement(std::string viewType, int width, int height, float x = 0, float y = 0, int health = 100);
+	
+	RobotMapElement(std::string viewType, int width, int height, Point p = Point(0.0f,0.0f), int health = 100);
 	virtual ~RobotMapElement() = 0 { };
 	void SetRobot(Robot *robot);
 	Robot * const GetRobot();
@@ -32,7 +33,8 @@ public:
 
 class RobotFrame : public RobotMapElement {
 public:
-	RobotFrame(int width, int height, float x = 0, float y = 0);
+	
+	RobotFrame(int width, int height, Point p = Point(0.0f,0.0f));
 };
 
 class Robot : public WorldObject {
