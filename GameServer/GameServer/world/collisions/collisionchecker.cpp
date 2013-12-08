@@ -15,9 +15,7 @@ bool CollisionChecker::checkEdges(std::vector<Edge> &rect0, std::vector<Edge> &r
 bool CollisionChecker::checkPoints(std::vector<Point> &rect0, std::vector<Point> &rect1){
 	BBox b0(rect0);
 	BBox b1(rect1);
-	bool check0 = belong(b0, b1);
-	bool check1 = belong(b1, b0);
-	return check0 || check1;
+	return belong(b0, b1) ||  belong(b1, b0);
 }
 bool CollisionChecker::Check(Rectangle *rectangle1, Rectangle *rectangle2) {
 	return checkEdges(rectangle1->getEdges(), rectangle2->getEdges()) ||
