@@ -7,6 +7,18 @@ var GameStatus = {
 	win: "Победа",
 	loose: "Поражение"
 };
+var RobotColor = [
+	"#9c1dce",
+	"#9cbcbc",
+	"#de5f4b",
+	"#a0a525",
+	"#365b0d",
+	"#a8047c",
+	"#5ce95a",
+	"#8d7b5c",
+	"#3e8efb",
+	"#b7a5aa"
+];
 var MapSize, Canvas, Context;
 var Padding;
 var TempCanvas = $("<canvas></canvas>");
@@ -101,7 +113,7 @@ function action_update(msg) {
 	Context.clear();
 	for (var i in msg.mapelements) {
 		i = msg.mapelements[i];
-		var me = new MapElement(i.position.x, i.position.y, i.width, i.height, i.rotationcenter.x, i.rotationcenter.y, i.angle);
+		var me = new MapElement(i.position.x, i.position.y, i.width, i.height, i.rotationcenter.x, i.rotationcenter.y, i.angle, i.robotId);
 		me.draw();
 	}
 }
@@ -113,11 +125,11 @@ function translateCoords(c) {
 	return c;
 }
 
-function MapElement(x, y, width, height, rx, ry, a) {
+function MapElement(x, y, width, height, rx, ry, a, rid) {
 	this.pos = {x: x, y: y};
 	this.size = {x: width, y: height};
 	this.rot = {x: rx, y: ry, a: a};
-	this.color = "#351EFF";
+	this.color = RobotColor[rid];
 	
 	this.draw = function() {
 		var pos = translateCoords(this.pos);
