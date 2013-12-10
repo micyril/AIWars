@@ -1,4 +1,5 @@
 var BORDER_WIDTH = 10;
+var SELFID, ENEMYID, STATUS;
 
 // globals
 var GameStatus = {
@@ -7,18 +8,6 @@ var GameStatus = {
 	win: "Победа",
 	loose: "Поражение"
 };
-var RobotColors = [
-	"#9c1dce",
-	"#9cbcbc",
-	"#de5f4b",
-	"#a0a525",
-	"#365b0d",
-	"#a8047c",
-	"#5ce95a",
-	"#8d7b5c",
-	"#3e8efb",
-	"#b7a5aa"
-];
 var MapSize;
 var Padding;
 var SVG, jSVG;
@@ -47,11 +36,15 @@ $(function() {
 })
 
 function self_info(msg) {
+	SELFID = msg.id;
+	STATUS = GameStatus.waiting;
 	setPlane("id_self", msg.id, "Ваш ID");
 	setPlane("status", GameStatus.waiting, "Статус");
 }
 
 function enemy_info(msg) {
+	ENEMYID = msg.id;
+	STATUS = GameStatus.waiting;
 	setPlane("id_enemy", msg.id, "ID соперника");
 	$("#status").remove();
 	setPlane("status", GameStatus.waiting, "Статус");
@@ -90,7 +83,7 @@ function game_info(msg) {
 
 	SVG.prepare = function() {
 		SVG.clear();
-		SVG.rect(0, 0, "100%", "100%", {fill: "black", id: "background"})
+		SVG.rect(0, 0, "100%", "100%", {fill: "black", id: "background"});
 	}
 	SVG.prepare();
 }
@@ -100,14 +93,18 @@ function action(msg) {
 }
 
 function action_start(msg) {
+	STATUS = GameStatus.ingame;
 	setPlane("status", GameStatus.ingame);
 }
 
 function action_finish(msg) {
-	if ($("#id_self").find(".value").text() == msg.winner)
+	if ($("#id_self").find(".value").text() == msg.winner) {
+		STATUS = GameStatus.win;
 		setPlane("status", GameStatus.win, "Статус");
-	else 
+	} else {
+		STATUS = GameStatus.loose;
 		setPlane("status", GameStatus.loose, "Статус");
+	}
 }
 
 function action_update(msg) {
@@ -121,32 +118,32 @@ function action_update(msg) {
 
 
 function translateCoords(c) {
-	c.x = c.x / MapSize.width;
-	c.y = c.y / MapSize.height;
-	return c;
+	return {
+		x: c.x / MapSize.width * jSVG.width(),
+		y: c.y / MapSize.height * jSVG.height()
+	};
 }
 
 function MapElement(x, y, width, height, rx, ry, a, rid, type) {
 	this.pos = {x: x, y: y};
 	this.size = {x: width, y: height};
 	this.rot = {x: rx, y: ry, a: a};
-	this.color = RobotColors[rid];
 	this.type = type;
+	if (this.type == "RobotFrame") {
+		this.type += (rid == SELFID ? "0" : "1");
+	}
 	
 	this.draw = function() {
-		var pos = translateCoords(this.pos);
-		var rot = translateCoords(this.rot);
+		var p = translateCoords(this.pos);
+		var r = translateCoords(this.rot);
 		var sz = translateCoords(this.size);
 
-		rot.x *= jSVG.width();
-		rot.y *= jSVG.height();
-		rot.a *= 180/Math.PI;
-
+		r.a = this.rot.a * 180/Math.PI;
 		var g = SVG.group({
-			transform: "rotate("+rot.a+" "+rot.x+" "+rot.y+")",
-			fill: this.color
+			transform: "rotate(-"+r.a+" "+r.x+" "+r.y+") translate("+p.x+" "+p.y+")",
+			"class": this.type
 		});
-		SVG.rect(g, pos.x*100 + "%", pos.y*100 + "%", sz.x*100 + "%", sz.y*100 + "%");
+		SVG.rect(g, 0, 0, sz.x, sz.y).original = this;
 	}
 }
 
@@ -166,6 +163,13 @@ function resizeField() {
 		h = area.height - BORDER_WIDTH*2;
 	}
 	jSVG.width(w).height(h);
+	jSVG.find("*").each(function(i, e) {
+			if (e.original) {
+				var o = e.original;
+				e.remove();
+				o.draw();
+			}
+		});
 }
 
 // создает новую информационную плашку или обновляет значение в существующей

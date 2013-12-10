@@ -22,10 +22,25 @@ body {
 	text-align: center;
 }
 
-
 svg {
 	border: 10px solid;
 	border-image: url(/img/frame.gif) 10 repeat;
+}
+
+.Bullet {
+	fill: red;
+}
+
+.RobotFrame0 {
+	fill: #9c1dce;
+}
+
+.RobotFrame1 {
+	fill: #9cbcbc;
+}
+
+.GunBarrel {
+	fill: #666666;
 }
 
 
