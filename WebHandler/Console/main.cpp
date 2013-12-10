@@ -12,10 +12,10 @@ void OnConnect(Client *c) {
 	Sleep(500);
 	c->notifyStart();
 	w->Update(0);
-	while (1) {
+	//while (1) {
 		c->notifyUpdate((std::list<Serializable*>*)w->GetMapElements());
-		Sleep(200);
-	}
+	//	Sleep(200);
+	//}
 }
 
 Robot* makeRobot(int width, int height, Point p, World* world){
@@ -34,7 +34,7 @@ Robot* makeRobot(int width, int height, Point p, World* world){
 
 int main() {
 	w = new World(500, 500);
-	w->Add(makeRobot(40, 40, Point(10, 10), w));
+	w->Add(makeRobot(200, 200, Point(10, 10), w));
 	w->Add(makeRobot(40, 40, Point(10, 450), w));
 	w->Add(makeRobot(40, 40, Point(450, 10), w));
 	w->Add(makeRobot(40, 40, Point(450, 450), w));

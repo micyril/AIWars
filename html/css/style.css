@@ -18,12 +18,12 @@ body {
 	vertical-align: top;
 }
 
-#canvas_box {
+#field_box {
 	text-align: center;
 }
 
 
-canvas {
+svg {
 	border: 10px solid;
 	border-image: url(/img/frame.gif) 10 repeat;
 }

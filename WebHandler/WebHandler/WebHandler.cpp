@@ -135,7 +135,7 @@ VOID CALLBACK WebHandler::HttpRequestHandler(PTP_CALLBACK_INSTANCE Instance, PVO
 	bool ws = false;
 	try {
 		req = new HttpRequest(s, HTML_ROOT, DEFAULT_PAGE);
-		if (req->headers["Upgrade"].compare("websocket") == 0) {
+		if (toLowerCase(req->headers["Upgrade"]).compare("websocket") == 0) {
 			// переходим на веб-сокет
 			res = websocketHandshake(req);
 			ws = true;
