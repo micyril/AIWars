@@ -138,9 +138,9 @@ function MapElement(x, y, width, height, rx, ry, a, rid, type) {
 		var r = translateCoords(this.rot);
 		var sz = translateCoords(this.size);
 
-		r.a = this.rot.a * 180/Math.PI;
+		r.a = -this.rot.a * 180/Math.PI;
 		var g = SVG.group({
-			transform: "rotate(-"+r.a+" "+r.x+" "+r.y+") translate("+p.x+" "+p.y+")",
+			transform: "rotate("+r.a+" "+r.x+" "+r.y+") translate("+p.x+" "+p.y+")",
 			"class": this.type
 		});
 		SVG.rect(g, 0, 0, sz.x, sz.y).original = this;
