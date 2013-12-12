@@ -12,8 +12,8 @@ class WorldObject:
 
 
 class ScanCommandAnswer(CommandAnswer):
-    def __init__(self,scWorldsObjects = [] ,state = 1):
-        self.scannedWorldsObjects = scWorldsObjects
+    def __init__(self,scWorldObjects = [] ,state = 1):
+        self.scannedWorldObjects = scWorldObjects
         self.state = state
 
 
@@ -96,7 +96,7 @@ class ScanCommand(Command):
         for i in range(2,len(args),3):
             parsed_args.append(WorldObject(args[i-2],float(args[i-1]),float(args[i])))
 
-        answer.scannedWorldsObjects = parsed_args
+        answer.scannedWorldObjects = parsed_args
         return answer
 
 

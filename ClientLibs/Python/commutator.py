@@ -71,7 +71,7 @@ class Commutator:
     def hand_shake(self,hand_shake_msg):
         if(self.connected):
             self.send_all(hand_shake_msg)
-            print self.recv_all()
+            #print self.recv_all()
             return True
         else:
             return False

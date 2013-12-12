@@ -1,7 +1,6 @@
 
 class Message:
 ## ACK = 1, NAK = 0, EOG = -1
-
     def __init__(self,head = "", raw_command = "", args_line = ""):
         self.head = head
         self.raw_command = raw_command
