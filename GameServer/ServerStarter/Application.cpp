@@ -60,8 +60,10 @@ void Application::listenOnPort(int port){//ToDo decomposite it
 	char buff[SIZE_BUFFER];
 	try{
 		while(1){
-			if(clients.empty())
+			if(clients.empty()){
+				Sleep(1);
 				continue;
+			}
 			ClientSocket = accept(ListenSocket, NULL, NULL);
 		
 			//TODO check wrong value
