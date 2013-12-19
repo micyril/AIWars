@@ -10,10 +10,10 @@ private:
 	static BulletCollisionResolver *bulletCollisionResolver;
 
 	BulletCollisionResolver();
-	void resolve(BulletBody *subject, RobotMapElement *object);
-	void resolve(BulletBody *subject, BulletBody *object);
+	void resolve(BulletBody *updatedElement, RobotMapElement *collidedElement);
+	void resolve(BulletBody *updatedElement, BulletBody *collidedElement);
 
 public:
-	virtual void Resolve(MapElement *subject, MapElement *object);
+	virtual void Resolve(MapElement *updatedElement, MapElement *collidedElement);
 	static void Initilize();
 };

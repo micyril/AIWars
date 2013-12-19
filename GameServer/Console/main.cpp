@@ -37,7 +37,7 @@ void OnConnect(Client *c) {
 	c->notifyStart();
 	int sleepPeriod = 20;
 
-	//r1->Execute("MOV", "120.0");
+	r1->Execute("MOV", "120.0");
 	r1->Execute("FR", "");
 	//r1->Execute("ROT", "-0.75");
 	//r2->Execute("FR", "");

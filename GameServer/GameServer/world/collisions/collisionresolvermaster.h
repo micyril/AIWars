@@ -14,6 +14,6 @@ private:
 
 public:
 	~CollisionResolverMaster();
-	static void AddNewCollisionResolver(std::string mapElementType1, std::string mapElementType2, CollisionResolver *collisionResolver);
-	static void Resolve(MapElement *subject, MapElement *object);
+	static void AddNewCollisionResolver(std::string updatedElementType, std::string collidedElementType, CollisionResolver *collisionResolver);
+	static void Resolve(MapElement *updatedElement, MapElement *collidedElement);
 };

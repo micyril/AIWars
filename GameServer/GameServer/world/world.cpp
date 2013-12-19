@@ -53,11 +53,11 @@ std::string World::Serialize() {
 	return stream.str();
 }
 
-void World::checkAndResolveCollisionsFor(WorldObject *object) {
-	for (auto objectMEIt = object->mapElements.begin(); objectMEIt != object->mapElements.end(); objectMEIt++)
+void World::checkAndResolveCollisionsFor(WorldObject *updatedObject) {
+	for (auto updatedObjectMEIt = updatedObject->mapElements.begin(); updatedObjectMEIt != updatedObject->mapElements.end(); updatedObjectMEIt++)
 		for (auto mapElementIt = mapElements.begin(); mapElementIt != mapElements.end();  mapElementIt++)
-			if(*objectMEIt != *mapElementIt && CollisionChecker::Check(*objectMEIt, *mapElementIt))
-				CollisionResolverMaster::Resolve(*mapElementIt, *objectMEIt);
+			if(*updatedObjectMEIt != *mapElementIt && CollisionChecker::Check(*updatedObjectMEIt, *mapElementIt))
+				CollisionResolverMaster::Resolve(*updatedObjectMEIt, *mapElementIt);
 }
 
 void World::deleteObjects() {

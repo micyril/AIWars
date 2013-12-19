@@ -11,11 +11,11 @@ BulletCollisionResolver::BulletCollisionResolver() {
 	CollisionResolverMaster::AddNewCollisionResolver(BulletBody::GetClassType(), BulletBody::GetClassType(), this);
 }
 
-void BulletCollisionResolver::Resolve(MapElement *subject, MapElement *object) {
-	if(subject->GetType() == BulletBody::GetClassType() && object->GetType() == RobotMapElement::GetClassType())
-		resolve((BulletBody*)subject, (RobotMapElement*)object);
-	else if(subject->GetType() == BulletBody::GetClassType() && object->GetType() == BulletBody::GetClassType())
-		resolve((BulletBody*)subject, (BulletBody*)object);
+void BulletCollisionResolver::Resolve(MapElement *updatedElement, MapElement *collidedElement) {
+	if(updatedElement->GetType() == BulletBody::GetClassType() && collidedElement->GetType() == RobotMapElement::GetClassType())
+		resolve((BulletBody*)updatedElement, (RobotMapElement*)collidedElement);
+	else if(updatedElement->GetType() == BulletBody::GetClassType() && collidedElement->GetType() == BulletBody::GetClassType())
+		resolve((BulletBody*)updatedElement, (BulletBody*)collidedElement);
 }
 
 void BulletCollisionResolver::Initilize() {
@@ -23,14 +23,14 @@ void BulletCollisionResolver::Initilize() {
 		bulletCollisionResolver = new BulletCollisionResolver();
 }
 
-void BulletCollisionResolver::resolve(BulletBody *subject, RobotMapElement *object) { 
-	if(subject->IsDestroyed() == false) {
-		object->Damage(subject->GetDamageInfluence());
-		subject->Destroy();
+void BulletCollisionResolver::resolve(BulletBody *updatedElement, RobotMapElement *collidedElement) { 
+	if(updatedElement->IsDestroyed() == false) {
+		collidedElement->Damage(updatedElement->GetDamageInfluence());
+		updatedElement->Destroy();
 	}
 }
 
-void BulletCollisionResolver::resolve(BulletBody *subject, BulletBody *object) {
-	subject->Destroy();
-	object->Destroy();
+void BulletCollisionResolver::resolve(BulletBody *updatedElement, BulletBody *collidedElement) {
+	updatedElement->Destroy();
+	collidedElement->Destroy();
 }

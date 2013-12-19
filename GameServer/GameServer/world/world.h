@@ -20,7 +20,7 @@ private:
 	std::mutex mutexForAdding;
 	std::mutex mutexForDeleting;
 
-	void checkAndResolveCollisionsFor(WorldObject *object);
+	void checkAndResolveCollisionsFor(WorldObject *updatedObject);
 	void deleteObjects();
 	void addObjects();
 

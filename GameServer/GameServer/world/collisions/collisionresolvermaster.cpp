@@ -10,21 +10,21 @@ CollisionResolverMaster::~CollisionResolverMaster() {
 		delete it->second;
 }
 
-void CollisionResolverMaster::AddNewCollisionResolver(std::string mapElementType1, std::string mapElementType2, CollisionResolver *collisionResolver) {
-	crm.mapElementsTypesToCollisionResolver.insert(std::pair< std::string, CollisionResolver* >(mapElementType1 + " " + mapElementType2, collisionResolver));
+void CollisionResolverMaster::AddNewCollisionResolver(std::string updatedElementType, std::string collidedElementType, CollisionResolver *collisionResolver) {
+	crm.mapElementsTypesToCollisionResolver.insert(std::pair< std::string, CollisionResolver* >(updatedElementType + " " + collidedElementType, collisionResolver));
 }
 
-void CollisionResolverMaster::Resolve(MapElement *subject, MapElement *object) {
+void CollisionResolverMaster::Resolve(MapElement *updatedElement, MapElement *collidedElement) {
 	if(areResolversInitialized == false) {
 		defineCollisionResolvers();
 		areResolversInitialized = true;
 	}
 
 	std::map<std::string, CollisionResolver* >::iterator it = 
-		crm.mapElementsTypesToCollisionResolver.find(subject->GetType() + " " + object->GetType());
+		crm.mapElementsTypesToCollisionResolver.find(updatedElement->GetType() + " " + collidedElement->GetType());
 
 	if (it == crm.mapElementsTypesToCollisionResolver.end())
-		throw CollisionResolverNotFoundException(subject->GetType(), object->GetType());
+		throw CollisionResolverNotFoundException(updatedElement->GetType(), collidedElement->GetType());
 
-	it->second->Resolve(subject, object);
+	it->second->Resolve(updatedElement, collidedElement);
 }

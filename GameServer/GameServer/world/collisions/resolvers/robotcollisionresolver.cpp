@@ -8,12 +8,12 @@ RobotCollisionResolver::RobotCollisionResolver() {
 	CollisionResolverMaster::AddNewCollisionResolver(RobotMapElement::GetClassType(), RobotMapElement::GetClassType(), this);
 }
 
-void RobotCollisionResolver::Resolve(MapElement *subject, MapElement *object) {
-	RobotMapElement *rmeSubject = (RobotMapElement *)subject;
-	RobotMapElement *rmeObject = (RobotMapElement *)object;
+void RobotCollisionResolver::Resolve(MapElement *updatedElement, MapElement *collidedElement) {
+	RobotMapElement *rmeCollidedElement = (RobotMapElement *)collidedElement;
+	RobotMapElement *rmeUpdatedElement = (RobotMapElement *)updatedElement;
 
-	if (rmeSubject->GetRobot() != rmeObject->GetRobot())
-		rmeObject->GetRobot()->UndoLastMovement();
+	if (rmeCollidedElement->GetRobot() != rmeUpdatedElement->GetRobot())
+		rmeUpdatedElement->GetRobot()->UndoLastMovement();
 }
 
 void RobotCollisionResolver::Initilize() {

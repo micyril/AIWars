@@ -6,6 +6,6 @@ private:
 	static RobotCollisionResolver *robotCollisionResolver;
 
 public:
-	virtual void Resolve(MapElement *subject, MapElement *object);
+	virtual void Resolve(MapElement *updatedElement, MapElement *collidedElement);
 	static void Initilize();
 };
