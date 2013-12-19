@@ -6,7 +6,7 @@ import time
 
 
 class ServerTester:
-	def __init__(self, driver, drivers_count, server_ip, server_port = 2560, start_id):
+	def __init__(self, driver, drivers_count, server_ip, server_port, start_id):
 		self.drivers = []
 		self.processes = []
 		self.drivers_count = drivers_count
@@ -26,8 +26,8 @@ class ServerTester:
 				body.send_keys(Keys.CONTROL + 't')
 
 		for i in range(tests_count * self.drivers_count):
-			args_str = str(i + start_id) + " " + str(self.server_ip) + " " + str(self.server_port)
-			self.processes.append(Popen("python testClient/robotExample.py " + args_str , shell=True))
+			args_str = str(i + self.start_id) + " " + str(self.server_ip) + " " + str(self.server_port)
+			self.processes.append(Popen("python ./testClient/robotExample.py " + args_str , shell=True))
 
 	def wait_and_stop_testing(self, timeout):
 		time.sleep(timeout)
