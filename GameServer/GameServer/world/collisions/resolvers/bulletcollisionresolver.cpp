@@ -12,9 +12,9 @@ BulletCollisionResolver::BulletCollisionResolver() {
 }
 
 void BulletCollisionResolver::Resolve(MapElement *updatedElement, MapElement *collidedElement) {
-	if(updatedElement->GetType() == BulletBody::GetClassType() && collidedElement->GetType() == RobotMapElement::GetClassType())
+	if(updatedElement->GetCollidedElementType() == BulletBody::GetClassType() && collidedElement->GetCollidedElementType() == RobotMapElement::GetClassType())
 		resolve((BulletBody*)updatedElement, (RobotMapElement*)collidedElement);
-	else if(updatedElement->GetType() == BulletBody::GetClassType() && collidedElement->GetType() == BulletBody::GetClassType())
+	else if(updatedElement->GetCollidedElementType() == BulletBody::GetClassType() && collidedElement->GetCollidedElementType() == BulletBody::GetClassType())
 		resolve((BulletBody*)updatedElement, (BulletBody*)collidedElement);
 }
 

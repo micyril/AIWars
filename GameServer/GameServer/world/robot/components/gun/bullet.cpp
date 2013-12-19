@@ -5,7 +5,7 @@
 std::string BulletBody::type = "BulletBody";
 
 BulletBody::BulletBody(int damageInfluence, int width, int height, Point p, Point rotationCenter, float rotation) : 
-	MapElement(std::string("Bullet"), width, height, p, rotationCenter, rotation), damageInfluence(damageInfluence), isDestroyed(false) {}
+	MapElement(std::string("Bullet"), BulletBody::type, width, height, p, rotationCenter, rotation), damageInfluence(damageInfluence), isDestroyed(false) {}
 
 int BulletBody::GetDamageInfluence() {
 	return damageInfluence;
@@ -17,10 +17,6 @@ void BulletBody::Destroy() {
 
 bool BulletBody::IsDestroyed() {
 	return isDestroyed;
-}
-
-std::string BulletBody::GetType() {
-	return GetClassType();
 }
 
 std::string BulletBody::GetClassType() {

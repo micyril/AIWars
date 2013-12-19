@@ -5,7 +5,7 @@
 std::string RobotMapElement::type = "RobotMapElement";
 
 RobotMapElement::RobotMapElement(std::string viewType, int width, int height, Point p, int health) :
-	MapElement(viewType, width, height, p), health(health) {}
+	MapElement(viewType, RobotMapElement::type, width, height, p), health(health) {}
 
 void RobotMapElement::SetRobot(Robot *robot) {
 	this->robot = robot;
@@ -21,10 +21,6 @@ void RobotMapElement::Damage(int points) {
 
 int RobotMapElement::GetHealth() {
 	return health;
-}
-
-std::string RobotMapElement::GetType() {
-	return GetClassType();
 }
 
 std::string RobotMapElement::GetClassType() {

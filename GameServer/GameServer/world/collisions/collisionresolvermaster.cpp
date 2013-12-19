@@ -21,10 +21,10 @@ void CollisionResolverMaster::Resolve(MapElement *updatedElement, MapElement *co
 	}
 
 	std::map<std::string, CollisionResolver* >::iterator it = 
-		crm.mapElementsTypesToCollisionResolver.find(updatedElement->GetType() + " " + collidedElement->GetType());
+		crm.mapElementsTypesToCollisionResolver.find(updatedElement->GetCollidedElementType() + " " + collidedElement->GetCollidedElementType());
 
 	if (it == crm.mapElementsTypesToCollisionResolver.end())
-		throw CollisionResolverNotFoundException(updatedElement->GetType(), collidedElement->GetType());
+		throw CollisionResolverNotFoundException(updatedElement->GetCollidedElementType(), collidedElement->GetCollidedElementType());
 
 	it->second->Resolve(updatedElement, collidedElement);
 }

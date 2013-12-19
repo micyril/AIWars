@@ -37,10 +37,10 @@ std::string VisualScanner::Execute(const std::string &command, const std::string
 		float distanceToMapElement, directionToMapElement;
 		for(auto mapElemIt = allMapElements->begin(); mapElemIt != allMapElements->end(); mapElemIt++) {
 			if (CollisionChecker::Check(&scanRectangle1, *mapElemIt) && CollisionChecker::Check(&scanRectangle2, *mapElemIt) && 
-				((*mapElemIt)->GetType() != RobotMapElement::GetClassType() || ((RobotMapElement*)*mapElemIt)->GetRobot() != robot)) {
+				((*mapElemIt)->GetCollidedElementType() != RobotMapElement::GetClassType() || ((RobotMapElement*)*mapElemIt)->GetRobot() != robot)) {
 					Measurer::FindDistanceAndDirectionToRectangle(*mapElemIt, pointOfView, sectorBegin, sectorEnd, viewDistance, 
 						distanceToMapElement, directionToMapElement);
-					serializationStream << space << (*mapElemIt)->GetType() << space << distanceToMapElement << space << directionToMapElement;
+					serializationStream << space << (*mapElemIt)->GetViewType() << space << distanceToMapElement << space << directionToMapElement;
 			}
 		}
 

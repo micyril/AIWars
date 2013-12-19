@@ -27,7 +27,6 @@ public:
 	Robot * const GetRobot();
 	void Damage(int points);
 	int GetHealth();
-	virtual std::string GetType();
 	static std::string GetClassType();
 };
 

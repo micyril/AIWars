@@ -13,7 +13,6 @@ public:
 	int GetDamageInfluence();
 	void Destroy();
 	bool IsDestroyed();
-	virtual std::string GetType();
 	static std::string GetClassType();
 };
 
