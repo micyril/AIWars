@@ -22,8 +22,8 @@ class ServerTester:
 			for j in range(self.drivers_count):
 				self.drivers[j].get("http://" + self.server_ip + "/");
 				body = self.drivers[j].find_element_by_tag_name("body")
-				body.send_keys(Keys.COMMAND + 't')
-				#body.send_keys(Keys.CONTROL + 't')
+				#body.send_keys(Keys.COMMAND + 't')
+				body.send_keys(Keys.CONTROL + 't')
 
 		for i in range(tests_count * self.drivers_count):
 			args_str = str(i + start_id) + " " + str(self.server_ip) + " " + str(self.server_port)
