@@ -39,7 +39,7 @@ void OnConnect(Client *c) {
 
 	r1->Execute("MOV", "120.0");
 	r1->Execute("FR", "");
-	//r1->Execute("ROT", "-0.75");
+	r1->Execute("ROT", "-0.75");
 	//r2->Execute("FR", "");
 	
 	for(int i = 0; i < 26; i++)

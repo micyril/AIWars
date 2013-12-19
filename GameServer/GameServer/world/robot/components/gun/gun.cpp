@@ -27,17 +27,18 @@ std::string Gun::Execute(const std::string &command, const std::string &arg) {
 	//TODO: think out what should be done if we are reloading now
 	//TODO: think out what should be returned if we are reloading now
 	if (command == "FR") {
-		if(nextShotWaitingTime == 0 && barrel->GetHealth() > 0) {
-			nextShotWaitingTime += reloadingTime;
-			Bullet *bullet = bulletFactory.Create();
-			world->Add(bullet);
-		}
+		if(nextShotWaitingTime == 0 && barrel->GetHealth() > 0)
+			nextShotWaitingTime = reloadingTime;
 		return std::string("");  //TODO: use constant
 	}
 	throw NotSupportedCommandException(command);
 }
 
 void Gun::Update(float delta) {
+	if(nextShotWaitingTime == reloadingTime) {
+		Bullet *bullet = bulletFactory.Create();
+		world->Add(bullet);
+	}
 	if(nextShotWaitingTime > 0)
 		nextShotWaitingTime = std::max<float>(nextShotWaitingTime - delta, 0.0F);
 }

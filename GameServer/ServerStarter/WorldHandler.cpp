@@ -65,7 +65,7 @@ DWORD WINAPI clientThread(LPVOID lpParam){
 				parceCommand(recvbuf, iResult, command, arg);
 			
 				try{
-					cerr << command << endl;
+					//cerr << command << endl;
 					std::string answer = info->r->Execute(command, arg); 
 					if(answer.empty()){//ToDo убрать костыли
 						iSendResult = send( info->c->commandSocket, ack.c_str(), ack.length(), 0 );
@@ -122,7 +122,7 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 
 	for(int i = 0;i<info->max_clients;i++){
 		(*info->clinfo)[i]->c->sendSelfInfo();
-		//(*clients)[i]->c->sendEnemyInfo(info->c2info->c->id);
+		(*info->clinfo)[i]->c->sendEnemyInfo((*info->clinfo)[(i + 1) % info->max_clients]->c->id);
 		(*info->clinfo)[i]->c->sendGameInfo(info->world);
 		(*info->clinfo)[i]->c->notifyStart();
 		CreateThread(NULL, NULL, clientThread, (*info->clinfo)[i], NULL, NULL);
@@ -141,6 +141,7 @@ DWORD WINAPI worldThread( LPVOID lpParam ){
 			(*info->clinfo)[i]->c->notifyUpdate((std::list<Serializable*>*)(info->world->GetMapElements()));
 			switch((*info->active_clients)[i]){
 				case 0:
+					winner = (*info->clinfo)[i]->c->id;
 					break;
 				case 1:
 					game_alive = true;

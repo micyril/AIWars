@@ -105,9 +105,9 @@ void Client::sendSelfInfo() {
 	sendObject(Info(true, id));
 }
 
-void Client::sendEnemyInfo(int id) {
-	enemy_id = id;
-	sendObject(Info(false, id));
+void Client::sendEnemyInfo(int _id) {
+	enemy_id = _id;
+	sendObject(Info(false, _id));
 }
 
 void Client::sendGameInfo(Serializable *w) {
